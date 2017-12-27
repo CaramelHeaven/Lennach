@@ -17,10 +17,6 @@ import java.util.List;
 import ru.caramelheaven.dvach.data.File;
 import ru.caramelheaven.dvach.data.Post;
 
-/**
- * Created by Sergey F on 22.12.2017.
- */
-
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
 
     private List<Post> postList;

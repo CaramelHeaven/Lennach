@@ -19,7 +19,7 @@ import ru.caramelheaven.dvach.R;
 import ru.caramelheaven.dvach.ThreadAdapter;
 import ru.caramelheaven.dvach.data.Board;
 import ru.caramelheaven.dvach.data.Post;
-import ru.caramelheaven.dvach.network.DvachClient;
+import ru.caramelheaven.dvach.network.DvachService;
 
 import static ru.caramelheaven.dvach.BoardAdapter.NUMBER_THREAD;
 
@@ -42,8 +42,8 @@ public class ThreadActivity extends AppCompatActivity {
 
         Retrofit retrofit = builder.build();
 
-        DvachClient dvachClient = retrofit.create(DvachClient.class);
-        Call<Board> call = dvachClient.getThread("b", f); // Здесь должен быть GET_BOARD, но он не работает.
+        DvachService dvachService = retrofit.create(DvachService.class);
+        Call<Board> call = dvachService.getThread("b", f); // Здесь должен быть GET_BOARD, но он не работает.
         List<Post> posts = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

@@ -12,14 +12,21 @@ import org.reactivestreams.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.caramelheaven.dvach.data.Board;
 import ru.caramelheaven.dvach.data.Thread;
-import ru.caramelheaven.dvach.network.DvachClient;
+import ru.caramelheaven.dvach.network.DvachService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Все перегрузки метода subscribe возвращают объект интерфейса Subscribtion,
     private Subscription subscriptionBoard;
+
+    //тип Disposable позволяет вызывать метод dispose, означающий «Я закончил работать с этим ресурсом, мне больше не нужны данные»
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,39 +70,58 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-        Retrofit.Builder builder = new Retrofit.Builder()
+        DvachService dvachService = new Retrofit.Builder()
                 .baseUrl("https://2ch.hk/")
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(DvachService.class);
 
+        //Call<Board> call = dvachService.getBoard(boardq);
 
-        DvachClient dvachClient = retrofit.create(DvachClient.class);
-        Call<Board> call = dvachClient.getBoard(boardq);
+        dvachService.getRxBoard("b")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Board>() {
+                               @Override
+                               public void accept(Board board) throws Exception {
+                                   recyclerView.setAdapter(new BoardAdapter(MainActivity.this, board.getThreads()));
+                               }
+                           }, new Consumer<Throwable>() {
+                               @Override
+                               public void accept(Throwable throwable) throws Exception {
+                                   Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
 
-        /*App.getDvachApi().getBoard(boardq).enqueue(new Callback<Board>() {
-            @Override
-            public void onResponse(Call<Board> call, Response<Board> response) {
-                recyclerView.setAdapter(new BoardAdapter(MainActivity.this, response.body().getThreads()));
-            }
+                               }
+                           });
 
-            @Override
-            public void onFailure(Call<Board> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
-            }*/
-        call.enqueue(new Callback<Board>() {
-            @Override
-            public void onResponse(Call<Board> call, Response<Board> response) {
-                if (response.isSuccessful()) {
-                    recyclerView.setAdapter(new BoardAdapter(MainActivity.this, response.body().getThreads()));
-                }
-                //recyclerView.setAdapter(new RecyclerViewAdapter(MainActivity.this, re));
-                //listView.setAdapter(new GitHubRepoAdapter(MainActivity.this, repos));
-            }
+                       /* call.enqueue(new Callback<Board>() {
+                            @Override
+                            public void onResponse(Call<Board> call, Response<Board> response) {
+                                if (response.isSuccessful()) {
+                                    recyclerView.setAdapter(new BoardAdapter(MainActivity.this, response.body().getThreads()));
+                                }
+                            }
 
-            @Override
-            public void onFailure(Call<Board> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
-            }
-        });
+                            @Override
+                            public void onFailure(Call<Board> call, Throwable t) {
+                                Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
+                            }
+                        });*/
     }
+
+    /*private void setGetBoard(String board) {
+        disposable = DvachClient.getDvachClient()
+                .getBoardMethod(GET_BOARD)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((new Consumer<Board>() {
+                    @Override
+                    public void accept(Board board) throws Exception {
+                        recyclerView.setAdapter(MainActivity.class, board.getThreads());
+                    }
+                }) {
+
+                })
+    }*/
 }

@@ -10,11 +10,14 @@ import ru.caramelheaven.dvach.data.Board;
  * Created by Sergey F on 22.12.2017.
  */
 
-public interface DvachClient {
+public interface DvachService {
 
     @GET("{board}/res/{number}.json")
     Call<Board> getThread(@Path("board") String board, @Path("number") String number);
 
     @GET("{board}/catalog.json")
-    Observable<Board> getBoard(@Path("board") String boardView);
+    Call<Board> getBoard(@Path("board") String boardView);
+
+    @GET("{board}/catalog.json")
+    Observable<Board> getRxBoard(@Path("board") String boardView);
 }
