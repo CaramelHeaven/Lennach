@@ -1,5 +1,6 @@
 package ru.caramelheaven.dvach.network;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -15,5 +16,5 @@ public interface DvachClient {
     Call<Board> getThread(@Path("board") String board, @Path("number") String number);
 
     @GET("{board}/catalog.json")
-    Call<Board> getBoard(@Path("board") String boardView);
+    Observable<Board> getBoard(@Path("board") String boardView);
 }
