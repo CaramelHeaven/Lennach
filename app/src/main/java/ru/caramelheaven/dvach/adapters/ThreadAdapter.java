@@ -1,9 +1,8 @@
-package ru.caramelheaven.dvach;
+package ru.caramelheaven.dvach.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import ru.caramelheaven.dvach.R;
 import ru.caramelheaven.dvach.data.File;
 import ru.caramelheaven.dvach.data.Post;
 
@@ -43,6 +43,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             textData = itemView.findViewById(R.id.textData);
             image = itemView.findViewById(R.id.imageViewThread);
         }
+
+
     }
 
     @Override
