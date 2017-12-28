@@ -39,7 +39,7 @@ public class File {
     private Integer tnWidth;
     @SerializedName("type")
     @Expose
-    private Integer type;
+    private Long type;
     @SerializedName("width")
     @Expose
     private Integer width;
@@ -132,11 +132,11 @@ public class File {
         this.tnWidth = tnWidth;
     }
 
-    public Integer getType() {
+    public Long getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
