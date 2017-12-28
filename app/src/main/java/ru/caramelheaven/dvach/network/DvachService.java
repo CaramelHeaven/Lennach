@@ -15,6 +15,9 @@ public interface DvachService {
     @GET("{board}/res/{number}.json")
     Call<Board> getThread(@Path("board") String board, @Path("number") String number);
 
+    @GET("{board}/res/{number}.json")
+    Observable<Board> getRxThread(@Path("board") String board, @Path("number") String number);
+
     @GET("{board}/catalog.json")
     Call<Board> getBoard(@Path("board") String boardView);
 
