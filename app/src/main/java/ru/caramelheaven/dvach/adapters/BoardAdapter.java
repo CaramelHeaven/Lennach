@@ -1,4 +1,4 @@
-package ru.caramelheaven.dvach;
+package ru.caramelheaven.dvach.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,22 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import ru.caramelheaven.dvach.data.Board;
+import ru.caramelheaven.dvach.R;
 import ru.caramelheaven.dvach.data.File;
 import ru.caramelheaven.dvach.data.Thread;
-import ru.caramelheaven.dvach.fragment_or_activity.ThreadActivity;
-
-/**
- * Created by Sergey F on 24.12.2017.
- */
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
+
+    private static ClickListener clickListener;
     public static final String NUMBER_THREAD = "NUMBER_THREAD";
     private List<Thread> threads;
     Context context;
@@ -35,12 +31,13 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         this.threads = threads;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView subject;
         TextView comment;
         TextView views;
         ImageView image;
         CardView cardView;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -49,19 +46,17 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             views = itemView.findViewById(R.id.views);
             image = itemView.findViewById(R.id.imageView);
             cardView = itemView.findViewById(R.id.opPost);
+            cardView.setOnClickListener(this);
         }
 
-        /*@Override
+        @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                switch (v.getId()) {
-                    case 0:
-                        Intent intent = new Intent(context, ThreadActivity.class);
-                        context.startActivity(intent);
-                }
-            }
-        }*/
+            clickListener.onItemClick(v, getAdapterPosition());
+        }
+    }
+    //Try to start the better solution for clickListener
+    public void setOnItemClickListener(ClickListener clickListener) {
+
     }
 
     @Override
@@ -89,7 +84,9 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             }
         }
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        //Working code
+
+        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String fa = thread.getNum();
@@ -98,12 +95,16 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
                 intent.putExtra(NUMBER_THREAD, fa);
                 context.startActivity(intent);
             }
-        });
+        });*/
 
     }
 
     @Override
     public int getItemCount() {
         return threads.size();
+    }
+
+    public interface ClickListener {
+        void onItemClick(View view, int position);
     }
 }
