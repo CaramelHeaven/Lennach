@@ -10,28 +10,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import ru.caramelheaven.dvach.R;
+import ru.caramelheaven.dvach.data.Board;
 import ru.caramelheaven.dvach.data.File;
 import ru.caramelheaven.dvach.data.Thread;
+import ru.caramelheaven.dvach.fragment_or_activity.ThreadActivity;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
+    String board;
     private static ClickListener clickListener;
-    public static final String NUMBER_THREAD = "NUMBER_THREAD";
     private List<Thread> threads;
     Context context;
 
-    public BoardAdapter(Context context, List<Thread> threads) {
+    public BoardAdapter(Context context, List<Thread> threads, String board) {
         this.context = context;
         this.threads = threads;
+        this.board = board;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView subject;
         TextView comment;
         TextView views;
@@ -46,18 +50,10 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             views = itemView.findViewById(R.id.views);
             image = itemView.findViewById(R.id.imageView);
             cardView = itemView.findViewById(R.id.opPost);
-            cardView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            clickListener.onItemClick(v, getAdapterPosition());
-        }
     }
-    //Try to start the better solution for clickListener
-    public void setOnItemClickListener(ClickListener clickListener) {
 
-    }
 
     @Override
     public BoardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,6 +61,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
                 .inflate(R.layout.board_activity, parent, false);
         return new BoardAdapter.ViewHolder(view);
     }
+
+    private List<Board> boards;
 
     @Override
     public void onBindViewHolder(BoardAdapter.ViewHolder holder, final int position) {
@@ -83,19 +81,18 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
                 }
             }
         }
-
         //Working code
-
-        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fa = thread.getNum();
+                String number_thread = thread.getNum();
                 Toast.makeText(context, "Get Position" + position, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, ThreadActivity.class);
-                intent.putExtra(NUMBER_THREAD, fa);
+                intent.putExtra("NUMBER_THREAD", number_thread);
+                intent.putExtra("BOARD", board);
                 context.startActivity(intent);
             }
-        });*/
+        });
 
     }
 

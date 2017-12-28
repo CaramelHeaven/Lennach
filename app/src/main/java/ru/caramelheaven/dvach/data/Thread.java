@@ -230,5 +230,4 @@ public class Thread {
     public void setTrip(String trip) {
         this.trip = trip;
     }
-
 }
