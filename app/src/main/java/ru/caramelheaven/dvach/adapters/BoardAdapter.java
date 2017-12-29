@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import ru.caramelheaven.dvach.fragment_or_activity.ThreadActivity;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
+    private static String TAG = "MY LOGS";
     String board;
     private static ClickListener clickListener;
     private List<Thread> threads;
@@ -59,6 +61,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     public BoardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.board_activity, parent, false);
+        Log.d(TAG, "onCreateViewHolder: " + view + viewType);
         return new BoardAdapter.ViewHolder(view);
     }
 
@@ -93,7 +96,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
                 context.startActivity(intent);
             }
         });
-
+        Log.d(TAG, "onBindViewHolder" + position + thread.getComment() + thread.getDate() + thread.getFiles());
     }
 
     @Override

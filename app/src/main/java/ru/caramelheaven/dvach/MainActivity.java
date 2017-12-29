@@ -2,6 +2,8 @@ package ru.caramelheaven.dvach;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,17 +34,23 @@ public class MainActivity extends AppCompatActivity {
 
     //private ListView listView;
     private RecyclerView recyclerView;
+    Realm realm;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerView = findViewById(R.id.recycle_view);
 
         Intent intent = getIntent();
         String currentBoard = intent.getStringExtra(GET_BOARD);
 
         //listView = (ListView) findViewById(R.id.pagination_list);
-        recyclerView = findViewById(R.id.recycle_view);
 
         List<Thread> repos = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -112,5 +121,15 @@ public class MainActivity extends AppCompatActivity {
 
             })
         }*/
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -1,16 +1,22 @@
 package ru.caramelheaven.dvach.data;
 
+import android.graphics.Movie;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Sergey F on 27.12.2017.
  */
 
-public class Board {
+public class Board extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("Board")
     @Expose
     private String board;
@@ -110,6 +116,9 @@ public class Board {
     @SerializedName("threads")
     @Expose
     private List<Thread> threads;
+
+    public Board() {
+    }
 
     public String getBoard() {
         return board;
