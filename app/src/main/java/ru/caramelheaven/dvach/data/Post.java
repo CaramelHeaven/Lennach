@@ -5,11 +5,15 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmModel;
+import io.realm.RealmObject;
+
 /**
  * Created by Sergey F on 22.12.2017.
  */
 
-public class Post {
+public class Post extends RealmObject implements RealmModel{
 
     @SerializedName("banned")
     @Expose
@@ -31,7 +35,7 @@ public class Post {
     private Integer endless;
     @SerializedName("files")
     @Expose
-    private List<File> files = null;
+    private RealmList<File> files = null;
     @SerializedName("lasthit")
     @Expose
     private Integer lasthit;
@@ -114,11 +118,11 @@ public class Post {
         this.endless = endless;
     }
 
-    public List<File> getFiles() {
+    public RealmList<File> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(RealmList<File> files) {
         this.files = files;
     }
 

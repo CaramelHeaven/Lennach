@@ -12,28 +12,31 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmList;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 import ru.caramelheaven.dvach.R;
 import ru.caramelheaven.dvach.data.Board;
 import ru.caramelheaven.dvach.data.File;
 import ru.caramelheaven.dvach.data.Thread;
 import ru.caramelheaven.dvach.fragment_or_activity.ThreadActivity;
 
-public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
+public class BoardAdapter extends RealmRecyclerViewAdapter<Thread, BoardAdapter.ViewHolder> {
+    //public class BoardAdapter extends RealmRecyclerViewAdapter<Thread, BoardAdapter.ViewHolder> {
 
     private static String TAG = "MY LOGS";
     String board;
     private static ClickListener clickListener;
-    private List<Thread> threads;
-    Context context;
+    //private  OrderedRealmCollection<Thread> threads;
+    private Context context;
 
-    public BoardAdapter(Context context, List<Thread> threads, String board) {
+    public BoardAdapter(Context context, OrderedRealmCollection<Thread> threads, String board) {
+        super(threads, true);
         this.context = context;
-        this.threads = threads;
+        //this.threads = threads;
         this.board = board;
     }
 
@@ -44,7 +47,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         ImageView image;
         CardView cardView;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             subject = itemView.findViewById(R.id.subject);
@@ -53,7 +55,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             image = itemView.findViewById(R.id.imageView);
             cardView = itemView.findViewById(R.id.opPost);
         }
-
     }
 
 
@@ -69,7 +70,9 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(BoardAdapter.ViewHolder holder, final int position) {
-        final Thread thread = threads.get(position);
+        final Thread thread = getData().get(position);//The getData() was previously missing
+        //holder.data = thread;
+        //other
         holder.subject.setText(Html.fromHtml(thread.getSubject()));
         holder.comment.setText(Html.fromHtml(thread.getComment()));
         holder.views.setText(Html.fromHtml(thread.getDate()));
@@ -99,11 +102,12 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         Log.d(TAG, "onBindViewHolder" + position + thread.getComment() + thread.getDate() + thread.getFiles());
     }
 
-    @Override
+    /*@Override
     public int getItemCount() {
         return threads.size();
-    }
+    }*/
 
+    //set on the future
     public interface ClickListener {
         void onItemClick(View view, int position);
     }

@@ -5,7 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Thread {
+import io.realm.RealmList;
+import io.realm.RealmModel;
+import io.realm.RealmObject;
+
+public class Thread extends RealmObject implements RealmModel{
 
     @SerializedName("banned")
     @Expose
@@ -27,7 +31,7 @@ public class Thread {
     private Integer endless;
     @SerializedName("files")
     @Expose
-    private List<File> files;
+    private RealmList<File> files;
     @SerializedName("files_count")
     @Expose
     private Integer filesCount;
@@ -69,13 +73,13 @@ public class Thread {
      * c нулевого индекса. response.body().getThreads().get(0).getPosts() */
     @SerializedName("posts")
     @Expose
-    private List<Post> posts = null;
+    private RealmList<Post> posts = null;
 
-    public List<Post> getPosts() {
+    public RealmList<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(RealmList<Post> posts) {
         this.posts = posts;
     }
     //-------------------------------------------------------
@@ -127,11 +131,11 @@ public class Thread {
         this.endless = endless;
     }
 
-    public List<File> getFiles() {
+    public RealmList<File> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(RealmList<File> files) {
         this.files = files;
     }
 

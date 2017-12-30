@@ -1,12 +1,12 @@
 package ru.caramelheaven.dvach.data;
 
-import android.graphics.Movie;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,7 +14,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by Sergey F on 27.12.2017.
  */
 
-public class Board extends RealmObject {
+public class Board extends RealmObject implements RealmModel{
 
     @PrimaryKey
     @SerializedName("Board")
@@ -110,15 +110,9 @@ public class Board extends RealmObject {
     @SerializedName("max_files_size")
     @Expose
     private Integer maxFilesSize;
-    @SerializedName("news_abu")
-    @Expose
-    private List<NewsAbu> newsAbuAbu = null;
     @SerializedName("threads")
     @Expose
-    private List<Thread> threads;
-
-    public Board() {
-    }
+    private RealmList<Thread> threads = new RealmList<>();
 
     public String getBoard() {
         return board;
@@ -368,19 +362,7 @@ public class Board extends RealmObject {
         this.maxFilesSize = maxFilesSize;
     }
 
-    public List<NewsAbu> getNewsAbuAbu() {
-        return newsAbuAbu;
-    }
-
-    public void setNewsAbuAbu(List<NewsAbu> newsAbuAbu) {
-        this.newsAbuAbu = newsAbuAbu;
-    }
-
-    public List<Thread> getThreads() {
+    public RealmList<Thread> getThreads() {
         return threads;
-    }
-
-    public void setThreads(List<Thread> threads) {
-        this.threads = threads;
     }
 }

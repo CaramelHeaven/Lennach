@@ -3,7 +3,11 @@ package ru.caramelheaven.dvach.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class File {
+import io.realm.RealmList;
+import io.realm.RealmModel;
+import io.realm.RealmObject;
+
+public class File extends RealmObject implements RealmModel{
     @SerializedName("displayname")
     @Expose
     private String displayname;
