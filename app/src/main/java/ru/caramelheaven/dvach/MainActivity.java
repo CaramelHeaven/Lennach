@@ -2,6 +2,8 @@ package ru.caramelheaven.dvach;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -15,21 +17,18 @@ import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,11 +41,11 @@ import ru.caramelheaven.dvach.network.DvachService;
 public class MainActivity extends AppCompatActivity {
     public final static String GET_BOARD = "GET_BOARD";
 
-    //private ListView listView;
     private RecyclerView recyclerView;
     private RealmResults<Thread> data;
     private RealmList<Thread> list;
-    private Realm realmq;
+    private Realm realm;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +56,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String currentBoard = intent.getStringExtra(GET_BOARD);
 
-
-        Realm.init(MainActivity.this);
-        realmq = Realm.getDefaultInstance();
-        data = realmq.where(Thread.class).findAll();
-
         //listView = (ListView) findViewById(R.id.pagination_list);
 
         List<Thread> repos = new ArrayList<>();
@@ -69,24 +63,110 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        OrderedRealmCollection<Thread> rr = null;
+
         Board board = new Board();
         //Second parameter - ir's data from database, our threads
-        BoardAdapter adapter = new BoardAdapter(this, data, board.getBoard());
+        BoardAdapter adapter = new BoardAdapter(this, rr, board.getBoard());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        DvachService dvachService = new Retrofit.Builder()//api
+        /*DvachService dvachService = new Retrofit.Builder()//api
                 .baseUrl("https://2ch.hk/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-                .create(DvachService.class);
+                .create(DvachService.class);*/
 
         //Call<Board> call = dvachService.getBoard("pa");
         //Problem with memory BAG
         Log.e("MY_LOGS", currentBoard);
 
-        dvachService.getRxBoard(currentBoard)
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://2ch.hk/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        //We need to use Realm.init, because without it, we will catching exception
+        Realm.init(MainActivity.this);
+        //realm = Realm.getDefaultInstance();
+        //data = realm.where(Thread.class).findAll();
+
+        DvachService dvachService = retrofit.create(DvachService.class);
+
+        Observable<Board> observable = Observable.create(e -> realm.copyFromRealm(realm.where(Board.class).findAll()));
+
+        if (isNetworkAvialable()) {
+            dvachService.getRxBoard(currentBoard)
+                    .subscribeOn(Schedulers.io())
+                    /*.doOnNext(threads -> {
+                        if (threads != null) {
+                            Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            realm.copyToRealmOrUpdate(threads);
+                            realm.commitTransaction();
+                            realm.close();
+                        }
+                    })*/
+                    .observeOn(Schedulers.computation())
+                    .map(database -> {
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.executeTransaction(trRealm -> {
+                            trRealm.copyToRealm(database);
+                        });
+                        return database;
+                    })
+                    .mergeWith(observable)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Board>() {
+                        @Override
+                        public void accept(Board board) throws Exception {
+                            recyclerView.setAdapter(new BoardAdapter(MainActivity.this, board.getThreads(), board.getBoard()));
+                        }
+                    });
+        } else {
+            realm.copyToRealm((realm.where(Board.class).findAll()));
+        }
+
+        /*else {
+            recyclerView.setAdapter(realm.copyFromRealm(realm.where(Thread.class).findAll()));
+        }*/
+
+
+     /*   disposable = realmq.where(Board.class).isNotNull("getThreads").findAllAsync().asFlowable()
+                .filter(boards -> board.isLoaded())
+                .doOnNext(threads -> {
+                    if (threads != null) {
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        realm.copyToRealmOrUpdate(threads);
+                        realm.commitTransaction();
+                        realm.close();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())*/
+/*
+                .subscribeWith(new DisposableObserver<Board>() {
+                    @Override
+                    public void onNext(Board board) {
+                        recyclerView.setAdapter(new BoardAdapter(MainActivity.this, board.getThreads(), board.getBoard()));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
+                    }
+                });*/
+
+        /*dvachService.getRxBoard(currentBoard)
                 .doOnNext(threads -> {
                     if (threads != null) {
                         Realm realm = Realm.getDefaultInstance();
@@ -116,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
                     }
                 })
-        ;
+        ;*/
         /*call.enqueue(new Callback<Board>() {
             @Override
             public void onResponse(Call<Board> call, Response<Board> response) {
@@ -155,10 +235,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        disposable.dispose();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        realm.close();
+    }
+
+    private boolean isNetworkAvialable() {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return info != null && info.isConnected();
     }
 }
