@@ -12,5 +12,13 @@ public class AppRealm extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
+
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
+                .name("lennach1.realm")
+                .schemaVersion(1)
+                .migration(new MyMigration())
+                .build();
+
+        Realm.setDefaultConfiguration(realmConfig);
     }
 }
