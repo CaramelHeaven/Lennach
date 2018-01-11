@@ -19,6 +19,7 @@ public class AppRealm extends Application {
                 .migration(new MyMigration())
                 .build();
 
+        Realm.deleteRealm(realmConfig);
         Realm.setDefaultConfiguration(realmConfig);
     }
 }

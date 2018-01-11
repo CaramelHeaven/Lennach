@@ -9,21 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.database.BoardDB;
-import com.caramelheaven.lennach.database.FileDB;
-import com.squareup.picasso.Picasso;
 
 import io.realm.RealmList;
 
-public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
+public class BoardAdapter extends  RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
     private Context context;
     private RealmList<BoardDB> threads;
     private static final String LOGS = BoardAdapter.class.getSimpleName();
 
-    public BoardAdapter(Context context, RealmList<BoardDB> threads) {
+    public BoardAdapter(RealmList<BoardDB> threads, Context context) {
         this.context = context;
         this.threads = threads;
     }
@@ -62,7 +59,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         Log.d(LOGS, boardDB.getDate() + " ");
         holder.imageView.setVisibility(View.GONE);
 
-        int files = boardDB.getFiles().size();
+       /* int files = boardDB.getFiles().size();
         if (files > 0) {
             for (FileDB file : boardDB.getFiles()) {
                 if (file.getPath() != null) {
@@ -76,7 +73,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
                             .into(holder.imageView);
                 }
             }
-        }
+        }*/
     }
 
     @Override
