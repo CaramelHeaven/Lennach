@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.database.BoardDB;
+import com.caramelheaven.lennach.database.FileDB;
 
 import io.realm.RealmList;
 
-public class BoardAdapter extends  RecyclerView.Adapter<BoardAdapter.ViewHolder> {
+public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
     private Context context;
     private RealmList<BoardDB> threads;
@@ -59,21 +62,19 @@ public class BoardAdapter extends  RecyclerView.Adapter<BoardAdapter.ViewHolder>
         Log.d(LOGS, boardDB.getDate() + " ");
         holder.imageView.setVisibility(View.GONE);
 
-       /* int files = boardDB.getFiles().size();
+        int files = boardDB.getFiles().size();
         if (files > 0) {
             for (FileDB file : boardDB.getFiles()) {
                 if (file.getPath() != null) {
                     holder.imageView.setVisibility(View.VISIBLE);
                     String stringFile = file.getPath();
                     Log.d(LOGS, stringFile + " ");
-                    Picasso.with(context)
+                    Glide.with(context)
                             .load("https://2ch.hk/" + stringFile)
-                            .resize(50, 50)
-                            .centerCrop()
                             .into(holder.imageView);
                 }
             }
-        }*/
+        }
     }
 
     @Override
