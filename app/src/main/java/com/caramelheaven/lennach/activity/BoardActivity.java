@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.caramelheaven.lennach.BoardFragment;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.adapters.BoardAdapter;
@@ -26,6 +28,7 @@ public class BoardActivity extends AppCompatActivity {
     BoardAdapter adapter;
     private TextView textOnline;
     RealmResults<BoardDB> realmResults;
+    private Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class BoardActivity extends AppCompatActivity {
             ft.add(R.id.flContainer, boardFragment);
             ft.commit();
         }
+
+
 
         /*realmUI = Realm.getDefaultInstance();
 

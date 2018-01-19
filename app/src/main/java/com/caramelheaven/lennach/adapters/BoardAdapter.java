@@ -39,7 +39,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             views = itemView.findViewById(R.id.views);
             subject = itemView.findViewById(R.id.subject);
             comment = itemView.findViewById(R.id.comment);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.image_poster);
         }
     }
 
