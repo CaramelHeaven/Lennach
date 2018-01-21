@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.database.BoardDB;
+import com.caramelheaven.lennach.database.BoardRealm;
 import com.caramelheaven.lennach.database.FileDB;
 
 import io.realm.RealmList;
@@ -20,21 +20,22 @@ import io.realm.RealmList;
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
     private Context context;
-    private RealmList<BoardDB> threads;
+    private RealmList<BoardRealm> threads;
     private static final String LOGS = BoardAdapter.class.getSimpleName();
 
-    public BoardAdapter(RealmList<BoardDB> threads, Context context) {
+    public BoardAdapter(RealmList<BoardRealm> threads, Context context) {
         this.context = context;
+        Log.i(LOGS, String.valueOf(threads));
         this.threads = threads;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView subject;
         TextView comment;
         TextView views;
         ImageView imageView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             views = itemView.findViewById(R.id.views);
             subject = itemView.findViewById(R.id.subject);
@@ -51,9 +52,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final BoardDB boardDB = threads.get(position);
+        final BoardRealm boardDB = threads.get(position);
         Log.d(LOGS, threads.get(position) + " ");
-
         holder.subject.setText(Html.fromHtml(boardDB.getSubject()));
         Log.d(LOGS, boardDB.getSubject() + " ");
         holder.comment.setText(Html.fromHtml(boardDB.getComment()));
@@ -62,7 +62,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         Log.d(LOGS, boardDB.getDate() + " ");
         holder.imageView.setVisibility(View.GONE);
 
-        int files = boardDB.getFiles().size();
+        /*int files = boardDB.getFiles().size();
         if (files > 0) {
             for (FileDB file : boardDB.getFiles()) {
                 if (file.getPath() != null) {
@@ -74,7 +74,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
                             .into(holder.imageView);
                 }
             }
-        }
+        }*/
     }
 
     @Override
@@ -82,7 +82,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         return threads.size();
     }
 
-    public void changeDataSet(RealmList<BoardDB> threadViewDBS) {
+    public void changeDataSet(RealmList<BoardRealm> threadViewDBS) {
         threads.clear();
         threads.addAll(threadViewDBS);
         notifyDataSetChanged();

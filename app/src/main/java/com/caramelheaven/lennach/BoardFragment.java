@@ -16,11 +16,15 @@ import android.widget.Toast;
 import com.caramelheaven.lennach.activity.BoardActivity;
 import com.caramelheaven.lennach.adapters.BoardAdapter;
 import com.caramelheaven.lennach.data.Board;
-import com.caramelheaven.lennach.database.BoardDB;
+import com.caramelheaven.lennach.data.Thread;
+import com.caramelheaven.lennach.database.BoardDbHelper;
+import com.caramelheaven.lennach.database.BoardRealm;
 import com.caramelheaven.lennach.network.ApiFactory;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -30,12 +34,18 @@ import io.realm.RealmResults;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BoardFragment extends BaseFragment<BoardDB> {
+public class BoardFragment extends BaseFragment<BoardRealm> {
 
     private BoardAdapter boardAdapter;
+    private final int PAGE_SIZE = 7;
+    private int LIST_FIRST_PAGE = 1;
+    private static final String LOGS = BoardFragment.class.getSimpleName();
+
     public static BoardFragment newInstance() {
         return new BoardFragment();
     }
+
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,25 +88,16 @@ public class BoardFragment extends BaseFragment<BoardDB> {
             ApiFactory.getCheckingService()
                     .getRxBoard("pa")
                     .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .map(Board::getThreads)
-                    .flatMap(boardDBS -> {
-                        try (Realm realm = Realm.getDefaultInstance()) {
-                            realm.executeTransaction(r -> {
-                                r.delete(BoardDB.class);
-                                r.insertOrUpdate(boardDBS);//Solved bug, but what is the different between copyToRealmOrUpdate and my method used.
-                            });
-                        }
-                        return Observable.just(boardDBS);
-                    })
-                    .onErrorResumeNext(throwable -> {
-                        try (Realm realm = Realm.getDefaultInstance()) {
-                            realm.refresh();
-                            //realm.close();
-                        }
-                    })
-                    //.map(boardDBS -> realmResults)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::showList, throwable -> showError());
+                    //.doOnComplete(this::showList)
+                    .subscribe(document -> {
+                        Log.i(LOGS, String.valueOf("DOCUMENTS: " + document));
+                        BoardDbHelper dbHelper = new BoardDbHelper(document, realmUI);
+                        dbHelper.saveToDatabase();
+                        showList();
+                    }, throwable -> showError());
         }
         /*{ //recyclerView.setAdapter(new BoardAdapter(re, getActivity()));
         showList()}, Throwable::printStackTrace);*/
@@ -104,16 +105,14 @@ public class BoardFragment extends BaseFragment<BoardDB> {
 
     private void showError() {
         //textOnline.setVisibility(View.VISIBLE);
-        Toast.makeText(getActivity(), "Not Connected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
     }
 
-    private void showList(RealmList<BoardDB> boardDBS) {
-        boardAdapter.changeDataSet(boardDBS);
-    }
-
-    @Override
     void showList() {
-        boardAdapter.changeDataSet(list);
+        Log.i(LOGS, String.valueOf("SHOW LIST: " + list));
+        BoardDbHelper dbHelper = new BoardDbHelper(list, realmUI);
+        dbHelper.getFromDatabase(PAGE_SIZE, LIST_FIRST_PAGE++);
+        boardAdapter.notifyDataSetChanged();
     }
 
     private boolean isOnline() {

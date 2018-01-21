@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide;
 import com.caramelheaven.lennach.BoardFragment;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.adapters.BoardAdapter;
-import android.support.v4.app.Fragment;
-import com.caramelheaven.lennach.database.BoardDB;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -27,7 +25,6 @@ public class BoardActivity extends AppCompatActivity {
     private Realm realmUI;
     BoardAdapter adapter;
     private TextView textOnline;
-    RealmResults<BoardDB> realmResults;
     private Context context;
 
     @Override

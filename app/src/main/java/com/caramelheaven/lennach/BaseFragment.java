@@ -20,7 +20,6 @@ public abstract class BaseFragment<T> extends Fragment {
 
     abstract void getData();
 
-    abstract void showList();
 
 
     protected int getLayoutId() {
