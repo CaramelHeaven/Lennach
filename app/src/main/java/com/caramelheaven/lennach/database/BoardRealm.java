@@ -60,14 +60,15 @@ public class BoardRealm extends RealmObject {
         board.subject = subject;
         board.comment = comment;
         board.date = date;
-        //thread.files = files;
+        board.files = files;
         return board;
     }
 
     //Возвращение сущностей в БД
-    public void setFromEntity(BoardRealm thread) {
-        subject = thread.subject;
-        comment = thread.comment;
-        date = thread.date;
+    public void setFromEntity(BoardRealm board) {
+        subject = board.subject;
+        comment = board.comment;
+        date = board.date;
+        files = board.files;
     }
 }

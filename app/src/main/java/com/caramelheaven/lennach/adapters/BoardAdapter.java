@@ -17,6 +17,8 @@ import com.caramelheaven.lennach.database.FileDB;
 
 import io.realm.RealmList;
 
+import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
+
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
     private Context context;
@@ -52,39 +54,42 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final BoardRealm boardDB = threads.get(position);
+        final BoardRealm boardRealm = threads.get(position);
         Log.d(LOGS, threads.get(position) + " ");
-        holder.subject.setText(Html.fromHtml(boardDB.getSubject()));
-        Log.d(LOGS, boardDB.getSubject() + " ");
-        holder.comment.setText(Html.fromHtml(boardDB.getComment()));
-        Log.d(LOGS, boardDB.getComment() + " ");
-        holder.views.setText(Html.fromHtml(boardDB.getDate()));
-        Log.d(LOGS, boardDB.getDate() + " ");
+        holder.subject.setText(Html.fromHtml(boardRealm.getSubject()));
+        Log.d(LOGS, boardRealm.getSubject() + " ");
+        holder.comment.setText(Html.fromHtml(boardRealm.getComment()));
+        Log.d(LOGS, boardRealm.getComment() + " ");
+        holder.views.setText(Html.fromHtml(boardRealm.getDate()));
+        Log.d(LOGS, boardRealm.getDate() + " ");
         holder.imageView.setVisibility(View.GONE);
 
-        /*int files = boardDB.getFiles().size();
+
+        int files = boardRealm.getFiles().size();
+        Log.d(LOGS, "boardRealm.getFiles().size(): " + boardRealm.getFiles().size());
         if (files > 0) {
-            for (FileDB file : boardDB.getFiles()) {
-                if (file.getPath() != null) {
+            for (FileDB file : boardRealm.getFiles()) {
+                if (!file.getPath().isEmpty()) {
+                    //Here is a bug, We can download more then one image and set it on the our realm
                     holder.imageView.setVisibility(View.VISIBLE);
-                    String stringFile = file.getPath();
-                    Log.d(LOGS, stringFile + " ");
+                    String temp = file.getPath();
+                    Log.d(LOGS, "Image: " + temp);
                     Glide.with(context)
-                            .load("https://2ch.hk/" + stringFile)
+                            .load("https://2ch.hk/" + temp)
+                            .apply(centerCropTransform())
                             .into(holder.imageView);
+                    break;
+                } else {
+                    Glide.with(context).clear(holder.imageView);
                 }
             }
-        }*/
+        } else {
+            Log.d(LOGS, "Image not found");
+        }
     }
 
     @Override
     public int getItemCount() {
         return threads.size();
-    }
-
-    public void changeDataSet(RealmList<BoardRealm> threadViewDBS) {
-        threads.clear();
-        threads.addAll(threadViewDBS);
-        notifyDataSetChanged();
     }
 }

@@ -2,18 +2,9 @@ package com.caramelheaven.lennach.database;
 
 import android.util.Log;
 
-import com.caramelheaven.lennach.data.Board;
-import com.caramelheaven.lennach.data.Thread;
-
-import java.util.List;
-
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
-
-/**
- * Created by Sergey F on 20.01.2018.
- */
 
 public class BoardDbHelper {
     private RealmList<BoardRealm> entityList;
@@ -54,7 +45,12 @@ public class BoardDbHelper {
         int endPos = Math.max(startPos - pageSize, 0);
 
         for (int i = startPos; i > endPos; i--) {
-            entityList.add(results.get(i).toEntity());
+            try {
+                Log.d(LOGS, "GetFromDB цикл: " + results.get(i).toEntity());
+                entityList.add(results.get(i).toEntity());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

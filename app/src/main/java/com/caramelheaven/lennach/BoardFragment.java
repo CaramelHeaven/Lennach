@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.caramelheaven.lennach.activity.BoardActivity;
@@ -21,31 +22,23 @@ import com.caramelheaven.lennach.database.BoardDbHelper;
 import com.caramelheaven.lennach.database.BoardRealm;
 import com.caramelheaven.lennach.network.ApiFactory;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmResults;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BoardFragment extends BaseFragment<BoardRealm> {
-
+    private ProgressBar progressBar;
     private BoardAdapter boardAdapter;
-    private final int PAGE_SIZE = 7;
+    private final int PAGE_SIZE = 40;
     private int LIST_FIRST_PAGE = 1;
     private static final String LOGS = BoardFragment.class.getSimpleName();
 
     public static BoardFragment newInstance() {
         return new BoardFragment();
     }
-
-    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,20 +63,27 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
 
         //А вот здесь ответ на вопрос по запросу к интернету
         if (list.size() < 1) {
-            getData();
+            getData(1);
         }
 
-        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int current_page) {
-                Log.i("onLoadMore", String.valueOf(current_page));
-                getData();
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (totalItemsCount < PAGE_SIZE) {
+                    loadNextPage(page);
+                }
             }
         });
     }
 
-    @Override
-    void getData() {
+    private void loadNextPage(int page) {
+        Log.d(LOGS, "Next Page: " + page);
+        getData(page);
+    }
+
+
+    void getData(int page) {
+        Log.d(LOGS, "Called getData() " + page);
         if (isOnline()) {
             ApiFactory.getCheckingService()
                     .getRxBoard("pa")
@@ -93,7 +93,7 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
                     .observeOn(AndroidSchedulers.mainThread())
                     //.doOnComplete(this::showList)
                     .subscribe(document -> {
-                        Log.i(LOGS, String.valueOf("DOCUMENTS: " + document));
+                        Log.i(LOGS, String.valueOf("Document: " + document));
                         BoardDbHelper dbHelper = new BoardDbHelper(document, realmUI);
                         dbHelper.saveToDatabase();
                         showList();
@@ -123,5 +123,4 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
         //Есть еще isConnected - но это если в данный момент времени
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
-
 }

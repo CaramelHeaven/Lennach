@@ -18,7 +18,7 @@ public abstract class BaseFragment<T> extends Fragment {
     protected Realm realmUI;
     protected RealmList<T> list = new RealmList<>();
 
-    abstract void getData();
+    //abstract void getData();
 
 
 
