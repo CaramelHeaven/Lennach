@@ -1,7 +1,12 @@
 package com.caramelheaven.lennach.database;
 
-import com.caramelheaven.lennach.data.File;
+import android.os.Parcelable;
 
+import com.caramelheaven.lennach.data.Board;
+import com.caramelheaven.lennach.data.File;
+import com.caramelheaven.lennach.data.Thread;
+
+import java.io.Serializable;
 import java.util.BitSet;
 import java.util.List;
 
@@ -10,7 +15,7 @@ import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class BoardDB extends RealmObject {
+public class BoardRealm extends RealmObject {
     @PrimaryKey
     private String subject;
     private String comment;
@@ -47,5 +52,22 @@ public class BoardDB extends RealmObject {
 
     public void setFiles(RealmList<FileDB> files) {
         this.files = files;
+    }
+
+    //Потому что доска возвращает список тредов, а треды представлены как коменты, фотки, число и т.д.
+    public BoardRealm toEntity() {
+        BoardRealm board = new BoardRealm();
+        board.subject = subject;
+        board.comment = comment;
+        board.date = date;
+        //thread.files = files;
+        return board;
+    }
+
+    //Возвращение сущностей в БД
+    public void setFromEntity(BoardRealm thread) {
+        subject = thread.subject;
+        comment = thread.comment;
+        date = thread.date;
     }
 }
