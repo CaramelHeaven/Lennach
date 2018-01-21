@@ -1,8 +1,10 @@
 package com.caramelheaven.lennach.data;
 
-import com.caramelheaven.lennach.database.BoardDB;
+import com.caramelheaven.lennach.database.BoardRealm;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 import io.realm.RealmList;
 
@@ -104,9 +106,9 @@ public class Board {
 
     @SerializedName("threads")
     @Expose
-    private RealmList<BoardDB> threads;
+    private RealmList<BoardRealm> threads;
 
-    public RealmList<BoardDB> getThreads() {
+    public RealmList<BoardRealm> getThreads() {
         return threads;
     }
 

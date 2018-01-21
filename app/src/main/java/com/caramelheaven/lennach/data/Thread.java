@@ -13,10 +13,10 @@ public class Thread {
     private Integer closed;
     @SerializedName("comment")
     @Expose
-    private String comment;
+    public String comment;
     @SerializedName("date")
     @Expose
-    private String date;
+    public String date;
     @SerializedName("email")
     @Expose
     private String email;
@@ -25,7 +25,7 @@ public class Thread {
     private Integer endless;
     @SerializedName("files")
     @Expose
-    private List<File> files;
+    public List<File> files;
     @SerializedName("files_count")
     @Expose
     private Integer filesCount;
@@ -52,7 +52,7 @@ public class Thread {
     private Integer sticky;
     @SerializedName("subject")
     @Expose
-    private String subject;
+    public String subject;
     @SerializedName("tags")
     @Expose
     private String tags;
