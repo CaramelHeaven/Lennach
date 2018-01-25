@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="io.realm:realm-android-kotlin-extensions-4.3.1">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/realm-android-kotlin-extensions-4.3.1.aar/d47817d9b7b878a40de2b64b61a6655f/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/realm-android-kotlin-extensions-4.3.1.aar/d47817d9b7b878a40de2b64b61a6655f/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/realm-android-kotlin-extensions-4.3.1.aar/e68ee4ed87f5a924f6373deff1dda99d/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/realm-android-kotlin-extensions-4.3.1.aar/e68ee4ed87f5a924f6373deff1dda99d/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -65,15 +65,6 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
         if (list.size() < 1) {
             getData(1);
         }
-
-        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (totalItemsCount < PAGE_SIZE) {
-                    loadNextPage(page);
-                }
-            }
-        });
     }
 
     private void loadNextPage(int page) {
@@ -120,7 +111,6 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
                 //подойдет ли getActivity?
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        //Есть еще isConnected - но это если в данный момент времени
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }
