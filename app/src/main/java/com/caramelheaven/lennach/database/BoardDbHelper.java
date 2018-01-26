@@ -32,21 +32,31 @@ public class BoardDbHelper {
     }
 
     /**
-     * @param pageSize Страницы подкачки
-     * @param page     Первая страница
+     * @param pageSize size
+     * @param page     first page
      */
 
-    public void getFromDatabase(int pageSize, int page) {
+    public void getFromDatabase(int page, int pageSize) {
         entityList.clear();
 
         RealmResults<BoardRealm> results = realm.where(BoardRealm.class).findAll();
+        /*
+        Example - We have a startPos - 136 and endPos - 96, sum = 40. 40 threads-data we can view.
+        Why 136? If we set 0 to startPos, and result.size()-1 to endPos -> we get old data
+        in start - and a fresh data - in the end.
+        */
         Log.i(LOGS, String.valueOf("Get From Database: " + entityList));
+        Log.i(LOGS, String.valueOf(results));
+        //int startPos = results.size() - results.size();
         int startPos = Math.max(results.size() - 1 - (page - 1) * pageSize, 0);
+        //Log.i(LOGS, "START_POS" + String.valueOf(startPos));
+        //int endPos = results.size() - 1;
         int endPos = Math.max(startPos - pageSize, 0);
+        //Log.i(LOGS, "ENG_POS" + String.valueOf(endPos));
 
         for (int i = startPos; i > endPos; i--) {
             try {
-                Log.d(LOGS, "GetFromDB цикл: " + results.get(i).toEntity());
+                Log.d(LOGS, "GetFromDB for: " + i + " " + results.get(i).toEntity());
                 entityList.add(results.get(i).toEntity());
             } catch (NullPointerException e) {
                 e.printStackTrace();

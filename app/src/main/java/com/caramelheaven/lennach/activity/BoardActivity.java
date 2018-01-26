@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.caramelheaven.lennach.BoardFragment;
+import com.caramelheaven.lennach.BoardMoreFragment;
 import com.caramelheaven.lennach.R;
 
 public class BoardActivity extends AppCompatActivity {
@@ -18,10 +19,11 @@ public class BoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_board);
 
         if (savedInstanceState == null) {
-            BoardFragment boardFragment = new BoardFragment();
-
+            //BoardFragment boardFragment = new BoardFragment();
+            BoardMoreFragment boardMoreFragment = new BoardMoreFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.flContainer, boardFragment);
+            //ft.add(R.id.flContainer, boardFragment);
+            ft.add(R.id.flContainer, boardMoreFragment);
             ft.commit();
         }
     }

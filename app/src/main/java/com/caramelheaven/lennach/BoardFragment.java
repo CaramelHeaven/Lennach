@@ -10,7 +10,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,10 +38,6 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
     private int LIST_FIRST_PAGE = 1;
     private static final String LOGS = BoardFragment.class.getSimpleName();
 
-    public static BoardFragment newInstance() {
-        return new BoardFragment();
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,18 +61,12 @@ public class BoardFragment extends BaseFragment<BoardRealm> {
 
         //А вот здесь ответ на вопрос по запросу к интернету
         if (list.size() < 1) {
-            getData(1);
+            getData();
         }
     }
 
-    private void loadNextPage(int page) {
-        Log.d(LOGS, "Next Page: " + page);
-        getData(page);
-    }
-
-
-    void getData(int page) {
-        Log.d(LOGS, "Called getData() " + page);
+    void getData() {
+        Log.d(LOGS, "Called getData() ");
         if (isOnline()) {
             ApiFactory.getCheckingService()
                     .getRxBoard("pa")

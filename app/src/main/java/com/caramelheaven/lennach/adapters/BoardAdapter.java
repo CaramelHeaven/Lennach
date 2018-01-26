@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.caramelheaven.lennach.R;
@@ -48,7 +49,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     @Override
     public BoardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.board_elements, parent, false);
+        View view = LayoutInflater.
+                from(parent.getContext()).inflate(R.layout.board_elements, parent, false);
         return new BoardAdapter.ViewHolder(view);
     }
 
@@ -56,13 +58,17 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         final BoardRealm boardRealm = threads.get(position);
         Log.d(LOGS, threads.get(position) + " ");
-        holder.subject.setText(Html.fromHtml(boardRealm.getSubject()));
-        Log.d(LOGS, boardRealm.getSubject() + " ");
-        holder.comment.setText(Html.fromHtml(boardRealm.getComment()));
-        Log.d(LOGS, boardRealm.getComment() + " ");
-        holder.views.setText(Html.fromHtml(boardRealm.getDate()));
-        Log.d(LOGS, boardRealm.getDate() + " ");
-        holder.imageView.setVisibility(View.GONE);
+        if (boardRealm != null) {
+            holder.subject.setText(Html.fromHtml(boardRealm.getSubject()));
+            Log.d(LOGS, boardRealm.getSubject() + " ");
+            holder.comment.setText(Html.fromHtml(boardRealm.getComment()));
+            Log.d(LOGS, boardRealm.getComment() + " ");
+            holder.views.setText(Html.fromHtml(boardRealm.getDate()));
+            Log.d(LOGS, boardRealm.getDate() + " ");
+            holder.imageView.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(context, "Failed onBindViewHolder in BoardAdapter", Toast.LENGTH_SHORT).show();
+        }
 
 
         int files = boardRealm.getFiles().size();
