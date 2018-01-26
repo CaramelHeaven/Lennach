@@ -11,13 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Toast;
 
 import com.caramelheaven.lennach.Utils.Constants;
-
 import com.caramelheaven.lennach.adapters.BoardAdapter;
-import com.caramelheaven.lennach.adapters.BoardMoreAdapter;
 import com.caramelheaven.lennach.data.Board;
 import com.caramelheaven.lennach.database.BoardDbHelper;
 import com.caramelheaven.lennach.database.BoardRealm;
@@ -31,19 +28,8 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
     private BoardAdapter boardAdapter;
     private final int PAGE_SIZE = Constants.LIST_PAGE_SIZE;
     private int page = Constants.LIST_FIRST_PAGE;
-    private boolean userScrolled;
 
     private static final String LOGS = BoardMoreFragment.class.getSimpleName();
-
-    // region Member Variables
-    private boolean isLastPage = false;
-    private int currentPage = 1;
-    //    private int selectedSortByKey = 0;
-//    private int selectedSortOrderKey = 1;
-    private boolean isLoading = false;
-//    private String sortByValue = "relevant";
-//    private String sortOrderValue = "desc";
-//    private String filter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,10 +62,41 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         if (list.size() < 1) {
             getData();
         }
-        recyclerView.addOnScrollListener(recyclerViewOnScrollListener);
+        //recyclerView.addOnScrollListener(recyclerViewOnScrollListener);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && layoutManager != null) {
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.add(null);
+                            boardAdapter.notifyItemChanged(list.size() - 1);
+                            boardAdapter.notifyDataSetChanged();
+                            LinearLayoutManager lm = layoutManager;
+                            int lastPos = lm.findLastVisibleItemPosition();
+                            int totalItem = lm.getItemCount();
+                            int visibleItem = lm.getChildCount();
+                            if ((visibleItem + lastPos) >= totalItem) {
+                                page++;
+                                loadMore();
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
-    private int mDy;
+    /*private int mDy;
     private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -106,13 +123,13 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
             super.onScrolled(recyclerView, dx, dy);
             mDy = dy;
         }
-    };
+    };*/
 
     private void loadMore() {
-        page++;
         Log.i(LOGS, " LOAD MORE() CALLED");
-        if ((page - 1) * Constants.LIST_PAGE_SIZE > list.size())
-            return;
+        /*if ((page - 1) * Constants.LIST_PAGE_SIZE > list.size())
+            return*/
+        ;
         showList();
     }
 

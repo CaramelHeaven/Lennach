@@ -5,6 +5,6 @@ package com.caramelheaven.lennach.Utils;
  */
 
 public class Constants {
-    public static final int LIST_PAGE_SIZE = 20;
+    public static final int LIST_PAGE_SIZE = 5;
     public static final int LIST_FIRST_PAGE = 1;
 }
