@@ -1,13 +1,15 @@
 package com.caramelheaven.lennach.activity;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.caramelheaven.lennach.BoardFragment;
-import com.caramelheaven.lennach.BoardMoreFragment;
+import com.caramelheaven.lennach.fragments.BoardMoreFragment;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.fragments.ThreadFragment;
 
 public class BoardActivity extends AppCompatActivity {
 
@@ -18,13 +20,27 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
-        if (savedInstanceState == null) {
-            //BoardFragment boardFragment = new BoardFragment();
-            BoardMoreFragment boardMoreFragment = new BoardMoreFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            //ft.add(R.id.flContainer, boardFragment);
-            ft.add(R.id.flContainer, boardMoreFragment);
-            ft.commit();
+        int currentOrientation = getResources().getConfiguration().orientation;
+
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            BoardMoreFragment boardFragment = new BoardMoreFragment();
+            ThreadFragment threadFragment = new ThreadFragment();
+
+            boardFragment.setArguments(getIntent().getExtras());
+            threadFragment.setArguments(getIntent().getExtras());
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.boardContainer, boardFragment)
+                    .add(R.id.threadContainer, threadFragment)
+                    .commit();
+        } else {
+            BoardMoreFragment boardFragment = new BoardMoreFragment();
+            boardFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.boardContainer, boardFragment)
+                    .commit();
         }
     }
 
