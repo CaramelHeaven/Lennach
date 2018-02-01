@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,14 +28,16 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     private Context context;
     private RealmList<BoardRealm> threads;
     private static final String LOGS = BoardAdapter.class.getSimpleName();
+    public OnItemClickListener mItemClickListener;
 
-    public BoardAdapter(Context context, RealmList<BoardRealm> threads) {
+    public BoardAdapter(Context context, RealmList<BoardRealm> threads, OnItemClickListener item) {
         this.context = context;
         this.threads = threads;
+        mItemClickListener = item;
         Log.i(LOGS, String.valueOf(threads));
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LinearLayout layout;
         TextView subject;
         TextView comment;
@@ -48,6 +51,13 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             subject = itemView.findViewById(R.id.subject);
             comment = itemView.findViewById(R.id.comment);
             imageView = itemView.findViewById(R.id.image_poster);
+
+            layout.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(context, "pos: " + threads.get(getAdapterPosition()).getSubject(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -74,12 +84,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             Toast.makeText(context, "Failed onBindViewHolder in BoardAdapter", Toast.LENGTH_SHORT).show();
         }
 
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Clicked: " + threads.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         int files = boardRealm.getFiles().size();
         Log.d(LOGS, "boardRealm.getFiles().size(): " + boardRealm.getFiles().size());
@@ -147,8 +151,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         }
         notifyDataSetChanged();
     }
-    public interface OnItemClickListener {
-        void onItemClick(BoardRealm item);
-    }
 
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position, String id, RealmList<BoardRealm> threads);
+    }
 }

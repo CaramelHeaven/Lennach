@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.caramelheaven.lennach.R;
@@ -26,6 +27,13 @@ import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmList;
 
 public class BoardMoreFragment extends BaseFragment<BoardRealm> {
+
+    public BoardAdapter.OnItemClickListener onItemClickListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     private LinearLayoutManager layoutManager;
     private BoardAdapter boardAdapter;
@@ -54,7 +62,7 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         recyclerView.setHasFixedSize(true);
 
         //добавляю реалмЛист, будет ли толк?
-        boardAdapter = new BoardAdapter(getActivity(), list);
+        boardAdapter = new BoardAdapter(getActivity(), list, onItemClickListener);
 
         recyclerView.setAdapter(boardAdapter);
         return view;
@@ -64,74 +72,11 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                page++;
-
-                isLoading = false;
-
-                RealmList<BoardRealm> realms;
-                Log.i(LOGS, String.valueOf("LoadMore"));
-                BoardDbHelper dbHelper = new BoardDbHelper(list, realmUI);
-                realms = dbHelper.getFromDatabase(page, PAGE_SIZE);
-
-                boardAdapter.addAll(realms);
-            }
-
-            @Override
-            public int getTotalPageCount() {
-                return PAGE_SIZE;
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });*/
-        //Not working
-        /*final RealmList<BoardRealm> realms = null;
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (dy > 0 && layoutManager != null) {
-                    LinearLayoutManager lm = layoutManager;
-                    int lastPos = lm.findLastVisibleItemPosition();
-                    int totalItem = lm.getItemCount();
-                    int visibleItem = lm.getChildCount();
-                    if ((visibleItem + lastPos) >= totalItem) {
-                        Log.i(LOGS, String.valueOf("LoadMore"));
-                        BoardDbHelper dbHelper = new BoardDbHelper(list, realmUI);
-                        dbHelper.getFromDatabase(page++, PAGE_SIZE);
-                    }
-                }
-            }
-        });
-        boardAdapter.addAll(realms);*/
-
         if (list.size() < 1) {
             //progressBar.setVisibility(View.VISIBLE);
             getData();
             //progressBar.setVisibility(View.GONE);
         }
-    }
-
-    private void loadMore() {
-
-        //boardAdapter.notifyDataSetChanged();
     }
 
     void getData() {
@@ -179,3 +124,61 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         //realmUI.close();
     }
 }
+
+/*recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                page++;
+
+                isLoading = false;
+
+                RealmList<BoardRealm> realms;
+                Log.i(LOGS, String.valueOf("LoadMore"));
+                BoardDbHelper dbHelper = new BoardDbHelper(list, realmUI);
+                realms = dbHelper.getFromDatabase(page, PAGE_SIZE);
+
+                boardAdapter.addAll(realms);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return PAGE_SIZE;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });*/
+//Not working
+        /*final RealmList<BoardRealm> realms = null;
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0 && layoutManager != null) {
+                    LinearLayoutManager lm = layoutManager;
+                    int lastPos = lm.findLastVisibleItemPosition();
+                    int totalItem = lm.getItemCount();
+                    int visibleItem = lm.getChildCount();
+                    if ((visibleItem + lastPos) >= totalItem) {
+                        Log.i(LOGS, String.valueOf("LoadMore"));
+                        BoardDbHelper dbHelper = new BoardDbHelper(list, realmUI);
+                        dbHelper.getFromDatabase(page++, PAGE_SIZE);
+                    }
+                }
+            }
+        });
+        boardAdapter.addAll(realms);*/
