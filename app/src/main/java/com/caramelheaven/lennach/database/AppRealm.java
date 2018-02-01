@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.database;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.caramelheaven.lennach.database.MyMigration;
 
@@ -19,7 +20,14 @@ public class AppRealm extends Application {
                 .migration(new MyMigration())
                 .build();
 
-        Realm.deleteRealm(realmConfig);
         Realm.setDefaultConfiguration(realmConfig);
+
+        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Toast.makeText(AppRealm.this, "Deleted Realm database", Toast.LENGTH_SHORT).show();
+                realm.deleteAll();
+            }
+        });
     }
 }

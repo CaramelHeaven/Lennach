@@ -48,13 +48,8 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
         recyclerView = view.findViewById(R.id.fragment_recycler);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -62,6 +57,12 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         boardAdapter = new BoardAdapter(getActivity(), list);
 
         recyclerView.setAdapter(boardAdapter);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         /*recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
@@ -175,6 +176,6 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        realmUI.close();
+        //realmUI.close();
     }
 }

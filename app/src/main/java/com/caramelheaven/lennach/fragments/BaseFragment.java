@@ -23,7 +23,6 @@ public abstract class BaseFragment<T> extends Fragment {
     //abstract void getData();
 
 
-
     protected int getLayoutId() {
         return R.layout.fragment_recyclerview;
     }
@@ -47,12 +46,9 @@ public abstract class BaseFragment<T> extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (realmUI != null) {
-            realmUI.close();
-        }
+    public void onDestroyView() {
+        super.onDestroyView();
         //Хорошая практика что ли? Так пишут реалм продакшен
-        recyclerView.setAdapter(null);
+//        recyclerView.setAdapter(null);
     }
 }
