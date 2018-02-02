@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.network;
 
 import com.caramelheaven.lennach.data.Board;
+import com.caramelheaven.lennach.data.ThreadMy;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -13,7 +14,7 @@ public interface ApiService {
     Call<Board> getThread(@Path("board") String board, @Path("number") String number);
 
     @GET("{board}/res/{number}.json")
-    Observable<Board> getRxThread(@Path("board") String board, @Path("number") String number);
+    Observable<ThreadMy> getRxThread(@Path("board") String board, @Path("number") String number);
 
     @GET("{board}/catalog.json")
     Call<Board> getBoard(@Path("board") String boardView);

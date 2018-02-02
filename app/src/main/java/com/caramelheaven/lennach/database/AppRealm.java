@@ -15,19 +15,19 @@ public class AppRealm extends Application {
         Realm.init(this);
 
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-                .name("lennach1.realm")
-                .schemaVersion(1)
+                .name("lennach.realm")
+                .schemaVersion(3)
                 .migration(new MyMigration())
                 .build();
 
         Realm.setDefaultConfiguration(realmConfig);
 
-        Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+        /*Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 Toast.makeText(AppRealm.this, "Deleted Realm database", Toast.LENGTH_SHORT).show();
                 realm.deleteAll();
             }
-        });
+        });*/
     }
 }

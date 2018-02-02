@@ -1,17 +1,6 @@
 package com.caramelheaven.lennach.database;
 
-import android.os.Parcelable;
-
-import com.caramelheaven.lennach.data.Board;
-import com.caramelheaven.lennach.data.File;
-import com.caramelheaven.lennach.data.Thread;
-
-import java.io.Serializable;
-import java.util.BitSet;
-import java.util.List;
-
 import io.realm.RealmList;
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 

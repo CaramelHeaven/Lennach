@@ -54,8 +54,15 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
-        recyclerView = view.findViewById(R.id.fragment_recycler);
+        View view = inflater.inflate(R.layout.fragment_board, container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = view.findViewById(R.id.fragment_recyclerView_board);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -65,18 +72,12 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         boardAdapter = new BoardAdapter(getActivity(), list, onItemClickListener);
 
         recyclerView.setAdapter(boardAdapter);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+/*
         if (list.size() < 1) {
             //progressBar.setVisibility(View.VISIBLE);
             getData();
             //progressBar.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     void getData() {

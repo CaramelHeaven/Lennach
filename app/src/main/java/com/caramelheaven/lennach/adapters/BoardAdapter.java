@@ -26,15 +26,15 @@ import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
     private Context context;
-    private RealmList<BoardRealm> threads;
+    private RealmList<BoardRealm> board;
     private static final String LOGS = BoardAdapter.class.getSimpleName();
     public OnItemClickListener mItemClickListener;
 
-    public BoardAdapter(Context context, RealmList<BoardRealm> threads, OnItemClickListener item) {
+    public BoardAdapter(Context context, RealmList<BoardRealm> board, OnItemClickListener item) {
         this.context = context;
-        this.threads = threads;
+        this.board = board;
         mItemClickListener = item;
-        Log.i(LOGS, String.valueOf(threads));
+        Log.i(LOGS, String.valueOf(board));
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -57,21 +57,21 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, "pos: " + threads.get(getAdapterPosition()).getSubject(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "pos: " + board.get(getAdapterPosition()).getSubject(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public BoardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.
-                from(parent.getContext()).inflate(R.layout.board_elements, parent, false);
+        View view = LayoutInflater
+                .from(parent.getContext()).inflate(R.layout.board_elements, parent, false);
         return new BoardAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final BoardRealm boardRealm = threads.get(position);
-        Log.d(LOGS, threads.get(position) + " ");
+        final BoardRealm boardRealm = board.get(position);
+        Log.d(LOGS, board.get(position) + " ");
         if (boardRealm != null) {
             holder.subject.setText(Html.fromHtml(boardRealm.getSubject()));
             //Log.d(LOGS, boardRealm.getSubject() + " ");
@@ -110,7 +110,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return threads.size();
+        return board.size();
     }
 
     /*public void add(BoardRealm boardRealm) {
@@ -141,8 +141,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     }*/
 
     public void add(BoardRealm item) {
-        threads.add(item);
-        notifyItemInserted(threads.size() - 1);
+        board.add(item);
+        notifyItemInserted(board.size() - 1);
     }
 
     public void addAll(RealmList<BoardRealm> items) {

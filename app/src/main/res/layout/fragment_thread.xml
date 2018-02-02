@@ -5,8 +5,9 @@
     tools:context="com.caramelheaven.lennach.fragments.ThreadFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:padding="8dp"
+        android:id="@+id/fragment_recyclerView_thread"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fuck you!" />
+        android:layout_height="match_parent" />
 </RelativeLayout>

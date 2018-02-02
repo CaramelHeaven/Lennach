@@ -22,10 +22,10 @@ public abstract class BaseFragment<T> extends Fragment {
 
     //abstract void getData();
 
-
+/*
     protected int getLayoutId() {
-        return R.layout.fragment_recyclerview;
-    }
+        return R.layout.fragment_recview_thread;
+    }*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,14 +36,14 @@ public abstract class BaseFragment<T> extends Fragment {
         realmUI = Realm.getDefaultInstance();
     }
 
-    @Nullable
+   /* @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         //Закрепление ресайклера за каждым фрагментом, который его унаследует
         View view = inflater.inflate(getLayoutId(), container, false);
-        recyclerView = view.findViewById(R.id.fragment_recycler);
+        recyclerView = view.findViewById(R.id.recyclerView);
         return view;
-    }
+    }*/
 
     @Override
     public void onDestroyView() {
