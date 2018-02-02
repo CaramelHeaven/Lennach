@@ -1,10 +1,14 @@
 package com.caramelheaven.lennach.data;
 
+import com.caramelheaven.lennach.database.BoardRealm;
+import com.caramelheaven.lennach.database.ThreadRealm;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class Thread {
+import io.realm.RealmList;
+
+public class ThreadMy {
 
     @SerializedName("banned")
     private Integer banned;
@@ -67,9 +71,9 @@ public class Thread {
      *. response.body().getThreads().get(0).getPosts() */
     @SerializedName("posts")
     @Expose
-    private List<Post> posts = null;
+    private RealmList<ThreadRealm> posts;
 
-    public List<Post> getPosts() {
+    public RealmList<ThreadRealm> getPosts() {
         return posts;
     }
 
@@ -104,10 +108,7 @@ public class Thread {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
+
     //-------------------------------------------------------
 
     public String getComment() {
