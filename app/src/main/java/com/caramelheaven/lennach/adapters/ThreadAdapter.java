@@ -56,7 +56,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 holder.comment.setText(Html.fromHtml(threadRealm.getPosts().get(position).getComment()));
                 holder.date.setText(Html.fromHtml(threadRealm.getPosts().get(position).getDate()));
             } catch (NullPointerException e) {
-                Log.i(LOGS, "NPE exception");
+                Log.d(LOGS, "NPE exception");
             }
         }
     }

@@ -32,7 +32,7 @@ public abstract class BaseFragment<T> extends Fragment {
         super.onCreate(savedInstanceState);
 
         //но у меня же он уже создается независимо?
-        realmConfiguration = new RealmConfiguration.Builder().build();
+        //realmConfiguration = new RealmConfiguration.Builder().build();
         realmUI = Realm.getDefaultInstance();
     }
 

@@ -2,12 +2,13 @@ package com.caramelheaven.lennach.database;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Required;
 
 public class PostDB extends RealmObject {
 
+    private Integer number; //user number inside thread
     private String name;
     private Integer num;
-    private Integer number; //user number inside thread
     private Integer op;
     private String parent;
     private Integer sticky;

@@ -72,12 +72,12 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         boardAdapter = new BoardAdapter(getActivity(), list, onItemClickListener);
 
         recyclerView.setAdapter(boardAdapter);
-/*
         if (list.size() < 1) {
             //progressBar.setVisibility(View.VISIBLE);
             getData();
             //progressBar.setVisibility(View.GONE);
-        }*/
+        }
+
     }
 
     void getData() {
@@ -125,8 +125,8 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         //realmUI.close();
     }
 }
-
-/*recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+/*
+recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
@@ -156,9 +156,10 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
             public boolean isLoading() {
                 return isLoading;
             }
-        });*/
+        });
+
 //Not working
-        /*final RealmList<BoardRealm> realms = null;
+final RealmList<BoardRealm> realms = null;
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

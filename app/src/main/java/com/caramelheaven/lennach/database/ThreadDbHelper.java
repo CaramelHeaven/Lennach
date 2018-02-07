@@ -12,13 +12,13 @@ public class ThreadDbHelper {
     private static final String LOGS = ThreadDbHelper.class.getSimpleName();
 
     public ThreadDbHelper(RealmList<ThreadRealm> entityList, Realm realm) {
-        Log.i(LOGS, String.valueOf(entityList));
+        Log.d(LOGS, String.valueOf(entityList));
         this.entityList = entityList;
         this.realm = realm;
     }
 
     public void saveToDatabase() {
-        Log.i(LOGS, String.valueOf("Save To Database: " + entityList));
+        Log.d(LOGS, String.valueOf("Save To Database: " + entityList));
         realm = null;
         try {
             realm = Realm.getDefaultInstance();
@@ -47,8 +47,8 @@ public class ThreadDbHelper {
         realm = Realm.getDefaultInstance();
         try {
             final RealmResults<ThreadRealm> results = realm.where(ThreadRealm.class).findAll();
-            Log.i(LOGS, String.valueOf("Get From Database: " + entityList));
-            Log.i(LOGS, String.valueOf(results));
+            Log.d(LOGS, String.valueOf("Get From Database: " + entityList));
+            Log.d(LOGS, String.valueOf(results));
 
             int startPos = Math.max(results.size() - 1 - (page - 1) * pageSize, 0);
             //Log.i(LOGS, "START_POS" + String.valueOf(startPos));

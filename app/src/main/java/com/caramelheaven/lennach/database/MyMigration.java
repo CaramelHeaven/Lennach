@@ -1,3 +1,4 @@
+/*
 package com.caramelheaven.lennach.database;
 
 import io.realm.DynamicRealm;
@@ -67,3 +68,4 @@ public class MyMigration implements RealmMigration {
         }
     }
 }
+*/

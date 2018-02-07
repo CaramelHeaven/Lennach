@@ -62,6 +62,7 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d(LOGS, "Create recyclerView");
         recyclerView = view.findViewById(R.id.fragment_recyclerView_thread);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -72,35 +73,36 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
         recyclerView.setAdapter(threadAdapter);
 
         if (list.size() < 1) {
-            getData1();
+            Log.d(LOGS, "Get Data from internet");
+            getData();
         }
     }
 
-    private void getData1() {
-        Log.d(LOGS, "Called getData() " + page);
-        if (isOnline()) {
-            ApiFactory.getCheckingService()
-                    .getRxThread("pr", "1127618")
-                    .subscribeOn(Schedulers.io())
-                    .subscribeOn(Schedulers.computation())
-                    .map(ThreadMy::getPosts)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(threadRealms -> {
-                        Log.i(LOGS, String.valueOf("Document: " + threadRealms.get(1).getPosts().get(1).getSubject()));
-                        ThreadDbHelper dbHelper = new ThreadDbHelper(threadRealms, realmUI);
-                        dbHelper.saveToDatabase();
-                        showList();
-                    }, throwable -> showError());
-        }
+    private void getData() {
+        Log.d(LOGS, "Called getData() ");
+        ApiFactory.getCheckingService()
+                .getSimplyBoard("pa", "447956")
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(threadRealms -> {
+                    //It's a very interesting api :)
+                    Log.d(LOGS, String.valueOf(threadRealms.getThreads().get(0).getPosts().get(0).getComment()));
+          /*          ThreadDbHelper dbHelper = new ThreadDbHelper(threadRealms, realmUI);
+                    dbHelper.saveToDatabase();
+                    Log.d(LOGS, "Try to set data with showList");
+                    showList();*/
+                });
+
     }
 
-    private void showError() {
+  /*  private void showError() {
         //textOnline.setVisibility(View.VISIBLE);
         Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-    }
+    }*/
 
-    void showList() {
-        Log.i(LOGS, String.valueOf("SHOW LIST: " + list));
+    /*void showList() {
+        Log.d(LOGS, String.valueOf("SHOW LIST: " + list));
         ThreadDbHelper dbHelper = new ThreadDbHelper(list, realmUI);
         dbHelper.getFromDatabase(page++, PAGE_SIZE);
         threadAdapter.notifyDataSetChanged();
@@ -112,5 +114,5 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    }
+    }*/
 }
