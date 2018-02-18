@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.Utils.Constants;
 import com.caramelheaven.lennach.adapters.ThreadAdapter;
+import com.caramelheaven.lennach.data.SimplyBoard;
 import com.caramelheaven.lennach.data.ThreadMy;
 import com.caramelheaven.lennach.database.ThreadDbHelper;
 import com.caramelheaven.lennach.database.ThreadRealm;
@@ -32,8 +34,8 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
 
     private LinearLayoutManager layoutManager;
     private ThreadAdapter threadAdapter;
-    private final int PAGE_SIZE = 1000;//временно
-    private int page = 1;
+    private final int PAGE_SIZE = Constants.LIST_PAGE_SIZE;
+    private int page = Constants.LIST_FIRST_PAGE;
     private static final String LOGS = ThreadFragment.class.getSimpleName();
 
     public ThreadFragment() {
@@ -81,17 +83,21 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
     private void getData() {
         Log.d(LOGS, "Called getData() ");
         ApiFactory.getCheckingService()
-                .getSimplyBoard("pa", "447956")
+                .getSimplyBoard("pa", "456782")
                 .subscribeOn(Schedulers.io())
                 .subscribeOn(Schedulers.computation())
+                .map(SimplyBoard::getThreads)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(threadRealms -> {
                     //It's a very interesting api :)
-                    Log.d(LOGS, String.valueOf(threadRealms.getThreads().get(0).getPosts().get(0).getComment()));
-          /*          ThreadDbHelper dbHelper = new ThreadDbHelper(threadRealms, realmUI);
+                    /*for (int i = 0; i < threadRealms.get(0).getPosts().size(); i++) {
+                        Log.d(LOGS, "Size posts in thread: " + threadRealms.get(0).getPosts().size());
+                        Log.d(LOGS, String.valueOf(threadRealms.get(0).getPosts().get(i).getComment()));
+                    }*/
+                    ThreadDbHelper dbHelper = new ThreadDbHelper(threadRealms.get(0).getPosts(), realmUI);
                     dbHelper.saveToDatabase();
                     Log.d(LOGS, "Try to set data with showList");
-                    showList();*/
+                    showList();
                 });
 
     }
@@ -101,8 +107,7 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
         Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
     }*/
 
-    /*void showList() {
-        Log.d(LOGS, String.valueOf("SHOW LIST: " + list));
+    void showList() {
         ThreadDbHelper dbHelper = new ThreadDbHelper(list, realmUI);
         dbHelper.getFromDatabase(page++, PAGE_SIZE);
         threadAdapter.notifyDataSetChanged();
@@ -114,5 +119,5 @@ public class ThreadFragment extends BaseFragment<ThreadRealm> {
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    }*/
+    }
 }

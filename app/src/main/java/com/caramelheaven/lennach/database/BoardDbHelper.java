@@ -35,9 +35,8 @@ public class BoardDbHelper {
                             r.copyToRealmOrUpdate(boardRealm);
                         }
                     }
-
-
                 });
+                Log.d(LOGS, "Check FindAll" + String.valueOf(realm.where(BoardRealm.class).findAll().size()));
             }
         } finally {
             if (realm != null) {
@@ -66,14 +65,14 @@ public class BoardDbHelper {
         realm = Realm.getDefaultInstance();
         try {
             final RealmResults<BoardRealm> results = realm.where(BoardRealm.class).findAll();
-            Log.i(LOGS, String.valueOf("Get From Database: " + entityList));
-            Log.i(LOGS, String.valueOf(results));
+            Log.d(LOGS, "EntityList - " + String.valueOf("Get From Database: " + entityList));
+            Log.d(LOGS, "RealmResult Board: " + String.valueOf(results));
             //int startPos = results.size() - results.size();
             int startPos = Math.max(results.size() - 1 - (page - 1) * pageSize, 0);
-            //Log.i(LOGS, "START_POS" + String.valueOf(startPos));
+            Log.d(LOGS, "START_POS" + String.valueOf(startPos));
             //int endPos = results.size() - 1;
             int endPos = Math.max(startPos - pageSize, 0);
-            //Log.i(LOGS, "ENG_POS" + String.valueOf(endPos));
+            Log.d(LOGS, "ENG_POS" + String.valueOf(endPos));
             for (int i = startPos; i > endPos; i--) {
                 try {
                     Log.d(LOGS, "GetFromDB for: " + i + " " + results.get(i).toEntity());

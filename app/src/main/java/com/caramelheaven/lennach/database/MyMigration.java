@@ -31,7 +31,9 @@ public class MyMigration implements RealmMigration {
                     .addField("md5", String.class)
                     .addField("nsfw", Integer.class)
                     .addField("path", String.class)
-                    .addField("size", Integer.class)
+                    .addField("size", Integer.class)*/
+/**//*
+
                     .addField("thumbnail", String.class)
                     .addField("tnHeight", Integer.class)
                     .addField("tnWidth", Integer.class)

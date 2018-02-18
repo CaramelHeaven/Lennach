@@ -5,6 +5,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class BoardRealm extends RealmObject {
+
     @PrimaryKey
     private String subject;
     private String comment;

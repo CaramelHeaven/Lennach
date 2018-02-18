@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by Lion on 07.02.2018.
- */
-
 public class SimplyBoard {
     @SerializedName("threads")
     @Expose

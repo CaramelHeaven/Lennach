@@ -12,7 +12,7 @@ public class ThreadDbHelper {
     private static final String LOGS = ThreadDbHelper.class.getSimpleName();
 
     public ThreadDbHelper(RealmList<ThreadRealm> entityList, Realm realm) {
-        Log.d(LOGS, String.valueOf(entityList));
+        Log.d(LOGS, String.valueOf("Entity List in constructor: " + entityList));
         this.entityList = entityList;
         this.realm = realm;
     }
@@ -23,16 +23,19 @@ public class ThreadDbHelper {
         try {
             realm = Realm.getDefaultInstance();
             if (entityList.size() > 0) {
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm r) {
-                        for (int i = entityList.size() - 1; i >= 0; i--) {
-                            ThreadRealm threadRealm = new ThreadRealm();
-                            threadRealm.setFromEntityThread(entityList.get(i));
-                            r.copyToRealmOrUpdate(threadRealm);
-                        }
+                realm.executeTransaction(r -> {
+                    Log.d(LOGS, "SIze Entity list: " + entityList.size());
+                    for (int i = 0; i < entityList.size(); i++) {
+                        ThreadRealm threadRealm = new ThreadRealm();
+                        threadRealm.setFromEntityThread(entityList.get(i));
+                        Log.d(LOGS, "entityList.get(i): " + entityList.get(i));
+                        Log.d(LOGS, "File: " + entityList.get(i).getFiles());
+                        Log.d(LOGS, "Comment: " + entityList.get(i).getComment());
+                        Log.d(LOGS, "Date: " + entityList.get(i).getDate());
+                        r.copyToRealmOrUpdate(threadRealm);
                     }
                 });
+                Log.d(LOGS, "Check FindAll: " + String.valueOf(realm.where(ThreadRealm.class).findAll().size()));
             }
         } finally {
             if (realm != null) {
@@ -42,23 +45,21 @@ public class ThreadDbHelper {
     }
 
     public void getFromDatabase(int page, int pageSize) {
-        entityList.clear();
-
         realm = Realm.getDefaultInstance();
+        Log.d(LOGS, "PAge: " + page);
+        Log.d(LOGS, "PageSize: " + pageSize);
         try {
             final RealmResults<ThreadRealm> results = realm.where(ThreadRealm.class).findAll();
-            Log.d(LOGS, String.valueOf("Get From Database: " + entityList));
-            Log.d(LOGS, String.valueOf(results));
-
-            int startPos = Math.max(results.size() - 1 - (page - 1) * pageSize, 0);
+            Log.d(LOGS, String.valueOf("Result SIZE: " + results.size()));
             //Log.i(LOGS, "START_POS" + String.valueOf(startPos));
             //int endPos = results.size() - 1;
-            int endPos = Math.max(startPos - pageSize, 0);
             //Log.i(LOGS, "ENG_POS" + String.valueOf(endPos));
-            for (int i = startPos; i > endPos; i--) {
+
+            for (int i = 0; i < results.size(); i++) {
                 try {
                     Log.d(LOGS, "GetFromDB for: " + i + " " + results.get(i).toEntityThread());
                     entityList.add(results.get(i).toEntityThread());
+                    Log.d(LOGS, String.valueOf("for (int i = startPos; i > endPos; i--) {: " + entityList));
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

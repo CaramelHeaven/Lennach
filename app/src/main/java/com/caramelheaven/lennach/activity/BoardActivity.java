@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.fragments.BoardMoreFragment;
 import com.caramelheaven.lennach.fragments.ThreadFragment;
 
 public class BoardActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class BoardActivity extends AppCompatActivity {
                 ThreadFragment threadFragment = new ThreadFragment();
 
                 //boardFragment.setArguments(getIntent().getExtras());
-                threadFragment.setArguments(getIntent().getExtras());
+                //threadFragment.setArguments(getIntent().getExtras());
                 Log.d(LOGS, "Created fragment");
                 getSupportFragmentManager()
                         .beginTransaction()
