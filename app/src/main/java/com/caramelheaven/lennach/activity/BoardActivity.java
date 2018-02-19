@@ -30,7 +30,7 @@ public class BoardActivity extends AppCompatActivity {
             //to do something?)
         } else {
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                //BoardMoreFragment boardFragment = new BoardMoreFragment();
+                BoardMoreFragment boardFragment = new BoardMoreFragment();
                 ThreadFragment threadFragment = new ThreadFragment();
 
                 //boardFragment.setArguments(getIntent().getExtras());
@@ -38,7 +38,7 @@ public class BoardActivity extends AppCompatActivity {
                 Log.d(LOGS, "Created fragment");
                 getSupportFragmentManager()
                         .beginTransaction()
-                        //.add(R.id.boardContainer, boardFragment)
+                        .add(R.id.boardContainer, boardFragment)
                         .add(R.id.threadContainer, threadFragment)
                         .commit();
                 Log.d(LOGS, "Commited fragment");

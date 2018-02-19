@@ -51,13 +51,14 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             subject = itemView.findViewById(R.id.subject);
             comment = itemView.findViewById(R.id.comment);
             imageView = itemView.findViewById(R.id.image_poster);
-
-            layout.setOnClickListener(this);
+            layout.setOnClickListener(this);//or (this)
         }
 
         @Override
-        public void onClick(View v) {
-            Toast.makeText(context, "pos: " + board.get(getAdapterPosition()).getSubject(), Toast.LENGTH_SHORT).show();
+        public void onClick(View view) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 
@@ -153,6 +154,10 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position, String id, RealmList<BoardRealm> threads);
+        void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListener(final OnItemClickListener itemClickListener) {
+        this.mItemClickListener = itemClickListener;
     }
 }

@@ -9,9 +9,9 @@ public class ThreadRealm extends RealmObject {
 
     @PrimaryKey
     @Required
-    private String date;
-
     private Integer number; //user number inside thread
+
+    private String date;
     private String subject;
     private String name;
     private String comment;

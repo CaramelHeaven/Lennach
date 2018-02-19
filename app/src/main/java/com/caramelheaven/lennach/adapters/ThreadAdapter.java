@@ -65,7 +65,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 holder.subject.setText(Html.fromHtml(threadRealm.getSubject()));
                 holder.comment.setText(Html.fromHtml(threadRealm.getComment()));
                 holder.date.setText(Html.fromHtml(threadRealm.getDate()));
-
+                holder.imageView.setVisibility(View.GONE);
                 int files = threadRealm.getFiles().size();
                 Log.d(LOGS, "getFiles().size(): " + threadRealm.getFiles().size());
                 if (files > 0) {

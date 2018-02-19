@@ -71,6 +71,11 @@ public class BoardMoreFragment extends BaseFragment<BoardRealm> {
         //добавляю реалмЛист, будет ли толк?
         boardAdapter = new BoardAdapter(getActivity(), list, onItemClickListener);
 
+        boardAdapter.SetOnItemClickListener((vie, position) -> {
+            Log.d(LOGS, "Clicked ID: " + position);
+            Toast.makeText(getContext(), "id: " + position, Toast.LENGTH_SHORT).show();
+        });
+
         recyclerView.setAdapter(boardAdapter);
         if (list.size() < 1) {
             //progressBar.setVisibility(View.VISIBLE);
