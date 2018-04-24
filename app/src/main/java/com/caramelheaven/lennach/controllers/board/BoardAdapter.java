@@ -49,12 +49,14 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         boardVH.textSubject.setText(threadsList.get(position).getSubject());
 
         String fileUrl = threadsList.get(position).getFiles().get(0).getPath();
-        Glide.with(context)
-                .load("https://2ch.hk/" + fileUrl)
-                .apply(RequestOptions.centerCropTransform())
-                .into(boardVH.imageView);
-        boardVH.imageView.setVisibility(View.VISIBLE);
-        boardVH.progressBar.setVisibility(View.GONE);
+        if (fileUrl != null) {
+            Glide.with(context)
+                    .load("https://2ch.hk/" + fileUrl)
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(boardVH.imageView);
+            boardVH.imageView.setVisibility(View.VISIBLE);
+            boardVH.progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
