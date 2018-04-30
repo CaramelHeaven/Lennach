@@ -21,6 +21,15 @@
                 app:titleTextColor="@color/colorTextLight" />
         </android.support.design.widget.AppBarLayout>
 
+
+        <TextView
+            android:id="@+id/textWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Welcome. Again"
+            android:textColor="@color/colorTextDark" />
+
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"

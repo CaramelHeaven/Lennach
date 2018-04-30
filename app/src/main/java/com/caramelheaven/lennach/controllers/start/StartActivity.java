@@ -28,14 +28,14 @@ public class StartActivity extends BaseActivity {
         displayHomeAsUpEnabled();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, BoardFragment.newInstance())
-                .commit();
-
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, AddBoardFragment.newInstance())
+                        .commit();
+
                 Toast.makeText(StartActivity.this, "clicked on fab", Toast.LENGTH_SHORT).show();
             }
         });
