@@ -21,8 +21,6 @@ public class MainActivity extends BaseActivity {
     private TextView textWelcome;
     private Toolbar toolbar;
 
-    private static final String LOGS = MainActivity.class.getSimpleName();
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

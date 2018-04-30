@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.controllers.board;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.databinding.ItemBoardBinding;
 import com.caramelheaven.lennach.datasourse.model.Threads;
 import com.caramelheaven.lennach.utils.OnItemClickListener;
 
@@ -34,28 +36,23 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_board, parent, false);
-        return new BoardViewHolder(view);
+        ItemBoardBinding bindingItem = ItemBoardBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new BoardViewHolder(bindingItem.getRoot());
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BoardViewHolder boardVH = (BoardViewHolder) holder;
-        Log.d(LOGS, " numberThread: " + threadsList.get(position).getNum());
-        boardVH.numberThread.setText("# " + threadsList.get(position).getNum());
-        boardVH.textDate.setText(threadsList.get(position).getDate());
-        boardVH.textPosts.setText(String.valueOf(threadsList.get(position).getPostsCount()) + " posts");
-        boardVH.textFiles.setText(String.valueOf(threadsList.get(position).getFilesCount()) + " files");
-        boardVH.textSubject.setText(threadsList.get(position).getSubject());
+        boardVH.binding.textNumberPost.setText("# " + threadsList.get(position).getNum());
+        boardVH.binding.textDate.setText(threadsList.get(position).getDate());
+        boardVH.binding.textDescribe.setText(threadsList.get(position).getSubject());
 
         String fileUrl = threadsList.get(position).getFiles().get(0).getPath();
         if (fileUrl != null) {
             Glide.with(context)
                     .load("https://2ch.hk/" + fileUrl)
                     .apply(RequestOptions.centerCropTransform())
-                    .into(boardVH.imageView);
-            boardVH.imageView.setVisibility(View.VISIBLE);
-            boardVH.progressBar.setVisibility(View.GONE);
+                    .into(boardVH.binding.imageThread);
         }
     }
 
@@ -68,25 +65,15 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.onItemClickListener = onItemClickListener;
     }
 
-    private class BoardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView numberThread;
-        TextView textSubject;
-        TextView textDate;
-        ImageView imageView;
-        TextView textPosts;
-        TextView textFiles;
-        ProgressBar progressBar;
+    private class BoardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        ItemBoardBinding binding;
 
         BoardViewHolder(View itemView) {
             super(itemView);
-            numberThread = itemView.findViewById(R.id.numberThread);
-            textSubject = itemView.findViewById(R.id.textPost);
-            textDate = itemView.findViewById(R.id.textDate);
-            imageView = itemView.findViewById(R.id.imageView);
-            textPosts = itemView.findViewById(R.id.textPosts);
-            textFiles = itemView.findViewById(R.id.textFiles);
-            progressBar = itemView.findViewById(R.id.spinnerImage);
-            imageView.setOnClickListener(this);
+            binding = DataBindingUtil.bind(itemView);
+            binding.executePendingBindings();
+            //setOnClickListener is here
         }
 
         @Override
