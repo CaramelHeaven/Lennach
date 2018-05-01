@@ -1,12 +1,16 @@
 package com.caramelheaven.lennach.controllers.start;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.caramelheaven.lennach.MyApplication;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.controllers.BaseActivity;
 import com.caramelheaven.lennach.controllers.board.BoardFragment;
@@ -31,11 +35,7 @@ public class StartActivity extends BaseActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, AddBoardFragment.newInstance())
-                        .commit();
-
+                AddBoardFragment.newInstance().show(getSupportFragmentManager(), "fragment");
                 Toast.makeText(StartActivity.this, "clicked on fab", Toast.LENGTH_SHORT).show();
             }
         });

@@ -7,6 +7,10 @@ import java.util.List;
 
 public class Board {
 
+    public Board(String board) {
+        this.board = board;
+    }
+
     @SerializedName("Board")
     @Expose
     private String board;
@@ -267,7 +271,7 @@ public class Board {
 
 
     public void setEnableNames(Integer enableNames) {
-        this.enableNames =enableNames;
+        this.enableNames = enableNames;
     }
 
     public Integer getEnableOekaki() {
