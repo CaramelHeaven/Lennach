@@ -6,6 +6,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.database.LennachDatabase;
+import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iBoard;
 import com.caramelheaven.lennach.datasource.database.entity.iPost;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
@@ -79,13 +80,24 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
                         database.threadDao().insertThread(iThread);
                         List<iPost> iPosts = new ArrayList<>();
                         for (Post post : thread.getPosts()) {
-                            iPost iPost = new iPost(post.getNum(), post.getBanned(), post.getComment(), post.getTimestamp(), post.getOp(), post.getDate(), thread.getThreadNum());
+                            iPost iPost = new iPost(post.getNum(), post.getBanned(), post.getComment(),
+                                    post.getTimestamp(), post.getOp(), post.getDate(), post.getSubject(), thread.getThreadNum());
                             iPosts.add(iPost);
                         }
                         database.postDao().insertPost(iPosts);
                         iThreads.add(iThread);
                     }
                     return Single.just(iThreads);
+                })
+                .flatMap(new Function<List<iThread>, SingleSource<List<PostsInThreads>>>() {
+                    @Override
+                    public SingleSource<List<PostsInThreads>> apply(List<iThread> iThreads) throws Exception {
+                        List<PostsInThreads> postsInThreads = new ArrayList<>();
+                        for (iThread iThread : iThreads) {
+                            postsInThreads.add(database.threadDao().getPosts(iThread.getThreadId()));
+                        }
+                        return Single.just(postsInThreads);
+                    }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleLoadingSuccess, this::handleLoadingError));
@@ -95,12 +107,9 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         getViewState().showRetryView(throwable.getCause().toString());
     }
 
-    private void handleLoadingSuccess(List<iThread> models) {
+    private void handleLoadingSuccess(List<PostsInThreads> models) {
         if (currentPage == 1) {
             getViewState().hideProgress();
-        }
-        for (iThread iThread : models) {
-            Timber.d("handleLoadingSuccess: " + iThread.toString());
         }
         getViewState().showItems(models);
         currentPage++;

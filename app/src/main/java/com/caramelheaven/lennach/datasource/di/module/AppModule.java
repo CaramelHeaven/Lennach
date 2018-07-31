@@ -69,6 +69,7 @@ public class AppModule {
     @Singleton
     public LennachDatabase provideDatabase(Application application) {
         return Room.databaseBuilder(application, LennachDatabase.class, "lennach.db")
+                .fallbackToDestructiveMigration()
                 .build();
     }
 }

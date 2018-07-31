@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
 import com.caramelheaven.lennach.ui.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.ui.board.presenter.BoardView;
@@ -104,16 +105,12 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     }
 
     @Override
-    public void refteshItems(List<iThread> iThreads) {
+    public void refteshItems(List<PostsInThreads> postsInThreads) {
 
     }
 
     @Override
-    public void showItems(List<iThread> iThreads) {
-        Timber.d("ITAK: " + iThreads.size());
-        for (iThread iThread : iThreads) {
-            Timber.d("check: " + iThread.toString());
-        }
-        adapter.updateAdapter(iThreads);
+    public void showItems(List<PostsInThreads> postsInThreads) {
+        adapter.updateAdapter(postsInThreads);
     }
 }

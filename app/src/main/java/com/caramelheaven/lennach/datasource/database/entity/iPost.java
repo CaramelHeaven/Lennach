@@ -21,16 +21,18 @@ public class iPost {
     private Integer timestamp;
     private Integer op;
     private String date;
+    private String subject;
 
     private String idThread;
 
-    public iPost(String postId, Integer banned, String comment, Integer timestamp, Integer op, String date, String idThread) {
+    public iPost(@NotNull String postId, Integer banned, String comment, Integer timestamp, Integer op, String date, String subject, String idThread) {
         this.postId = postId;
         this.banned = banned;
         this.comment = comment;
         this.timestamp = timestamp;
         this.op = op;
         this.date = date;
+        this.subject = subject;
         this.idThread = idThread;
     }
 
@@ -43,8 +45,17 @@ public class iPost {
                 ", timestamp=" + timestamp +
                 ", op=" + op +
                 ", date='" + date + '\'' +
+                ", subject='" + subject + '\'' +
                 ", idThread='" + idThread + '\'' +
                 '}';
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getPostId() {

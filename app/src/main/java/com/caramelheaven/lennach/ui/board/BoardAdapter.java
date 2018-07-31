@@ -2,13 +2,15 @@ package com.caramelheaven.lennach.ui.board;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.database.entity.iThread;
+import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 
 import java.util.List;
 
@@ -17,10 +19,10 @@ import java.util.List;
  */
 public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<iThread> iThreads;
+    private List<PostsInThreads> thread;
 
-    public BoardAdapter(List<iThread> iThreads) {
-        this.iThreads = iThreads;
+    public BoardAdapter(List<PostsInThreads> thread) {
+        this.thread = thread;
     }
 
     @NonNull
@@ -33,28 +35,32 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BoardVH boardVH = (BoardVH) viewHolder;
-        boardVH.tvThreadNum.setText(iThreads.get(i).getThreadId());
+        boardVH.tvTitle.setText(Html.fromHtml(thread.get(i).iPostList.get(0).getSubject()));
+        boardVH.tvDescription.setText(Html.fromHtml(thread.get(i).iPostList.get(0).get));
         //for future  holder.views.setText(Html.fromHtml(boardRealm.getDate()));
     }
 
     @Override
     public int getItemCount() {
-        return iThreads.size();
+        return thread.size();
     }
 
-    public void updateAdapter(List<iThread> iThreadList) {
-        iThreads.clear();
-        iThreads.addAll(iThreadList);
+    public void updateAdapter(List<PostsInThreads> iThreadList) {
+        thread.clear();
+        thread.addAll(iThreadList);
         notifyDataSetChanged();
     }
 
     private class BoardVH extends RecyclerView.ViewHolder {
 
-        TextView tvThreadNum;
+        TextView tvTitle, tvDescription;
+        ImageView ivThread;
 
         public BoardVH(@NonNull View itemView) {
             super(itemView);
-            tvThreadNum = itemView.findViewById(R.id.tvThreadNum);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+            ivThread = itemView.findViewById(R.id.ivThread);
         }
     }
 }

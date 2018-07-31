@@ -6,6 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public interface BoardView extends MvpView {
     void showError();
 
     @StateStrategyType(value = SingleStateStrategy.class)
-    void refteshItems(List<iThread> iThreads);
+    void refteshItems(List<PostsInThreads> postsInThreads);
 
     @StateStrategyType(value = SingleStateStrategy.class)
-    void showItems(List<iThread> iThreads);
+    void showItems(List<PostsInThreads> postsInThreads);
 }
