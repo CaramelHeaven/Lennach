@@ -9,10 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
 import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -21,10 +27,12 @@ import timber.log.Timber;
  */
 public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<PostsInThreads> thread;
+    private List<PostFileThread> threadList;
+    private Set<PostFileThread> threadUniq;
 
-    public BoardAdapter(List<PostsInThreads> thread) {
-        this.thread = thread;
+    public BoardAdapter(List<PostFileThread> threadList) {
+        this.threadList = threadList;
+        threadUniq = new LinkedHashSet<>();
     }
 
     @NonNull
@@ -37,22 +45,30 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BoardVH boardVH = (BoardVH) viewHolder;
-        boardVH.tvTitle.setText(Html.fromHtml(thread.get(i).posts.get(0).getSubject()));
-        boardVH.tvDescription.setText(Html.fromHtml(thread.get(i).posts.get(0).getComment()));
-        boardVH.tvDate.setText(thread.get(i).posts.get(i).getComment());
-        boardVH.tvCountPosts.setText(String.valueOf(thread.get(i).iThread.getPostsCount()));
-        boardVH.tvCountFiles.setText(String.valueOf(thread.get(i).iThread.getFilesCount()));
-        Timber.d("files: " + thread.get(i).files.get(0).getDisplayName());
+        boardVH.tvTitle.setText(Html.fromHtml(threadList.get(i).getPostsInThreads().posts.get(0).getSubject()));
+        boardVH.tvDescription.setText(Html.fromHtml(threadList.get(i).getPostsInThreads().posts.get(0).getComment()));
+        boardVH.tvDate.setText(threadList.get(i).getPostsInThreads().posts.get(i).getComment());
+        boardVH.tvCountPosts.setText(String.valueOf(threadList.get(i).getPostsInThreads().iThread.getPostsCount()));
+        boardVH.tvCountFiles.setText(String.valueOf(threadList.get(i).getPostsInThreads().iThread.getFilesCount()));
+
+        if (threadList.get(i).getiFile() != null) {
+            Glide.with(boardVH.ivThread.getContext())
+                    .load("https://2ch.hk" + threadList.get(i).getiFile().getPath())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .apply(new RequestOptions().override(150, 150))
+                    .into(boardVH.ivThread);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return thread.size();
+        return threadList.size();
     }
 
-    public void updateAdapter(List<PostsInThreads> iThreadList) {
-        thread.clear();
-        thread.addAll(iThreadList);
+    public void updateAdapter(List<PostFileThread> iThreadList) {
+        threadUniq.addAll(iThreadList);
+        threadList.clear();
+        threadList.addAll(iThreadList);
         notifyDataSetChanged();
     }
 

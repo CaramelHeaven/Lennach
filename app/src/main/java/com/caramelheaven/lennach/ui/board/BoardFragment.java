@@ -14,10 +14,12 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
 import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
 import com.caramelheaven.lennach.ui.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.ui.board.presenter.BoardView;
+import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private BoardAdapter adapter;
 
     @InjectPresenter
@@ -66,6 +68,23 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
         adapter = new BoardAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
         Timber.d("savedInstanceState: " + savedInstanceState);
+
+        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                presenter.loadMoreThreads();
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return presenter.isLoading();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return presenter.isLastPage();
+            }
+        });
     }
 
     @Override
@@ -105,12 +124,12 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     }
 
     @Override
-    public void refteshItems(List<PostsInThreads> postsInThreads) {
+    public void refteshItems(List<PostFileThread>  postsInThreads) {
 
     }
 
     @Override
-    public void showItems(List<PostsInThreads> postsInThreads) {
+    public void showItems(List<PostFileThread>  postsInThreads) {
         adapter.updateAdapter(postsInThreads);
     }
 }

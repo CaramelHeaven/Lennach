@@ -20,6 +20,7 @@ public class BoardRepository {
 
     private final ApiService apiService;
     private final LennachDatabase database;
+    private int totalPage = 0;
 
     @Inject
     public BoardRepository(ApiService apiService, LennachDatabase database) {
@@ -30,9 +31,14 @@ public class BoardRepository {
     public Single<List<Thread>> getBoardByName(String boardName, int page) {
         return apiService.getBoard(boardName, page)
                 .doOnSuccess(board -> {
+                    totalPage = board.getPages().size();
                     iBoard iBoard = new iBoard(board.getBoard(), board.getBoardName(), board.getBoardSpeed(), board.getBumpLimit());
                     database.boardDao().insertBoard(iBoard);
                 })
                 .map(Board::getThreads);
+    }
+
+    public int getTotalPage() {
+        return totalPage;
     }
 }

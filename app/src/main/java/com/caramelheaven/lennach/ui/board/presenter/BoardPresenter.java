@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.database.LennachDatabase;
+import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
 import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.datasource.database.entity.iPost;
@@ -35,6 +36,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     private boolean isLoading = false;
     private boolean isEndPage = false;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private int totalPage = 0;
 
     @Inject
     BoardRepository repository;
@@ -93,14 +95,16 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
                     }
                     return Single.just(iThreads);
                 })
-                .flatMap(new Function<List<iThread>, SingleSource<List<PostsInThreads>>>() {
+                .flatMap(new Function<List<iThread>, SingleSource<List<PostFileThread>>>() {
                     @Override
-                    public SingleSource<List<PostsInThreads>> apply(List<iThread> iThreads) throws Exception {
-                        List<PostsInThreads> postsInThreads = new ArrayList<>();
+                    public SingleSource<List<PostFileThread>> apply(List<iThread> iThreads) throws Exception {
+                        List<PostFileThread> postFileThreads = new ArrayList<>();
                         for (iThread iThread : iThreads) {
-                            postsInThreads.add(database.threadDao().getPosts(iThread.getThreadId()));
+                            PostsInThreads postsInThreads = database.threadDao().getPosts(iThread.getThreadId());
+                            iFile iFile = database.fileDao().getFileById(postsInThreads.posts.get(0).getPostId());
+                            postFileThreads.add(new PostFileThread(postsInThreads, iFile));
                         }
-                        return Single.just(postsInThreads);
+                        return Single.just(postFileThreads);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -111,11 +115,28 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         getViewState().showRetryView(throwable.getCause().toString());
     }
 
-    private void handleLoadingSuccess(List<PostsInThreads> models) {
+    private void handleLoadingSuccess(List<PostFileThread> models) {
         if (currentPage == 1) {
+            totalPage = repository.getTotalPage();
             getViewState().hideProgress();
         }
         getViewState().showItems(models);
-        currentPage++;
+        isLoading = false;
+    }
+
+    public void loadMoreThreads() {
+        if (totalPage != currentPage) {
+            isLoading = true;
+            currentPage++;
+            loadThreads("b", currentPage);
+        }
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public boolean isLastPage() {
+        return totalPage == currentPage;
     }
 }

@@ -24,4 +24,7 @@ public interface FileDao {
 
     @Query("SELECT * FROM iFile")
     List<iFile> getAllPosts();
+
+    @Query("SELECT * FROM iFile WHERE idPost=:postId")
+    iFile getFileById(String postId);
 }

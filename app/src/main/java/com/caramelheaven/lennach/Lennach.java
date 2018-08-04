@@ -5,6 +5,8 @@ import android.app.Application;
 import com.caramelheaven.lennach.datasource.di.AppComponent;
 import com.caramelheaven.lennach.datasource.di.DaggerAppComponent;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 27.07.2018
  */
@@ -16,7 +18,7 @@ public class Lennach extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Timber.plant(new Timber.DebugTree());
         lennach = this;
 
         component = DaggerAppComponent.builder()
