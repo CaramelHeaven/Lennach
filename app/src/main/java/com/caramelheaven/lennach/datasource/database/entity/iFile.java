@@ -50,6 +50,14 @@ public class iFile {
                 '}';
     }
 
+    public String getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(String idPost) {
+        this.idPost = idPost;
+    }
+
     @NotNull
     public String getFileId() {
         return fileId;

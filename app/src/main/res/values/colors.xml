@@ -10,7 +10,6 @@
     <color name="colorSecondaryLightAlpha">#BBFFFFFF</color>
     <color name="colorTextSecondary">#FF9D9D9D</color>
     <color name="colorTextGrayLight">#FFD8D8D8</color>
-    <color name="colorTextGrayDark">#FFA8A8A8</color>
     <color name="colorDividerGray">#FFE9E9E9</color>
     <color name="colorLikeTrue">#E75153</color>
     <color name="colorEditText">#1F000000</color>

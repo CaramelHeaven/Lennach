@@ -22,8 +22,10 @@ public interface BoardView extends MvpView {
 
     void hideRefreshing();
 
+    @StateStrategyType(value = SingleStateStrategy.class)
     void showRetryView(String cause);
 
+    @StateStrategyType(value = SingleStateStrategy.class)
     void hideRetryView();
 
     @StateStrategyType(value = SkipStrategy.class)

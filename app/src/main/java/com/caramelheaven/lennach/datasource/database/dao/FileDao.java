@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface FileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPost(List<iFile> iFiles);
+    void insertFiles(List<iFile> iFiles);
 
     @Update
     void updatePost(iFile iFile);

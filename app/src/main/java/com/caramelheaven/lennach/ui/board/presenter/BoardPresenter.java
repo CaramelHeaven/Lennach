@@ -1,15 +1,14 @@
 package com.caramelheaven.lennach.ui.board.presenter;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.database.LennachDatabase;
 import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
-import com.caramelheaven.lennach.datasource.database.entity.iBoard;
+import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.datasource.database.entity.iPost;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
+import com.caramelheaven.lennach.datasource.model.File;
 import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.datasource.model.Thread;
 import com.caramelheaven.lennach.datasource.repository.BoardRepository;
@@ -25,7 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 27.07.2018
@@ -78,13 +76,19 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
                     for (Thread thread : threads) {
                         iThread iThread = new iThread(thread.getThreadNum(), thread.getPostsCount(), thread.getFilesCount(), boardName);
                         database.threadDao().insertThread(iThread);
-                        List<iPost> iPosts = new ArrayList<>();
                         for (Post post : thread.getPosts()) {
                             iPost iPost = new iPost(post.getNum(), post.getBanned(), post.getComment(),
                                     post.getTimestamp(), post.getOp(), post.getDate(), post.getSubject(), thread.getThreadNum());
-                            iPosts.add(iPost);
+                            List<iFile> iFiles = new ArrayList<>();
+                            for (File file : post.getFiles()) {
+                                iFile iFile = new iFile(file.getDisplayname(), file.getDisplayname(),
+                                        file.getFullname(), file.getHeight(), file.getWidth(),
+                                        file.getPath(), file.getSize(), file.getThumbnail(), post.getNum());
+                                iFiles.add(iFile);
+                            }
+                            database.postDao().insertPost(iPost);
+                            database.fileDao().insertFiles(iFiles);
                         }
-                        database.postDao().insertPost(iPosts);
                         iThreads.add(iThread);
                     }
                     return Single.just(iThreads);

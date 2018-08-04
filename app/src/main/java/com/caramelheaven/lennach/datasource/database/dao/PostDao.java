@@ -17,7 +17,7 @@ import java.util.List;
 @Dao
 public interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPost(List<iPost> iPosts);
+    void insertPost(iPost iPosts);
 
     @Update
     void updatePost(iPost iPost);

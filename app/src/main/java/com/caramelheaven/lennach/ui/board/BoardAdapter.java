@@ -14,6 +14,8 @@ import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 29.07.2018
  */
@@ -35,9 +37,12 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BoardVH boardVH = (BoardVH) viewHolder;
-        boardVH.tvTitle.setText(Html.fromHtml(thread.get(i).iPostList.get(0).getSubject()));
-        boardVH.tvDescription.setText(Html.fromHtml(thread.get(i).iPostList.get(0).get));
-        //for future  holder.views.setText(Html.fromHtml(boardRealm.getDate()));
+        boardVH.tvTitle.setText(Html.fromHtml(thread.get(i).posts.get(0).getSubject()));
+        boardVH.tvDescription.setText(Html.fromHtml(thread.get(i).posts.get(0).getComment()));
+        boardVH.tvDate.setText(thread.get(i).posts.get(i).getComment());
+        boardVH.tvCountPosts.setText(String.valueOf(thread.get(i).iThread.getPostsCount()));
+        boardVH.tvCountFiles.setText(String.valueOf(thread.get(i).iThread.getFilesCount()));
+        Timber.d("files: " + thread.get(i).files.get(0).getDisplayName());
     }
 
     @Override
@@ -53,13 +58,16 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private class BoardVH extends RecyclerView.ViewHolder {
 
-        TextView tvTitle, tvDescription;
+        TextView tvTitle, tvDescription, tvDate, tvCountFiles, tvCountPosts;
         ImageView ivThread;
 
         public BoardVH(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvCountFiles = itemView.findViewById(R.id.tvCountFiles);
+            tvCountPosts = itemView.findViewById(R.id.tvCountPosts);
             ivThread = itemView.findViewById(R.id.ivThread);
         }
     }
