@@ -5,11 +5,15 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iPost;
 
 import java.util.List;
+
+import io.reactivex.Flowable;
 
 /**
  * Created by CaramelHeaven on 29.07.2018
@@ -30,4 +34,8 @@ public interface PostDao {
 
     @Query("SELECT * FROM iPost WHERE idThread=:threadId")
     List<iPost> findPostsByThread(final int threadId);
+
+    @Transaction
+    @Query("SELECT * FROM iPost WHERE idThread=:threadId")
+    Flowable<List<PostsHelper>> getPostsFromThread(String threadId);
 }

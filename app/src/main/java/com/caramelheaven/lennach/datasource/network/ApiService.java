@@ -1,7 +1,11 @@
 package com.caramelheaven.lennach.datasource.network;
 
 import com.caramelheaven.lennach.datasource.model.Board;
+import com.caramelheaven.lennach.datasource.model.BoardSettings;
 import com.caramelheaven.lennach.datasource.model.Captcha;
+import com.caramelheaven.lennach.datasource.model.Post;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -21,4 +25,13 @@ public interface ApiService {
     Single<Captcha> getCaptcha(@Path("type") String captchaType,
                                @Query("board") String board,
                                @Query("thread") String thread);
+
+    @GET("makaba/mobile.fcgi?task=get_boards")
+    Single<BoardSettings> getBoardSettings();
+
+    @GET("makaba/mobile.fcgi?task=get_thread")
+    Single<List<Post>> getPostsByThreadId(@Query("board") String boardName,
+                                          @Query("thread") String threadId,
+                                          @Query("num") String numId);
+
 }

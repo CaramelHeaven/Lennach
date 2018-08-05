@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
-import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
 
 import java.util.List;

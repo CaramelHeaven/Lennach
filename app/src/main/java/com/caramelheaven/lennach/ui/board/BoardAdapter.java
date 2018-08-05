@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.ui.board;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -13,14 +14,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
-import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
+import com.caramelheaven.lennach.utils.myOnItemClickListener;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 29.07.2018
@@ -29,6 +28,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private List<PostFileThread> threadList;
     private Set<PostFileThread> threadUniq;
+    private myOnItemClickListener myOnItemClickListener;
 
     public BoardAdapter(List<PostFileThread> threadList) {
         this.threadList = threadList;
@@ -47,7 +47,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         BoardVH boardVH = (BoardVH) viewHolder;
         boardVH.tvTitle.setText(Html.fromHtml(threadList.get(i).getPostsInThreads().posts.get(0).getSubject()));
         boardVH.tvDescription.setText(Html.fromHtml(threadList.get(i).getPostsInThreads().posts.get(0).getComment()));
-        boardVH.tvDate.setText(threadList.get(i).getPostsInThreads().posts.get(i).getComment());
+        boardVH.tvDate.setText(threadList.get(i).getPostsInThreads().posts.get(0).getDate());
         boardVH.tvCountPosts.setText(String.valueOf(threadList.get(i).getPostsInThreads().iThread.getPostsCount()));
         boardVH.tvCountFiles.setText(String.valueOf(threadList.get(i).getPostsInThreads().iThread.getFilesCount()));
 
@@ -72,10 +72,19 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    private class BoardVH extends RecyclerView.ViewHolder {
+    public void setMyOnItemClickListener(com.caramelheaven.lennach.utils.myOnItemClickListener myOnItemClickListener) {
+        this.myOnItemClickListener = myOnItemClickListener;
+    }
+
+    public String getThreadIdByPosition(int position) {
+        return threadList.get(position).getPostsInThreads().iThread.getThreadId();
+    }
+
+    private class BoardVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvTitle, tvDescription, tvDate, tvCountFiles, tvCountPosts;
         ImageView ivThread;
+        CardView cardView;
 
         public BoardVH(@NonNull View itemView) {
             super(itemView);
@@ -85,6 +94,13 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvCountFiles = itemView.findViewById(R.id.tvCountFiles);
             tvCountPosts = itemView.findViewById(R.id.tvCountPosts);
             ivThread = itemView.findViewById(R.id.ivThread);
+            cardView = itemView.findViewById(R.id.cardView);
+            cardView.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View view) {
+            myOnItemClickListener.onItemClick(getAdapterPosition());
         }
     }
 }

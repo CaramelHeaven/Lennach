@@ -1,4 +1,6 @@
-package com.caramelheaven.lennach.datasource.database.entity;
+package com.caramelheaven.lennach.datasource.database.entity.helpers;
+
+import com.caramelheaven.lennach.datasource.database.entity.iFile;
 
 public class PostFileThread {
 

@@ -4,8 +4,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.database.LennachDatabase;
-import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
-import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsInThreads;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.datasource.database.entity.iPost;
 import com.caramelheaven.lennach.datasource.database.entity.iThread;
@@ -25,6 +25,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 27.07.2018
@@ -68,6 +69,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         if (currentPage == 1) {
             getViewState().showProgress();
         }
+        Timber.d("board repository: " + repository.hashCode() + " simple:  " + repository);
         disposable.add(repository.getBoardByName(boardName, page)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(d -> {

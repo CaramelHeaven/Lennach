@@ -1,8 +1,10 @@
-package com.caramelheaven.lennach.datasource.database.entity;
+package com.caramelheaven.lennach.datasource.database.entity.helpers;
 
 import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Relation;
+
+import com.caramelheaven.lennach.datasource.database.entity.iPost;
+import com.caramelheaven.lennach.datasource.database.entity.iThread;
 
 import java.util.List;
 

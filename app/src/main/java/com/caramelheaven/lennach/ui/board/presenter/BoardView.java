@@ -1,14 +1,11 @@
 package com.caramelheaven.lennach.ui.board.presenter;
 
-import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
-import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
-import com.caramelheaven.lennach.datasource.database.entity.iThread;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
 
 import java.util.List;
 

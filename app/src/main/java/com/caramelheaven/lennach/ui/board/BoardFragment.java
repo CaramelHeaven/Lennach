@@ -3,7 +3,6 @@ package com.caramelheaven.lennach.ui.board;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,11 +13,10 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.database.entity.PostFileThread;
-import com.caramelheaven.lennach.datasource.database.entity.PostsInThreads;
-import com.caramelheaven.lennach.datasource.database.entity.iThread;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
 import com.caramelheaven.lennach.ui.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.ui.board.presenter.BoardView;
+import com.caramelheaven.lennach.ui.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
@@ -69,6 +67,16 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
         recyclerView.setAdapter(adapter);
         Timber.d("savedInstanceState: " + savedInstanceState);
 
+        adapter.setMyOnItemClickListener(position -> {
+            String idThread = adapter.getThreadIdByPosition(position);
+            Timber.d("getPosition: " + idThread);
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, ThreadFragment.newInstance(idThread))
+                    .commit();
+        });
+
         recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -91,6 +99,7 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     public void onDestroyView() {
         super.onDestroyView();
         recyclerView = null;
+        progressBar = null;
     }
 
     @Override
@@ -124,12 +133,12 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     }
 
     @Override
-    public void refteshItems(List<PostFileThread>  postsInThreads) {
+    public void refteshItems(List<PostFileThread> postsInThreads) {
 
     }
 
     @Override
-    public void showItems(List<PostFileThread>  postsInThreads) {
+    public void showItems(List<PostFileThread> postsInThreads) {
         adapter.updateAdapter(postsInThreads);
     }
 }
