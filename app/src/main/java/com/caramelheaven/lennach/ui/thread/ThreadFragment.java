@@ -3,7 +3,6 @@ package com.caramelheaven.lennach.ui.thread;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,8 +55,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-        Toast.makeText(getActivity(), "num: " + getArguments().getString("ID"), Toast.LENGTH_SHORT).show();
-        presenter.getPosts(getArguments().getString("ID"));
     }
 
     @Override
@@ -104,7 +101,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView {
 
     @Override
     public void showItems(List<PostsHelper> posts) {
-        Timber.d("CHECKING SIZE: " + posts.size());
+        Toast.makeText(getActivity(), "Size: " + posts.size(), Toast.LENGTH_SHORT).show();
         for (PostsHelper helper : posts) {
             Timber.d("posts kek: " + helper.iPost);
         }

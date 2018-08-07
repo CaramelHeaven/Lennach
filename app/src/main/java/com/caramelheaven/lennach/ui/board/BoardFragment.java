@@ -39,7 +39,6 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     BoardPresenter presenter;
 
     public static BoardFragment newInstance() {
-
         Bundle args = new Bundle();
 
         BoardFragment fragment = new BoardFragment();
@@ -73,7 +72,8 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
             getActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, ThreadFragment.newInstance(idThread))
+                    .replace(R.id.fragment_container, ThreadFragment.newInstance(idThread))
+                    .addToBackStack(null)
                     .commit();
         });
 

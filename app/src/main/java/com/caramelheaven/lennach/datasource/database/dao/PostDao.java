@@ -13,7 +13,7 @@ import com.caramelheaven.lennach.datasource.database.entity.iPost;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 /**
  * Created by CaramelHeaven on 29.07.2018
@@ -37,5 +37,5 @@ public interface PostDao {
 
     @Transaction
     @Query("SELECT * FROM iPost WHERE idThread=:threadId")
-    Flowable<List<PostsHelper>> getPostsFromThread(String threadId);
+    Single<List<PostsHelper>> getPostsFromThread(String threadId);
 }

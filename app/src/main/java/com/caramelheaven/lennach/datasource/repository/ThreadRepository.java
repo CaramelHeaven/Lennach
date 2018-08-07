@@ -56,9 +56,9 @@ public class ThreadRepository {
                 .subscribe());
     }
 
-    public Flowable<List<PostsHelper>> getPostsFromDatabase(String threadNumber) {
-        return database.postDao().getPostsFromThread(threadNumber);
-    }
+//    public Flowable<List<PostsHelper>> getPostsFromDatabase(String threadNumber) {
+//        return database.postDao().getPostsFromThread(threadNumber);
+//    }
 
     public void clearRequests() {
         disposable.clear();

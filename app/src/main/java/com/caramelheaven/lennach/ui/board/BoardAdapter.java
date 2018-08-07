@@ -68,7 +68,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void updateAdapter(List<PostFileThread> iThreadList) {
         threadUniq.addAll(iThreadList);
         threadList.clear();
-        threadList.addAll(iThreadList);
+        threadList.addAll(threadUniq);
         notifyDataSetChanged();
     }
 
