@@ -14,20 +14,25 @@ import com.caramelheaven.lennach.datasource.model.BoardNavModel;
 import com.caramelheaven.lennach.ui.base.AdapterMethods;
 import com.caramelheaven.lennach.utils.myOnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import timber.log.Timber;
 
 public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AdapterMethods<BoardNavModel> {
 
     private List<BoardNavModel> boardNavList;
     private Set<BoardNavModel> boardUnique;
+    private Set<Integer> selectedItems;
 
     private myOnItemClickListener myOnItemClickListener;
 
     public AddDialogAdapter(List<BoardNavModel> boardNavList) {
         this.boardNavList = boardNavList;
         boardUnique = new LinkedHashSet<>();
+        selectedItems = new LinkedHashSet<>();
     }
 
     @NonNull
@@ -71,6 +76,22 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return boardNavList;
     }
 
+    public List<BoardNavModel> getSelectedItems() {
+        List<BoardNavModel> selectedBoards = new ArrayList<>();
+        for (Integer position : selectedItems) {
+            selectedBoards.add(boardNavList.get(position));
+        }
+        return selectedBoards;
+    }
+
+    public Set<Integer> getSelectedPositions() {
+        return selectedItems;
+    }
+
+    public void setSelectedItems(Set<Integer> models) {
+        selectedItems.addAll(models);
+    }
+
     private class BoardVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvBoardName;
@@ -87,6 +108,15 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View view) {
+            if (selectedItems.contains(getAdapterPosition())) {
+                selectedItems.remove(getAdapterPosition());
+                Timber.d("selected contains");
+                cardView.setCardBackgroundColor(cardView.getContext().getResources().getColor(R.color.colorWhite));
+            } else {
+                Timber.d("white");
+                selectedItems.add(getAdapterPosition());
+                cardView.setCardBackgroundColor(cardView.getContext().getResources().getColor(R.color.colorGray));
+            }
             myOnItemClickListener.onItemClick(getAdapterPosition());
         }
     }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.caramelheaven.lennach.utils.myOnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -33,6 +35,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
 
     private RecyclerView rvBoards;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
 
     private AddDialogAdapter adapter;
     private DisplayMetrics displayMetrics;
@@ -62,6 +65,11 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
         super.onViewCreated(view, savedInstanceState);
         rvBoards = view.findViewById(R.id.rv_boards);
         progressBar = view.findViewById(R.id.progressBar);
+        toolbar = view.findViewById(R.id.toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationOnClickListener(view1 -> dismiss());
+
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -73,6 +81,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
         super.onDestroyView();
         rvBoards = null;
         progressBar = null;
+        Timber.d("onDestroyView");
     }
 
     @Override
@@ -81,6 +90,12 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
         Window window = getDialog().getWindow();
         window.setLayout(displayMetrics.widthPixels, displayMetrics.heightPixels / 2);
         window.setGravity(Gravity.CENTER);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.saveSelectedPos(adapter.getSelectedPositions());
     }
 
     @Override
@@ -96,7 +111,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
             public void onItemClick(int position) {
                 BoardNavModel board = adapter.getItemByPosition(position);
                 Toast.makeText(getActivity(), "pos: " + board.getName(), Toast.LENGTH_SHORT).show();
-                sendBackResult();
+                //sendBackResult();
             }
         });
     }
@@ -104,7 +119,13 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
     @Override
     public void showItems(List<BoardNavModel> models) {
         Timber.d("models> " + models.size());
+        presenter.getSaveSelectedPos();
         adapter.updateAdapter(models);
+    }
+
+    @Override
+    public void showSelectedItems(Set<Integer> models) {
+        adapter.setSelectedItems(models);
     }
 
     @Override
@@ -119,7 +140,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
 
     public void sendBackResult() {
         AddDialogListener listener = (AddDialogListener) getTargetFragment();
-        listener.onFinish(adapter.getItems());
+        listener.onFinish(adapter.getSelectedItems());
         dismiss();
     }
 
