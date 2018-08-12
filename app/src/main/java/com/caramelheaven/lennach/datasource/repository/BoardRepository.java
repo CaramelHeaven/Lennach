@@ -41,4 +41,5 @@ public class BoardRepository {
     public int getTotalPage() {
         return totalPage;
     }
+
 }

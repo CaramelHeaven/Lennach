@@ -13,17 +13,17 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/colorSecondaryLight</item>
+        <item name="android:windowBackground">@color/colorGray</item>
     </style>
 
     <style name="ToolbarStyle" parent="AppTheme">
-        <item name="colorControlNormal">@color/colorSecondaryLight</item>
-        <item name="android:textColorSecondary">@color/colorSecondaryLight</item>
-        <item name="android:color">@color/colorSecondaryLight</item>
+        <item name="colorControlNormal">@color/colorGray</item>
+        <item name="android:textColorSecondary">@color/colorGray</item>
+        <item name="android:color">@color/colorGray</item>
     </style>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorSecondaryLight</item>
+        <item name="android:textColor">@color/colorGray</item>
     </style>
 </resources>

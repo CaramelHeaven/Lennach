@@ -11,6 +11,11 @@ public class BoardNavigationPresenter extends MvpPresenter<BoardNavigationView> 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        onLoadBoards();
+    }
+
+    private void onLoadBoards() {
+
     }
 
     @Override

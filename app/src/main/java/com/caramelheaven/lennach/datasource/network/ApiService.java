@@ -26,12 +26,8 @@ public interface ApiService {
                                @Query("board") String board,
                                @Query("thread") String thread);
 
-    @GET("makaba/mobile.fcgi?task=get_boards")
-    Single<BoardSettings> getBoardSettings();
-
     @GET("makaba/mobile.fcgi?task=get_thread")
     Single<List<Post>> getPostsByThreadId(@Query("board") String boardName,
                                           @Query("thread") String threadId,
                                           @Query("num") String numId);
-
 }

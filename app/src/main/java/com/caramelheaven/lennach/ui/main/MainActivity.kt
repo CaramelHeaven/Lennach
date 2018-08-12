@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.caramelheaven.lennach.R
 import com.caramelheaven.lennach.ui.board.BoardFragment
+import com.caramelheaven.lennach.ui.main.navigation.BoardNavigationFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container, BoardFragment.newInstance())
+                    .replace(R.id.fragment_container, BoardNavigationFragment.newInstance())
                     .commit()
         }
     }
