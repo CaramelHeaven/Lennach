@@ -10,6 +10,6 @@
         android:pivotY="12">
         <path
             android:fillColor="#FF000000"
-            android:pathData="@string/path_arrow_back" />
+            android:pathData="@string/path_check" />
     </group>
 </vector>

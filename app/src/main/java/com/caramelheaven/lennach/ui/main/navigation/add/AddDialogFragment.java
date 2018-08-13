@@ -1,9 +1,11 @@
 package com.caramelheaven.lennach.ui.main.navigation.add;
 
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -67,8 +70,31 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
         progressBar = view.findViewById(R.id.progressBar);
         toolbar = view.findViewById(R.id.toolbar);
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setNavigationOnClickListener(view1 -> dismiss());
+        toolbar.setNavigationIcon(R.drawable.ic_check);
+
+        ImageView ivTest = view.findViewById(R.id.ivTest);
+        AnimatedVectorDrawable test = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_anim);
+        AnimatedVectorDrawable test2 = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_anim2);
+        ivTest.setImageDrawable(test);
+
+        ivTest.setSelected(false);
+        toolbar.setNavigationOnClickListener(view1 -> {
+            if (ivTest.isSelected()) {
+                ivTest.setSelected(false);
+                ivTest.setImageDrawable(test2);
+            } else {
+                ivTest.setSelected(true);
+                ivTest.setImageDrawable(test);
+            }
+            AnimatedVectorDrawable d4test44 = (AnimatedVectorDrawable) ivTest.getDrawable();
+            Drawable drawable = d4test44.getCurrent();
+            if (drawable instanceof Animatable) {
+                ((Animatable) drawable).start();
+            }
+
+
+            //dismiss();
+        });
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -120,7 +146,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
     public void showItems(List<BoardNavModel> models) {
         Timber.d("models> " + models.size());
         presenter.getSaveSelectedPos();
-        adapter.updateAdapter(models);
+        //adapter.updateAdapter(models);
     }
 
     @Override

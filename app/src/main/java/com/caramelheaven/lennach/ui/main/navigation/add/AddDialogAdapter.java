@@ -115,7 +115,7 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             } else {
                 Timber.d("white");
                 selectedItems.add(getAdapterPosition());
-                cardView.setCardBackgroundColor(cardView.getContext().getResources().getColor(R.color.colorGray));
+                cardView.setCardBackgroundColor(cardView.getContext().getResources().getColor(R.color.colorSelected));
             }
             myOnItemClickListener.onItemClick(getAdapterPosition());
         }
