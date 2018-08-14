@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -18,10 +19,13 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
 import com.caramelheaven.lennach.datasource.model.BoardNavModel;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
+import com.caramelheaven.lennach.ui.board.BoardFragment;
 import com.caramelheaven.lennach.ui.main.navigation.add.AddDialogFragment;
 import com.caramelheaven.lennach.ui.main.navigation.presenter.BoardNavigationPresenter;
 import com.caramelheaven.lennach.ui.main.navigation.presenter.BoardNavigationView;
+import com.caramelheaven.lennach.utils.myOnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
@@ -32,7 +36,6 @@ public class BoardNavigationFragment extends MvpAppCompatFragment implements Boa
     @InjectPresenter
     BoardNavigationPresenter presenter;
 
-    private EditText etSearchBoard;
     private ProgressBar progressBar;
     private RecyclerView rvBase;
     private FloatingActionButton fabAdd;
@@ -57,7 +60,6 @@ public class BoardNavigationFragment extends MvpAppCompatFragment implements Boa
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        etSearchBoard = view.findViewById(R.id.et_search);
         progressBar = view.findViewById(R.id.progressBar);
         rvBase = view.findViewById(R.id.rv_base);
         fabAdd = view.findViewById(R.id.fab_add_board_name);
@@ -69,15 +71,9 @@ public class BoardNavigationFragment extends MvpAppCompatFragment implements Boa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        etSearchBoard = null;
         progressBar = null;
         fabAdd = null;
         rvBase = null;
-    }
-
-    @Override
-    public void showItems(List<PostFileThread> postsInThreads) {
-
     }
 
     @Override
@@ -94,23 +90,32 @@ public class BoardNavigationFragment extends MvpAppCompatFragment implements Boa
     public void provideRecyclerAndAdapter() {
         rvBase.setHasFixedSize(true);
         rvBase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        adapter = new BoardAdapter(new ArrayList<>());
+        rvBase.setAdapter(adapter);
+
+        adapter.setMyOnItemClickListener(new myOnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, BoardFragment.newInstance(adapter.getItemByPosition(position).getName()))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     private void provideFab() {
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddDialogFragment fragment = AddDialogFragment.newInstance();
-                fragment.setTargetFragment(BoardNavigationFragment.this, 300);
-                fragment.show(getActivity().getSupportFragmentManager(), null);
-            }
+        fabAdd.setOnClickListener(view -> {
+            AddDialogFragment fragment = AddDialogFragment.newInstance();
+            fragment.setTargetFragment(BoardNavigationFragment.this, 300);
+            fragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 
     @Override
     public void onFinish(List<BoardNavModel> models) {
-        for (BoardNavModel model : models) {
-            Timber.d("model: " + model.toString());
-        }
+        adapter.updateAdapter(models);
     }
 }

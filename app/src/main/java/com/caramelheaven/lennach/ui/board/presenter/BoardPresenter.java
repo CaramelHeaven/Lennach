@@ -36,6 +36,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     private int currentPage = 1;
     private boolean isLoading = false;
     private boolean isEndPage = false;
+    private String boardName;
     private CompositeDisposable disposable = new CompositeDisposable();
     private int totalPage = 0;
 
@@ -45,7 +46,8 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     @Inject
     LennachDatabase database;
 
-    public BoardPresenter() {
+    public BoardPresenter(String boardName) {
+        this.boardName = boardName;
         Lennach.getComponent().injectBoardPresenter(this);
     }
 
@@ -62,7 +64,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     }
 
     public void initLoad() {
-        loadThreads("b", currentPage);
+        loadThreads(boardName, currentPage);
     }
 
     public void loadThreads(String boardName, int page) {
@@ -97,17 +99,14 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
                     }
                     return Single.just(iThreads);
                 })
-                .flatMap(new Function<List<iThread>, SingleSource<List<PostFileThread>>>() {
-                    @Override
-                    public SingleSource<List<PostFileThread>> apply(List<iThread> iThreads) throws Exception {
-                        List<PostFileThread> postFileThreads = new ArrayList<>();
-                        for (iThread iThread : iThreads) {
-                            PostsInThreads postsInThreads = database.threadDao().getPosts(iThread.getThreadId());
-                            iFile iFile = database.fileDao().getFileById(postsInThreads.posts.get(0).getPostId());
-                            postFileThreads.add(new PostFileThread(postsInThreads, iFile));
-                        }
-                        return Single.just(postFileThreads);
+                .flatMap((Function<List<iThread>, SingleSource<List<PostFileThread>>>) iThreads -> {
+                    List<PostFileThread> postFileThreads = new ArrayList<>();
+                    for (iThread iThread : iThreads) {
+                        PostsInThreads postsInThreads = database.threadDao().getPosts(iThread.getThreadId());
+                        iFile iFile = database.fileDao().getFileById(postsInThreads.posts.get(0).getPostId());
+                        postFileThreads.add(new PostFileThread(postsInThreads, iFile));
                     }
+                    return Single.just(postFileThreads);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleLoadingSuccess, this::handleLoadingError));

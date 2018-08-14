@@ -39,9 +39,12 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
     private RecyclerView rvBoards;
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private ImageView ivArrowCheck;
 
     private AddDialogAdapter adapter;
     private DisplayMetrics displayMetrics;
+    private AnimatedVectorDrawable avdArrowToCheck;
+    private AnimatedVectorDrawable avdCheckToArrow;
 
     @InjectPresenter
     AddDialogPresenter presenter;
@@ -69,32 +72,11 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
         rvBoards = view.findViewById(R.id.rv_boards);
         progressBar = view.findViewById(R.id.progressBar);
         toolbar = view.findViewById(R.id.toolbar);
+        ivArrowCheck = view.findViewById(R.id.iv_arrow_and_check);
 
-        toolbar.setNavigationIcon(R.drawable.ic_check);
-
-        ImageView ivTest = view.findViewById(R.id.ivTest);
-        AnimatedVectorDrawable test = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_anim);
-        AnimatedVectorDrawable test2 = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_anim2);
-        ivTest.setImageDrawable(test);
-
-        ivTest.setSelected(false);
-        toolbar.setNavigationOnClickListener(view1 -> {
-            if (ivTest.isSelected()) {
-                ivTest.setSelected(false);
-                ivTest.setImageDrawable(test2);
-            } else {
-                ivTest.setSelected(true);
-                ivTest.setImageDrawable(test);
-            }
-            AnimatedVectorDrawable d4test44 = (AnimatedVectorDrawable) ivTest.getDrawable();
-            Drawable drawable = d4test44.getCurrent();
-            if (drawable instanceof Animatable) {
-                ((Animatable) drawable).start();
-            }
-
-
-            //dismiss();
-        });
+        avdArrowToCheck = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_arrow_to_check);
+        avdCheckToArrow = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_check_to_arrow);
+        ivArrowCheck.setImageDrawable(avdArrowToCheck);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -131,13 +113,12 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
 
         adapter = new AddDialogAdapter(new ArrayList<>());
         rvBoards.setAdapter(adapter);
-
-        adapter.setMyOnItemClickListener(new myOnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                BoardNavModel board = adapter.getItemByPosition(position);
-                Toast.makeText(getActivity(), "pos: " + board.getName(), Toast.LENGTH_SHORT).show();
-                //sendBackResult();
+        adapter.setMySpesialOnItemClickListener((position, selected) -> {
+            if (selected) {
+                ivArrowCheck.setImageDrawable(avdArrowToCheck);
+                provideArrowCheckAnimation();
+                //bad
+                provideImageClick();
             }
         });
     }
@@ -146,7 +127,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
     public void showItems(List<BoardNavModel> models) {
         Timber.d("models> " + models.size());
         presenter.getSaveSelectedPos();
-        //adapter.updateAdapter(models);
+        adapter.updateAdapter(models);
     }
 
     @Override
@@ -172,5 +153,22 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
 
     public interface AddDialogListener<T> {
         void onFinish(List<T> models);
+    }
+
+    private void provideArrowCheckAnimation() {
+        AnimatedVectorDrawable temp = (AnimatedVectorDrawable) ivArrowCheck.getDrawable();
+        Drawable drawable = temp.getCurrent();
+        if (drawable instanceof Animatable) {
+            ((Animatable) drawable).start();
+        }
+    }
+
+    private void provideImageClick() {
+        ivArrowCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendBackResult();
+            }
+        });
     }
 }

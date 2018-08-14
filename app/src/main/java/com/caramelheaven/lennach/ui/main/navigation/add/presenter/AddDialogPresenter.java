@@ -30,9 +30,9 @@ public class AddDialogPresenter extends MvpPresenter<AddDialogView> {
 
     public void onLoadData() {
         List<BoardNavModel> iBoardNavs = new ArrayList<>();
-        iBoardNavs.add(new BoardNavModel("FirstName"));
-        iBoardNavs.add(new BoardNavModel("SecondName"));
-        iBoardNavs.add(new BoardNavModel("ThirdName"));
+        iBoardNavs.add(new BoardNavModel("b"));
+        iBoardNavs.add(new BoardNavModel("pa"));
+        iBoardNavs.add(new BoardNavModel("pr"));
         getViewState().showItems(iBoardNavs);
     }
 

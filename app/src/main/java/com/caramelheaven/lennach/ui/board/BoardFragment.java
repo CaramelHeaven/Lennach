@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
 import com.caramelheaven.lennach.ui.board.presenter.BoardPresenter;
@@ -38,8 +39,14 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     @InjectPresenter
     BoardPresenter presenter;
 
-    public static BoardFragment newInstance() {
+    @ProvidePresenter
+    BoardPresenter provideThreadPresenter() {
+        return new BoardPresenter(getArguments().getString("BOARD_NAME"));
+    }
+
+    public static BoardFragment newInstance(String boardName) {
         Bundle args = new Bundle();
+        args.putString("BOARD_NAME", boardName);
 
         BoardFragment fragment = new BoardFragment();
         fragment.setArguments(args);

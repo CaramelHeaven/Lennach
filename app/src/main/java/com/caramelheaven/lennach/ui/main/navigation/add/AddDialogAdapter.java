@@ -27,7 +27,7 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Set<BoardNavModel> boardUnique;
     private Set<Integer> selectedItems;
 
-    private myOnItemClickListener myOnItemClickListener;
+    private mySpesialOnItemClickListener mySpesialOnItemClickListener;
 
     public AddDialogAdapter(List<BoardNavModel> boardNavList) {
         this.boardNavList = boardNavList;
@@ -62,8 +62,8 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    public void setMyOnItemClickListener(com.caramelheaven.lennach.utils.myOnItemClickListener myOnItemClickListener) {
-        this.myOnItemClickListener = myOnItemClickListener;
+    public void setMySpesialOnItemClickListener(com.caramelheaven.lennach.ui.main.navigation.add.mySpesialOnItemClickListener mySpesialOnItemClickListener) {
+        this.mySpesialOnItemClickListener = mySpesialOnItemClickListener;
     }
 
     @Override
@@ -98,6 +98,8 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ImageView ivImageBoard;
         CardView cardView;
 
+        boolean checkable = false;
+
         public BoardVH(@NonNull View itemView) {
             super(itemView);
             tvBoardName = itemView.findViewById(R.id.tv_name_board);
@@ -109,15 +111,17 @@ public class AddDialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onClick(View view) {
             if (selectedItems.contains(getAdapterPosition())) {
+                checkable = false;
                 selectedItems.remove(getAdapterPosition());
                 Timber.d("selected contains");
                 cardView.setCardBackgroundColor(cardView.getContext().getResources().getColor(R.color.colorWhite));
             } else {
                 Timber.d("white");
+                checkable = true;
                 selectedItems.add(getAdapterPosition());
                 cardView.setCardBackgroundColor(cardView.getContext().getResources().getColor(R.color.colorSelected));
             }
-            myOnItemClickListener.onItemClick(getAdapterPosition());
+            mySpesialOnItemClickListener.onItemClick(getAdapterPosition(), checkable);
         }
     }
 }
