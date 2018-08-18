@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 
 import java.util.ArrayList;
@@ -21,11 +20,11 @@ import java.util.ArrayList;
 public class ImageViewPagerAdapter extends PagerAdapter {
 
     private FragmentActivity activity;
-    private ArrayList<PostsHelper> postsHelpers;
+    private ArrayList<iFile> iFiles;
 
-    public ImageViewPagerAdapter(FragmentActivity activity, ArrayList<PostsHelper> postsHelpers) {
+    public ImageViewPagerAdapter(FragmentActivity activity, ArrayList<iFile> iFiles) {
         this.activity = activity;
-        this.postsHelpers = postsHelpers;
+        this.iFiles = iFiles;
     }
 
     @NonNull
@@ -35,10 +34,8 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_image_fullscreen, container, false);
         ImageView ivFullscreen = view.findViewById(R.id.iv_fullscreen);
 
-        iFile iFile = postsHelpers.get(position).iFileList.get(0);
-
         Glide.with(ivFullscreen.getContext())
-                .load("https://2ch.hk" + iFile.getPath())
+                .load("https://2ch.hk" + iFiles.get(position).getPath())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(ivFullscreen);
 
@@ -48,7 +45,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return postsHelpers.size();
+        return iFiles.size();
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
+import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
 import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImageView;
@@ -126,8 +127,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         rvContaner.setAdapter(adapter);
 
         adapter.setImageOnItemClickListener((view, position) -> {
-            List<PostsHelper> container = adapter.getItems();
-            SliderImageDialogFragment.newInstance(position, (ArrayList<PostsHelper>) container)
+            SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()))
                     .show(getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction(), null);
@@ -144,5 +144,15 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
             }
         }));
+    }
+
+    private ArrayList<iFile> mappingFiles(List<PostsHelper> postsHelpers) {
+        ArrayList<iFile> fileList = new ArrayList<>();
+        for (PostsHelper post : postsHelpers) {
+            if (post.iFileList.size() != 0) {
+                fileList.addAll(post.iFileList);
+            }
+        }
+        return fileList;
     }
 }

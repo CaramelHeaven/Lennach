@@ -3,12 +3,14 @@ package com.caramelheaven.lennach.datasource.database.entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.jetbrains.annotations.NotNull;
 
 @Entity(foreignKeys = @ForeignKey(entity = iPost.class, parentColumns = "postId",
         childColumns = "idPost", onDelete = ForeignKey.CASCADE))
-public class iFile {
+public class iFile implements Parcelable {
     @NotNull
     @PrimaryKey
     private String fileId;
@@ -122,4 +124,47 @@ public class iFile {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.fileId);
+        dest.writeString(this.displayName);
+        dest.writeString(this.fullName);
+        dest.writeInt(this.height);
+        dest.writeInt(this.width);
+        dest.writeString(this.path);
+        dest.writeInt(this.size);
+        dest.writeString(this.thumbnail);
+        dest.writeString(this.idPost);
+    }
+
+    protected iFile(Parcel in) {
+        this.fileId = in.readString();
+        this.displayName = in.readString();
+        this.fullName = in.readString();
+        this.height = in.readInt();
+        this.width = in.readInt();
+        this.path = in.readString();
+        this.size = in.readInt();
+        this.thumbnail = in.readString();
+        this.idPost = in.readString();
+    }
+
+    public static final Parcelable.Creator<iFile> CREATOR = new Parcelable.Creator<iFile>() {
+        @Override
+        public iFile createFromParcel(Parcel source) {
+            return new iFile(source);
+        }
+
+        @Override
+        public iFile[] newArray(int size) {
+            return new iFile[size];
+        }
+    };
 }
