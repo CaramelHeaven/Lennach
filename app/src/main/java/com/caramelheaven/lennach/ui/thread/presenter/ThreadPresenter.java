@@ -72,12 +72,8 @@ public class ThreadPresenter extends MvpPresenter<ThreadView> {
                         database.fileDao().insertFiles(iFiles);
                     }
                 })
-                .flatMap(new Function<List<Post>, SingleSource<List<PostsHelper>>>() {
-                    @Override
-                    public SingleSource<List<PostsHelper>> apply(List<Post> posts) throws Exception {
-                        return database.postDao().getPostsFromThread(posts.get(0).getNum());
-                    }
-                })
+                .flatMap((Function<List<Post>, SingleSource<List<PostsHelper>>>) posts ->
+                        database.postDao().getPostsFromThread(posts.get(0).getNum()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(posts -> {
                     getViewState().hideProgress();

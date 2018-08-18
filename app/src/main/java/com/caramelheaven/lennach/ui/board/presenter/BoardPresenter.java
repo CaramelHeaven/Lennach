@@ -113,7 +113,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     }
 
     private void handleLoadingError(Throwable throwable) {
-        getViewState().showRetryView(throwable.getCause().toString());
+        //getViewState().showRetryView(throwable.getCause().toString());
     }
 
     private void handleLoadingSuccess(List<PostFileThread> models) {

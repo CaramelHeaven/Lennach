@@ -91,19 +91,22 @@ public class BoardNavigationFragment extends MvpAppCompatFragment implements Boa
         rvBase.setHasFixedSize(true);
         rvBase.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new BoardAdapter(new ArrayList<>());
+        //test
+        List<BoardNavModel> test = new ArrayList<>();
+        test.add(new BoardNavModel("pa"));
+        test.add(new BoardNavModel("b"));
+        test.add(new BoardNavModel("pr"));
+
+        adapter = new BoardAdapter(test);
         rvBase.setAdapter(adapter);
 
-        adapter.setMyOnItemClickListener(new myOnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
+        adapter.setMyOnItemClickListener(position ->
                 getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, BoardFragment.newInstance(adapter.getItemByPosition(position).getName()))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+                .beginTransaction()
+                .replace(R.id.fragment_container,
+                        BoardFragment.newInstance(adapter.getItemByPosition(position).getName()))
+                .addToBackStack(null)
+                .commit());
     }
 
     private void provideFab() {

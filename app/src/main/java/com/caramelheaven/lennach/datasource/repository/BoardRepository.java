@@ -9,6 +9,7 @@ import com.caramelheaven.lennach.datasource.network.ApiService;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -16,6 +17,7 @@ import io.reactivex.Single;
 /**
  * Created by CaramelHeaven on 29.07.2018
  */
+@Singleton
 public class BoardRepository {
 
     private final ApiService apiService;

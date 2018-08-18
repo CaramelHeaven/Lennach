@@ -1,5 +1,6 @@
 package com.caramelheaven.lennach.ui.main.navigation.add;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class AddDialogFragment extends MvpAppCompatDialogFragment implements BaseFragment, AddDialogView {
@@ -66,6 +72,7 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
         return inflater.inflate(R.layout.fragment_add_dialog, container, false);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -80,6 +87,8 @@ public class AddDialogFragment extends MvpAppCompatDialogFragment implements Bas
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+
 
         provideRecyclerAndAdapter();
     }

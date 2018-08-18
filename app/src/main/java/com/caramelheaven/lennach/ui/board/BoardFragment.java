@@ -15,6 +15,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostFileThread;
+import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsInThreads;
 import com.caramelheaven.lennach.ui.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.ui.board.presenter.BoardView;
 import com.caramelheaven.lennach.ui.thread.ThreadFragment;
@@ -28,7 +29,7 @@ import timber.log.Timber;
 /**
  * Created by CaramelHeaven on 27.07.2018
  */
-public class BoardFragment extends MvpAppCompatFragment implements BoardView {
+public class BoardFragment extends MvpAppCompatFragment implements BoardView<PostFileThread> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -79,7 +80,8 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
             getActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, ThreadFragment.newInstance(idThread))
+                    .replace(R.id.fragment_container, ThreadFragment
+                            .newInstance(getArguments().getString("BOARD_NAME"), idThread))
                     .addToBackStack(null)
                     .commit();
         });
@@ -125,27 +127,18 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     }
 
     @Override
-    public void showRetryView(String cause) {
-
-    }
-
-    @Override
-    public void hideRetryView() {
-
-    }
-
-    @Override
     public void showError() {
 
     }
 
     @Override
-    public void refteshItems(List<PostFileThread> postsInThreads) {
+    public void refteshItems(List<PostFileThread> models) {
 
     }
 
     @Override
-    public void showItems(List<PostFileThread> postsInThreads) {
-        adapter.updateAdapter(postsInThreads);
+    public void showItems(List<PostFileThread> models) {
+        Timber.d("models size: " + models.size());
+        adapter.updateAdapter(models);
     }
 }

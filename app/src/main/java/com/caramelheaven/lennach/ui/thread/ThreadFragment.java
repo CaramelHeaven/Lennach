@@ -3,6 +3,7 @@ package com.caramelheaven.lennach.ui.thread;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +16,26 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
+import com.caramelheaven.lennach.ui.base.BaseFragment;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
 
-public class ThreadFragment extends MvpAppCompatFragment implements ThreadView {
+public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment {
 
-    private RecyclerView recyclerView;
+    private RecyclerView rvContaner;
     private ProgressBar progressBar;
 
-    public static ThreadFragment newInstance(String idThread) {
+    private ThreadAdapter adapter;
+
+    public static ThreadFragment newInstance(String boardName, String idThread) {
         Bundle args = new Bundle();
-        args.putString("ID", idThread);
+        args.putString("BOARD_NAME", boardName);
+        args.putString("THREAD_ID", idThread);
 
         ThreadFragment fragment = new ThreadFragment();
         fragment.setArguments(args);
@@ -41,7 +47,8 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView {
 
     @ProvidePresenter
     ThreadPresenter provideThreadPresenter() {
-        return new ThreadPresenter("b", getArguments().getString("ID"));
+        return new ThreadPresenter(getArguments()
+                .getString("BOARD_NAME"), getArguments().getString("THREAD_ID"));
     }
 
     @Nullable
@@ -53,14 +60,16 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        rvContaner = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+
+        provideRecyclerAndAdapter();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        recyclerView = null;
+        rvContaner = null;
         progressBar = null;
     }
 
@@ -101,9 +110,15 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView {
 
     @Override
     public void showItems(List<PostsHelper> posts) {
-        Toast.makeText(getActivity(), "Size: " + posts.size(), Toast.LENGTH_SHORT).show();
-        for (PostsHelper helper : posts) {
-            Timber.d("posts kek: " + helper.iPost);
-        }
+        adapter.updateAdapter(posts);
+    }
+
+    @Override
+    public void provideRecyclerAndAdapter() {
+        rvContaner.setHasFixedSize(true);
+        rvContaner.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        adapter = new ThreadAdapter(new ArrayList<>());
+        rvContaner.setAdapter(adapter);
     }
 }
