@@ -1,5 +1,8 @@
 package com.caramelheaven.lennach.ui.slider;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,12 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImagePresenter;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImageView;
@@ -23,7 +26,7 @@ import timber.log.Timber;
 
 public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implements SliderImageView {
 
-    private ArrayList<iFile> postsHelperList;
+    private ArrayList<iFile> filesList;
     private int selectedPos;
     private ImageViewPagerAdapter pagerAdapter;
 
@@ -53,10 +56,18 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewPager = view.findViewById(R.id.vp_container);
         tvCount = view.findViewById(R.id.tv_count);
-
-        postsHelperList = getArguments().getParcelableArrayList("IMAGES");
+        filesList = getArguments().getParcelableArrayList("IMAGES");
         selectedPos = getArguments().getInt("POS");
         provideViewPager();
+    }
+
+    @Override
+    public void onResume() {
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+        super.onResume();
     }
 
     @Override
@@ -70,12 +81,14 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
     }
 
     private void provideViewPager() {
-        pagerAdapter = new ImageViewPagerAdapter(getActivity(), postsHelperList);
+        pagerAdapter = new ImageViewPagerAdapter(getActivity(), filesList);
         viewPager.setAdapter(pagerAdapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onPageScrolled(int i, float v, int i1) {
+                tvCount.setText(String.valueOf(i) + " of " + String.valueOf(filesList.size()));
                 Timber.d("onPageScrolled");
             }
 

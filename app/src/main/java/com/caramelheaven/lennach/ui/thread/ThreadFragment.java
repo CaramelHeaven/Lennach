@@ -3,6 +3,7 @@ package com.caramelheaven.lennach.ui.thread;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -127,10 +128,11 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         rvContaner.setAdapter(adapter);
 
         adapter.setImageOnItemClickListener((view, position) -> {
-            SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()))
-                    .show(getActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction(), null);
+            SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));
+            dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+            dialogFragment.show(getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction(), null);
         });
 
         rvContaner.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvContaner, new ThreadClickListener() {

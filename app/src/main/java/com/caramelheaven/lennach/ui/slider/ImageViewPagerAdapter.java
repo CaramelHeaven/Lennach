@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
