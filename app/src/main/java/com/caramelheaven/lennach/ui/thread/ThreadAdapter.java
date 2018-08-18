@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -14,16 +15,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
+import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.ui.base.AdapterMethods;
+import com.caramelheaven.lennach.utils.imageOnItemClickListener;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import timber.log.Timber;
+
 public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AdapterMethods<PostsHelper> {
 
     private List<PostsHelper> postsHelpers;
     private Set<PostsHelper> postsUnique;
+
+    private imageOnItemClickListener imageOnItemClickListener;
 
     public ThreadAdapter(List<PostsHelper> postsHelpers) {
         this.postsHelpers = postsHelpers;
@@ -44,13 +51,19 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         postVH.tvDate.setText(postsHelpers.get(i).iPost.getDate());
         postVH.tvCountPost.setText(String.valueOf(i));
 
+        Timber.d("postsHelpers.get(i).iFileList.size() " + postsHelpers.get(i).iFileList.size() + " iii: " + i);
         if (postsHelpers.get(i).iFileList.size() != 0) {
-            Glide.with(postVH.ivPost.getContext())
-                    .load("https://2ch.hk" + postsHelpers.get(i).iFileList.get(0).getPath())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(postVH.ivPost);
-        } else {
-            postVH.ivPost.setVisibility(View.GONE);
+            for (int q = 0; q < postsHelpers.get(i).iFileList.size(); q++) {
+                ImageView imageView = new ImageView(postVH.itemView.getContext());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
+                params.setMarginStart(4);
+                imageView.setLayoutParams(params);
+                Glide.with(imageView.getContext())
+                        .load("https://2ch.hk" + postsHelpers.get(i).iFileList.get(q).getPath())
+                        .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(imageView);
+                postVH.llContainer.addView(imageView);
+            }
         }
     }
 
@@ -78,17 +91,29 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return postsHelpers;
     }
 
-    private class PostVH extends RecyclerView.ViewHolder {
+    public void setImageOnItemClickListener(com.caramelheaven.lennach.utils.imageOnItemClickListener imageOnItemClickListener) {
+        this.imageOnItemClickListener = imageOnItemClickListener;
+    }
+
+    private class PostVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvDescription, tvDate, tvCountPost;
-        ImageView ivPost;
+        LinearLayout llContainer;
 
         public PostVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvDate = itemView.findViewById(R.id.tv_date);
-            ivPost = itemView.findViewById(R.id.iv_post);
             tvCountPost = itemView.findViewById(R.id.tv_count_post);
+            llContainer = itemView.findViewById(R.id.ll_container);
+            llContainer.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (llContainer == view) {
+                imageOnItemClickListener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 }

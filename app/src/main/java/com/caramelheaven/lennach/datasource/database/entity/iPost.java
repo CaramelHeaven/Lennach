@@ -3,6 +3,8 @@ package com.caramelheaven.lennach.datasource.database.entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Entity(foreignKeys = @ForeignKey(entity = iThread.class, parentColumns = "threadId",
         childColumns = "idThread", onDelete = ForeignKey.CASCADE))
-public class iPost {
+public class iPost implements Parcelable {
     @NotNull
     @PrimaryKey
     private String postId;
@@ -113,4 +115,44 @@ public class iPost {
     public void setIdThread(String idThread) {
         this.idThread = idThread;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.postId);
+        dest.writeValue(this.banned);
+        dest.writeString(this.comment);
+        dest.writeValue(this.timestamp);
+        dest.writeValue(this.op);
+        dest.writeString(this.date);
+        dest.writeString(this.subject);
+        dest.writeString(this.idThread);
+    }
+
+    protected iPost(Parcel in) {
+        this.postId = in.readString();
+        this.banned = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.comment = in.readString();
+        this.timestamp = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.op = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.date = in.readString();
+        this.subject = in.readString();
+        this.idThread = in.readString();
+    }
+
+    public static final Parcelable.Creator<iPost> CREATOR = new Parcelable.Creator<iPost>() {
+        @Override
+        public iPost createFromParcel(Parcel source) {
+            return new iPost(source);
+        }
+
+        @Override
+        public iPost[] newArray(int size) {
+            return new iPost[size];
+        }
+    };
 }
