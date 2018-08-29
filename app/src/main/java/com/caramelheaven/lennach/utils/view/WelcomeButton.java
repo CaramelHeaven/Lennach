@@ -9,12 +9,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
 
 import timber.log.Timber;
 
-public class WelcomeButton extends View {
+public class WelcomeButton extends TextView {
 
     private Paint paint;
     private Animation showAnimation;

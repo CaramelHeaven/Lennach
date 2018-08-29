@@ -57,10 +57,16 @@
                         android:layout_weight="1"
                         android:gravity="center">
 
-                        <com.caramelheaven.lennach.utils.view.WelcomeButton
+                        <Button
+                            android:id="@+id/btn"
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/button_shape"
+                            android:gravity="center"
+                            android:text="/b"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -73,13 +79,15 @@
                     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="0dp"
                         android:layout_height="105dp"
-                        android:layout_weight="1"
-                        android:gravity="center">
+                        android:layout_weight="1">
 
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/mov"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="98dp"
@@ -99,7 +107,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/hw"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -127,7 +138,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/a"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -146,7 +160,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/au"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -166,7 +183,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/po"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -194,7 +214,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/vg"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -213,7 +236,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/pa"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"
@@ -233,7 +259,10 @@
                         <com.caramelheaven.lennach.utils.view.WelcomeButton
                             android:layout_width="90dp"
                             android:layout_height="90dp"
-                            android:layout_centerInParent="true" />
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="/pr"
+                            android:textSize="22sp" />
 
                         <View
                             android:layout_width="95dp"

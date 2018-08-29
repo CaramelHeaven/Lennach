@@ -1,10 +1,9 @@
 package com.caramelheaven.lennach.ui.main
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.caramelheaven.lennach.R
 import com.caramelheaven.lennach.ui.board.BoardFragment
-import com.caramelheaven.lennach.ui.main.navigation.BoardNavigationFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,10 +11,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val temp = intent.getStringExtra("ITEM");
+
         if (savedInstanceState == null) {
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container, BoardNavigationFragment.newInstance())
+                    .replace(R.id.fragment_container, BoardFragment.newInstance(temp))
                     .commit()
         }
     }

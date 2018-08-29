@@ -1,5 +1,7 @@
 package com.caramelheaven.lennach.ui.welcome.container;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.ui.base.WelcomeFragment;
+import com.caramelheaven.lennach.ui.main.MainActivity;
 import com.caramelheaven.lennach.ui.welcome.container.presenter.FragmentFirstPresenter;
 import com.caramelheaven.lennach.ui.welcome.container.view.FirstView;
 import com.caramelheaven.lennach.utils.view.WelcomeButton;
@@ -56,6 +59,21 @@ public class FragmentFirst extends MvpAppCompatFragment implements FirstView {
 
         provideTouchEvents();
         presenter.showSavedItems();
+
+        Button btn = view.findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MainActivity.class).putExtra("ITEM", "b"));
+                getActivity().finish();
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.savedItems(returnClickedItems());
     }
 
     @Override
@@ -63,25 +81,14 @@ public class FragmentFirst extends MvpAppCompatFragment implements FirstView {
         super.onDestroyView();
         llContainer = null;
         btnStarted = null;
-        presenter.savedItems(returnClickedItems());
     }
 
     protected void provideTouchEvents() {
-        for (int i = 0; i < llContainer.getChildCount(); i++) {
-            LinearLayout llChild = (LinearLayout) llContainer.getChildAt(i);
-            for (int item = 0; item < llChild.getChildCount(); item++) {
-                RelativeLayout rl = (RelativeLayout) llChild.getChildAt(item);
-                WelcomeButton wbClick = (WelcomeButton) rl.getChildAt(0);
-                wbClick.setOnClickListener(view ->
-                        wbClick.setClicked(rl.getChildAt(1)));
-                wbList.add(rl);
-            }
-        }
+
 
         btnStarted.setOnClickListener(view -> {
-            int count = 0;
-
-            Toast.makeText(getActivity(), "all: " + wbList.size() + " count: " + count, Toast.LENGTH_SHORT).show();
+            WelcomeButton bu = (WelcomeButton) wbList.get(0).getChildAt(0);
+            Toast.makeText(getActivity(), "all: " + wbList.size() + " count: ", Toast.LENGTH_SHORT).show();
         });
     }
 

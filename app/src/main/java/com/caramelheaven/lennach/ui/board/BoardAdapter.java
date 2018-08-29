@@ -46,10 +46,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BoardVH boardVH = (BoardVH) viewHolder;
         boardVH.tvTitle.setText(Html.fromHtml(threadList.get(i).getPostsInThreads().posts.get(0).getSubject()));
-        boardVH.tvDescription.setText(Html.fromHtml(threadList.get(i).getPostsInThreads().posts.get(0).getComment()));
         boardVH.tvDate.setText(threadList.get(i).getPostsInThreads().posts.get(0).getDate());
-        boardVH.tvCountPosts.setText(String.valueOf(threadList.get(i).getPostsInThreads().iThread.getPostsCount()));
-        boardVH.tvCountFiles.setText(String.valueOf(threadList.get(i).getPostsInThreads().iThread.getFilesCount()));
 
         if (threadList.get(i).getiFile() != null) {
             Glide.with(boardVH.ivThread.getContext())
@@ -82,17 +79,14 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private class BoardVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tvTitle, tvDescription, tvDate, tvCountFiles, tvCountPosts;
+        TextView tvTitle, tvDate;
         ImageView ivThread;
         CardView cardView;
 
         public BoardVH(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvDescription = itemView.findViewById(R.id.tvDescription);
-            tvDate = itemView.findViewById(R.id.tvDate);
-            tvCountFiles = itemView.findViewById(R.id.tvCountFiles);
-            tvCountPosts = itemView.findViewById(R.id.tvCountPosts);
+            tvDate = itemView.findViewById(R.id.tv_date);
             ivThread = itemView.findViewById(R.id.ivThread);
             cardView = itemView.findViewById(R.id.cardView);
             cardView.setOnClickListener(this::onClick);
