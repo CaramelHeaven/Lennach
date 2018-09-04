@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -27,9 +28,12 @@ import com.caramelheaven.lennach.ui.thread.helper.ThreadClickListener;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.imageOnItemClickListener;
+import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment {
 
@@ -68,6 +72,20 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         super.onViewCreated(view, savedInstanceState);
         rvContaner = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        LinearLayout llContainer = view.findViewById(R.id.ll_container);
+        TopSheetBehavior topSheetBehavior = TopSheetBehavior.from(llContainer);
+
+        topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                Timber.d("newState: " + newState);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
+                Timber.d("slideOfSet: " + slideOffset);
+            }
+        });
 
         provideRecyclerAndAdapter();
     }
