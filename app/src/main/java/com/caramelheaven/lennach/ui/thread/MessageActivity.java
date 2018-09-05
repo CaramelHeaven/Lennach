@@ -14,6 +14,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
 
+import java.util.Map;
+
 public class MessageActivity extends AppCompatActivity {
     EditText msg;
     ImageView captchaImg;
