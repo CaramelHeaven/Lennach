@@ -38,25 +38,19 @@ public class MessageActivity extends AppCompatActivity {
         captchaImg = (ImageView) findViewById(R.id.captcha_img);
         postMsg = (Button) findViewById(R.id.postMsg);
 
-        captchaImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                messagePresenter.getCaptchaId(boardNumber,threadNumber);
-            }
+        captchaImg.setOnClickListener(view -> {
+            messagePresenter.getCaptchaId(boardNumber,threadNumber);
         });
 
-        postMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String task = "post";
-                String board = boardNumber;
-                String thread = threadNumber;
-                String comment = msg.getText().toString();
-                String captcha_type="2chaptcha";
-                String captchaValue = captchaEdit.getText().toString();
+        postMsg.setOnClickListener(view -> {
+            String task = "post";
+            String board = boardNumber;
+            String thread = threadNumber;
+            String comment = msg.getText().toString();
+            String captcha_type="2chaptcha";
+            String captchaValue = captchaEdit.getText().toString();
 
-                messagePresenter.postMessage(task,board,thread,comment,captcha_type,captchaId,captchaValue);
-            }
+            messagePresenter.postMessage(task,board,thread,comment,captcha_type,captchaId,captchaValue);
         });
     }
 

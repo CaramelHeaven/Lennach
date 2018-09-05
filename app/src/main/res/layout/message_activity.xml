@@ -10,51 +10,42 @@
         android:layout_height="match_parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="255dp">
-
-        <TextView
-            android:id="@+id/email_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="38dp"
-            android:text="Email:" />
-
-        <EditText
-            android:id="@+id/email_edit"
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/email_txt"
-            android:layout_marginTop="-20dp"
-            android:layout_toEndOf="@+id/msg_txt" />
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/msg_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/email_txt"
-            android:layout_marginTop="81dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="29dp"
             android:text="Message:" />
 
         <EditText
             android:id="@+id/msg_edit"
             android:layout_width="345dp"
-            android:layout_height="201dp"
+            android:layout_height="163dp"
             android:layout_alignParentTop="true"
-            android:layout_below="@+id/msg_txt"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="118dp" />
+            android:layout_marginTop="73dp" />
 
 
         <ImageView
             android:id="@+id/captcha_img"
-            android:layout_width="325dp"
-            android:layout_height="71dp"
+            android:layout_width="327dp"
+            android:layout_height="122dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="162dp"
-            android:src="@color/colorGray"/>
+            android:layout_marginBottom="191dp"
+            android:src="@color/colorGray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/captcha_edit"
+            android:layout_toEndOf="@+id/msg_txt"
+            android:text="Enter Captcha:" />
 
 
         <EditText
@@ -62,18 +53,19 @@
             android:layout_width="147dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="92dp"
-            android:layout_marginStart="42dp" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="86dp"
+            android:layout_marginEnd="38dp" />
 
         <Button
             android:id="@+id/postMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/captcha_img"
-            android:layout_marginBottom="19dp"
-            android:text="POST"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="57dp"
+            android:text="POST" />
 
 
     </RelativeLayout>
