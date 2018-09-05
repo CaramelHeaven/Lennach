@@ -1,5 +1,7 @@
 package com.caramelheaven.lennach.ui.thread;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -31,11 +33,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<PostsHelper> postsHelpers;
     private Set<PostsHelper> postsUnique;
 
+    private Context context;
     private imageOnItemClickListener imageOnItemClickListener;
 
-    public ThreadAdapter(List<PostsHelper> postsHelpers) {
+    public ThreadAdapter(List<PostsHelper> postsHelpers, Context context) {
         this.postsHelpers = postsHelpers;
         postsUnique = new LinkedHashSet<>();
+        this.context = context;
     }
 
     @NonNull
@@ -66,6 +70,12 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 postVH.llContainer.addView(imageView);
             }
         }
+
+        postVH.postButton.setOnClickListener(view -> {
+            Intent intent = new Intent(context,MessageActivity.class);
+            intent.putExtra("THREADNUMB",postsHelpers.get(i).iPost.getIdThread());
+            context.startActivity(intent);
+        });
 
 
     }

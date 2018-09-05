@@ -124,7 +124,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         rvContaner.setHasFixedSize(true);
         rvContaner.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new ThreadAdapter(new ArrayList<>());
+        adapter = new ThreadAdapter(new ArrayList<>(),getContext());
         rvContaner.setAdapter(adapter);
 
         adapter.setImageOnItemClickListener((view, position) -> {
