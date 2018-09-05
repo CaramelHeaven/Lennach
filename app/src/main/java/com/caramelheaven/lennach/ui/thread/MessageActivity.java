@@ -2,6 +2,7 @@ package com.caramelheaven.lennach.ui.thread;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +12,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
 
-public class MessageActivity {
+public class MessageActivity extends AppCompatActivity {
     EditText msg;
     ImageView captchaImg;
     EditText captchaEdit;
@@ -61,7 +63,6 @@ public class MessageActivity {
     public void setCaptchaId(String capthacaId) {
         this.captchaId = capthacaId;
         setCaptchaImg();
-        /*messagePresenter.getCaptchaImgById(capthacaId);*/
 
     }
 

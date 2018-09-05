@@ -19,9 +19,6 @@ public class MessagePresenter extends MvpPresenter<MessageView> {
     @Inject
     ApiService apiService;
 
-    @Inject
-    LennachDatabase database;
-
     public MessagePresenter(MessageActivity view) {
         disposable = new CompositeDisposable();
         this.view = view;
@@ -29,24 +26,11 @@ public class MessagePresenter extends MvpPresenter<MessageView> {
     }
 
     public void getCaptchaId(String boardNumber, String threadNumber) {
-        /*      apiService.getCaptcha("2chaptcha",boardNumber,threadNumber);*/
-        //setCaptchaId
         disposable.add(apiService.getCaptcha("2chaptcha",boardNumber,threadNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(captcha -> {
                     view.setCaptchaId(captcha.getId());
-                }));
-    }
-
-    public void getCaptchaImgById(String capthacaId) {
-        /*apiService.getCaptchaImg(capthacaId);*/
-        disposable.add(apiService.getCaptchaImg(capthacaId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(img -> {
-                    System.out.println("!!!!!!!!!!");
-                    System.out.println(img);
                 }));
     }
 
