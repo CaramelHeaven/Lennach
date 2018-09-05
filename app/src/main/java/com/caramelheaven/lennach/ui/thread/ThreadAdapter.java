@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,6 +66,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 postVH.llContainer.addView(imageView);
             }
         }
+
+
     }
 
     @Override
@@ -99,6 +102,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         TextView tvDescription, tvDate, tvCountPost;
         LinearLayout llContainer;
+        Button postButton;
 
         public PostVH(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +111,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             tvCountPost = itemView.findViewById(R.id.tv_count_post);
             llContainer = itemView.findViewById(R.id.ll_container);
             llContainer.setOnClickListener(this::onClick);
+            postButton = itemView.findViewById(R.id.post_btn);
         }
 
         @Override
