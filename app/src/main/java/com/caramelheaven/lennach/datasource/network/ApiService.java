@@ -23,7 +23,7 @@ public interface ApiService {
     Single<Board> getBoard(@Path("boardName") String boardName,
                            @Path("page") int page);
 
-    @GET("api/captcha{type}/id")
+    @GET("api/captcha/{type}/id")
     Single<Captcha> getCaptcha(@Path("type") String captchaType,
                                @Query("board") String board,
                                @Query("thread") String thread);
