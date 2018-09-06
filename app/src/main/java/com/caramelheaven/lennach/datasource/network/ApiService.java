@@ -7,10 +7,12 @@ import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.datasource.model.PostInThread;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -33,12 +35,17 @@ public interface ApiService {
                                           @Query("thread") String threadId,
                                           @Query("num") String numId);
 
-    @POST("makaba/posting.fcgi?json=1")
+    /*@POST("makaba/posting.fcgi?json=1")
     Single<PostInThread> sendPostInThread(@Query("task") String post,
                                           @Query("board") String boardName,
                                           @Query("thread") String threadId,
                                           @Query("comment") String comment,
                                           @Query("captcha_type") String captchaType,
                                           @Query("2chaptcha_id") String captchaId,
-                                          @Query("2chaptcha_value") String captchaValue);
+                                          @Query("2chaptcha_value") String captchaValue);*/
+
+    @POST("makaba/posting.fcgi?json=1")
+    Single<PostInThread> sendPostInThread(@HeaderMap Map<String, String> headers);
+
+
 }
