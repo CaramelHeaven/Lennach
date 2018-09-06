@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MessageActivity extends AppCompatActivity {
@@ -23,12 +24,14 @@ public class MessageActivity extends AppCompatActivity {
     String captchaId;
     Button postMsg;
     MessagePresenter messagePresenter;
+    Map<String,String> options;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_activity);
         messagePresenter = new MessagePresenter(this);
+        options = new HashMap<>();
 
         Bundle extras = getIntent().getExtras();
 
@@ -45,14 +48,14 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         postMsg.setOnClickListener(view -> {
-            String task = "post";
-            String board = boardNumber;
-            String thread = threadNumber;
-            String comment = msg.getText().toString();
-            String captcha_type="2chaptcha";
-            String captchaValue = captchaEdit.getText().toString();
+            options.put("board",boardNumber);
+            options.put("thread",threadNumber);
+            options.put("comment",msg.getText().toString());
+            options.put("captcha_type","2chaptcha");
+            options.put("2chaptcha_id",captchaId);
+            options.put("2chaptcha_value",captchaEdit.getText().toString());
 
-            messagePresenter.postMessage(task,board,thread,comment,captcha_type,captchaId,captchaValue);
+            messagePresenter.postMessage(options);
         });
     }
 

@@ -6,6 +6,8 @@ import com.caramelheaven.lennach.datasource.database.LennachDatabase;
 import com.caramelheaven.lennach.datasource.network.ApiService;
 import com.caramelheaven.lennach.ui.thread.MessageActivity;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,14 +36,8 @@ public class MessagePresenter extends MvpPresenter<MessageView> {
                 }));
     }
 
-    public void postMessage(String task,
-                            String board,
-                            String thread,
-                            String comment,
-                            String captcha_type,
-                            String captchaId,
-                            String captchaValue) {
-        disposable.add(apiService.sendPostInThread(task,board,thread,comment,captcha_type,captchaId,captchaValue)
+    public void postMessage(Map<String,String > options) {
+        disposable.add(apiService.sendPostInThread(options)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(postInThread -> {

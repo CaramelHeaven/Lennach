@@ -39,7 +39,7 @@ public interface ApiService {
 
 
     @POST("makaba/posting.fcgi?json=1&task=post")
-    Single<PostInThread> sendPostInThread(@QueryMap Map<String, String> headers);
+    Single<PostInThread> sendPostInThread(@QueryMap Map<String, String> options);
 
 
 }
