@@ -16,6 +16,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by CaramelHeaven on 27.07.2018
@@ -35,17 +36,10 @@ public interface ApiService {
                                           @Query("thread") String threadId,
                                           @Query("num") String numId);
 
-    /*@POST("makaba/posting.fcgi?json=1")
-    Single<PostInThread> sendPostInThread(@Query("task") String post,
-                                          @Query("board") String boardName,
-                                          @Query("thread") String threadId,
-                                          @Query("comment") String comment,
-                                          @Query("captcha_type") String captchaType,
-                                          @Query("2chaptcha_id") String captchaId,
-                                          @Query("2chaptcha_value") String captchaValue);*/
 
-    @POST("makaba/posting.fcgi?json=1")
-    Single<PostInThread> sendPostInThread(@HeaderMap Map<String, String> headers);
+
+    @POST("makaba/posting.fcgi?json=1&task=post")
+    Single<PostInThread> sendPostInThread(@QueryMap Map<String, String> headers);
 
 
 }
