@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -47,6 +49,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     private LinearLayout llContainer;
     private EditText etMessage;
     private CoordinatorLayout coordinatorLayout;
+    private Button btnSend;
 
     private ThreadAdapter adapter;
 
@@ -85,6 +88,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage = llContainer.findViewById(R.id.et_message);
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
+        btnSend = view.findViewById(R.id.btn_send);
 
         topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
             @Override
@@ -103,6 +107,13 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                 Timber.d("hasFocus: " + hasFocus);
             }
         });
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
+            }
+        });
         provideRecyclerAndAdapter();
         provideScrollBehavior();
     }
@@ -113,6 +124,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         super.onDestroyView();
         rvContaner = null;
         progressBar = null;
+        topSheetBehavior = null;
+        llContainer = null;
+        etMessage = null;
+        btnSend = null;
     }
 
     @Override
