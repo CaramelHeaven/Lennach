@@ -17,6 +17,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.ui.base.AdapterMethods;
 import com.caramelheaven.lennach.utils.imageOnItemClickListener;
+import com.caramelheaven.lennach.utils.item_touch.ItemTouchCallback;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Set<PostsHelper> postsUnique;
 
     private imageOnItemClickListener imageOnItemClickListener;
+    private ItemTouchCallback itemTouchCallback;
 
     public ThreadAdapter(List<PostsHelper> postsHelpers) {
         this.postsHelpers = postsHelpers;
@@ -95,6 +97,10 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.imageOnItemClickListener = imageOnItemClickListener;
     }
 
+    public void sendCallbackFromSwipe(int position) {
+        itemTouchCallback.sendAnswer(postsHelpers.get(position));
+    }
+
     public class PostVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvDescription, tvDate, tvCountPost;
@@ -115,5 +121,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 imageOnItemClickListener.onItemClick(view, getAdapterPosition());
             }
         }
+    }
+
+    public void setItemTouchCallback(ItemTouchCallback itemTouchCallback) {
+        this.itemTouchCallback = itemTouchCallback;
     }
 }

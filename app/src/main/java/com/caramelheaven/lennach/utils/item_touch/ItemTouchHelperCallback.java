@@ -7,8 +7,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import com.caramelheaven.lennach.ui.thread.ThreadAdapter;
 import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 
-import java.security.Key;
-
 import timber.log.Timber;
 
 public class ItemTouchHelperCallback extends ItemTouchHelperExtension.Callback {
@@ -39,21 +37,14 @@ public class ItemTouchHelperCallback extends ItemTouchHelperExtension.Callback {
                 .translationX(0)
                 .start();
         adapter.notifyItemChanged(holder.getAdapterPosition());
+        adapter.sendCallbackFromSwipe(holder.getAdapterPosition());
     }
-
-    RecyclerView recyclerView;
-    Canvas canvas;
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         ThreadAdapter.PostVH holder = (ThreadAdapter.PostVH) viewHolder;
-        Timber.d("dx: " + dX);
-        Timber.d("checking: " + holder.itemView.getWidth());
-        Timber.d("acionState: " + actionState + " isCurrentlyActive: " + isCurrentlyActive);
-
         if (Math.abs(dX) < 700) {
             holder.itemView.setTranslationX(dX);
-            //super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 }

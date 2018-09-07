@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_container"
     android:layout_width="match_parent"
-    android:layout_height="340dp"
-    android:background="@android:color/darker_gray"
+    android:layout_height="180dp"
     android:orientation="vertical"
     app:behavior_hideable="true"
     app:behavior_peekHeight="80dp"
@@ -12,16 +11,43 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/colorAccent"
+        android:layout_height="20dp"
+        android:background="@color/colorView"
         android:gravity="center"
-        android:text="Lalalal"
-        android:textColor="@android:color/white" />
+        android:text="Посты"
+        android:textColor="@color/colorTextDark" />
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Lalalal"
-        android:textColor="@android:color/white" />
+        android:background="@color/colorSelected">
+
+        <TextView
+            android:id="@+id/tv_data_of_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Data of message"
+            android:textColor="@color/colorTextDark" />
+
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@id/tv_data_of_message"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:maxLines="8" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_message"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="send" />
+    </RelativeLayout>
 </LinearLayout>
