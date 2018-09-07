@@ -15,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
-import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.ui.base.AdapterMethods;
 import com.caramelheaven.lennach.utils.imageOnItemClickListener;
 
@@ -25,7 +24,8 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AdapterMethods<PostsHelper> {
+public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements AdapterMethods<PostsHelper> {
 
     private List<PostsHelper> postsHelpers;
     private Set<PostsHelper> postsUnique;
@@ -95,7 +95,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.imageOnItemClickListener = imageOnItemClickListener;
     }
 
-    private class PostVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class PostVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvDescription, tvDate, tvCountPost;
         LinearLayout llContainer;

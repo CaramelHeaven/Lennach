@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -22,13 +20,11 @@ import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
 import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
-import com.caramelheaven.lennach.ui.slider.presenter.SliderImageView;
-import com.caramelheaven.lennach.ui.thread.helper.RecyclerTouchListener;
-import com.caramelheaven.lennach.ui.thread.helper.ThreadClickListener;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
-import com.caramelheaven.lennach.utils.imageOnItemClickListener;
+import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
+import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +141,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         adapter = new ThreadAdapter(new ArrayList<>());
         rvContaner.setAdapter(adapter);
 
+        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter);
+        ItemTouchHelperExtension extension = new ItemTouchHelperExtension(callback);
+        extension.attachToRecyclerView(rvContaner);
+
         adapter.setImageOnItemClickListener((view, position) -> {
             SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));
             dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
@@ -152,18 +152,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                     .getSupportFragmentManager()
                     .beginTransaction(), null);
         });
-
-        rvContaner.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvContaner, new ThreadClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
     private ArrayList<iFile> mappingFiles(List<PostsHelper> postsHelpers) {
