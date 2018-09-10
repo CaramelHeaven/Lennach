@@ -8,7 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +27,12 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
-import com.caramelheaven.lennach.ui.main.MainActivity;
 import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchCallback;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
-import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,8 +177,8 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         rvContaner.setAdapter(adapter);
 
         ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter);
-        ItemTouchHelperExtension extension = new ItemTouchHelperExtension(callback);
-        extension.attachToRecyclerView(rvContaner);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(rvContaner);
 
         adapter.setImageOnItemClickListener((view, position) -> {
             SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));

@@ -5,11 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.caramelheaven.lennach.ui.thread.ThreadAdapter;
-import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 
 import timber.log.Timber;
 
-public class ItemTouchHelperCallback extends ItemTouchHelperExtension.Callback {
+public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private ThreadAdapter adapter;
 
     public ItemTouchHelperCallback(ThreadAdapter adapter) {
