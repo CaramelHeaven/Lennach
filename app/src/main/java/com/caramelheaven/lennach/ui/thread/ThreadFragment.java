@@ -18,16 +18,16 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
-import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.datasource.model.File;
 import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
@@ -50,7 +50,8 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     private LinearLayout llContainer;
     private EditText etMessage;
     private CoordinatorLayout coordinatorLayout;
-    private Button btnSend;
+    private ImageButton btnSend, btnCatalog;
+    private TextView tvCounter;
 
     private ThreadAdapter adapter;
     private StringBuilder cacheAnswer;
@@ -91,21 +92,18 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
         btnSend = view.findViewById(R.id.btn_send);
+        btnCatalog = view.findViewById(R.id.btn_catalog);
+        tvCounter = view.findViewById(R.id.tv_counter);
 
         cacheAnswer = new StringBuilder();
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         provideRecyclerAndAdapter();
         provideEtMessageListeners();
         provideScrollBehavior();
         provideTopSheet();
         provideEtMessageListeners();
+        provideButtons();
     }
 
     @Override
@@ -291,18 +289,34 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+             //   tvCounter.setText(String.valueOf(start) + "/2000");
                 Timber.d("beforeTextChanged: " + s.toString() + " start: " + start + " count: " + count + " after: " + after);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Timber.d("alltext: " + etMessage.getText().toString());
-                Timber.d("getText: " + s.toString());
+                tvCounter.setText(s.toString().length() + "/2000");
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 Timber.d("afterTextChanged: " + s.toString());
+            }
+        });
+    }
+
+    private void provideButtons() {
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnCatalog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "get Catalog", Toast.LENGTH_SHORT).show();
             }
         });
     }

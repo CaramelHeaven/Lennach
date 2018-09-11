@@ -9,15 +9,21 @@
     app:behavior_peekHeight="80dp"
     app:layout_behavior="com.caramelheaven.lennach.utils.view.TopSheetBehavior">
 
-    <TextView
-        android:id="@+id/tv_count"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="0/2000"
-        android:textColor="@color/colorTextDark"
-        android:textSize="16sp" />
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tv_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="0/2000"
+            android:textColor="@color/colorTextDark"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,21 +34,36 @@
             android:id="@+id/et_message"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
+            android:layout_toStartOf="@id/btn_send"
             android:foregroundGravity="top"
             android:gravity="top"
             android:maxLength="2000"
             android:textColor="@color/colorAccent" />
 
-        <Button
+        <ImageButton
+            android:id="@+id/btn_catalog"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_above="@id/btn_send"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_image" />
+
+        <ImageButton
             android:id="@+id/btn_send"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="8dp"
-            android:text="S" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_send" />
     </RelativeLayout>
 </LinearLayout>
