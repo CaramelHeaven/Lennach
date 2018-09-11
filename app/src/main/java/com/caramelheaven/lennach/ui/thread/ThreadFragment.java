@@ -9,6 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +28,12 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
+import com.caramelheaven.lennach.datasource.model.File;
+import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
 import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
-import com.caramelheaven.lennach.utils.item_touch.ItemTouchCallback;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
@@ -50,6 +53,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     private Button btnSend;
 
     private ThreadAdapter adapter;
+    private StringBuilder cacheAnswer = new StringBuilder();
 
     public static ThreadFragment newInstance(String boardName, String idThread) {
         Bundle args = new Bundle();
@@ -88,34 +92,19 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
         btnSend = view.findViewById(R.id.btn_send);
 
-        topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                Timber.d("newState: " + newState);
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
-            }
-        });
-
-        etMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Timber.d("hasFocus: " + hasFocus);
-            }
-        });
-
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
             }
         });
-        provideRecyclerAndAdapter();
-        provideScrollBehavior();
-    }
 
+        provideRecyclerAndAdapter();
+        provideEtMessageListeners();
+        provideScrollBehavior();
+        provideTopSheet();
+        provideEtMessageListeners();
+    }
 
     @Override
     public void onDestroyView() {
@@ -159,12 +148,12 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     }
 
     @Override
-    public void refteshItems(List<PostsHelper> posts) {
+    public void refteshItems(List<Post> posts) {
 
     }
 
     @Override
-    public void showItems(List<PostsHelper> posts) {
+    public void showItems(List<Post> posts) {
         adapter.updateAdapter(posts);
     }
 
@@ -188,22 +177,22 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                     .beginTransaction(), null);
         });
 
-        adapter.setItemTouchCallback(new ItemTouchCallback() {
-            @Override
-            public void sendAnswer(PostsHelper post) {
-                etMessage.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                topSheetBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
-            }
+        adapter.setItemTouchCallback(post -> {
+            etMessage.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            topSheetBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
+            String answerToPost = ">>" + post.getNum() + "\n";
+            etMessage.setText(answerToPost);
+            etMessage.setSelection(answerToPost.length());
         });
     }
 
-    private ArrayList<iFile> mappingFiles(List<PostsHelper> postsHelpers) {
-        ArrayList<iFile> fileList = new ArrayList<>();
-        for (PostsHelper post : postsHelpers) {
-            if (post.iFileList.size() != 0) {
-                fileList.addAll(post.iFileList);
+    private ArrayList<File> mappingFiles(List<Post> postsHelpers) {
+        ArrayList<File> fileList = new ArrayList<>();
+        for (Post post : postsHelpers) {
+            if (post.getFiles().size() != 0) {
+                fileList.addAll(post.getFiles());
             }
         }
         return fileList;
@@ -220,7 +209,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
-                            topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
+                            topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_IDLE:
@@ -256,14 +245,55 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                 } else {
                     Timber.d("screenHeight: " + screenHeight);
                     Timber.d("heightDiff: " + heightDiff);
-                    switch (topSheetBehavior.getState()) {
-
-                    }
-                    if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
+                    topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
+                    /*if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
                         Timber.d("topSheetBehavior> " + topSheetBehavior.getState());
                         topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
-                    }
+                    }*/
                 }
+            }
+        });
+    }
+
+    private void provideTopSheet() {
+        topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                Timber.d("newState: " + newState);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
+                Timber.d("calling");
+                Timber.d("slideOffset: " + slideOffset);
+            }
+        });
+
+    }
+
+    private void provideEtMessageListeners() {
+        etMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Timber.d("hasFocus: " + hasFocus);
+            }
+        });
+
+        etMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Timber.d("alltext: " + etMessage.getText().toString());
+                Timber.d("getText: " + s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

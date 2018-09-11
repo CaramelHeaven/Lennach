@@ -79,6 +79,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
                 })
                 .flatMap((Function<List<Thread>, SingleSource<List<iThread>>>) threads -> {
                     List<iThread> iThreads = new ArrayList<>();
+                    //мы раскрываем это, т.к. в каждом итеме треда нужно пихать заголовок и картиночку
                     for (Thread thread : threads) {
                         iThread iThread = new iThread(thread.getThreadNum(), thread.getPostsCount(), thread.getFilesCount(), boardName);
                         database.threadDao().insertThread(iThread);
@@ -88,7 +89,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
                             List<iFile> iFiles = new ArrayList<>();
                             for (File file : post.getFiles()) {
                                 iFile iFile = new iFile(file.getDisplayname(), file.getDisplayname(),
-                                        file.getFullname(), file.getHeight(), file.getWidth(),
+                                        file.getFullName(), file.getHeight(), file.getWidth(),
                                         file.getPath(), file.getSize(), file.getThumbnail(), post.getNum());
                                 iFiles.add(iFile);
                             }

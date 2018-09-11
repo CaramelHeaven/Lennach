@@ -1,7 +1,7 @@
 package com.caramelheaven.lennach.utils.item_touch;
 
-import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
+import com.caramelheaven.lennach.datasource.model.Post;
 
 public interface ItemTouchCallback {
-    void sendAnswer(PostsHelper post);
+    void sendAnswer(Post post);
 }

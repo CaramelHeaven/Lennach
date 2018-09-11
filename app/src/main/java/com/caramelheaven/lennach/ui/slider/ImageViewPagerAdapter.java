@@ -15,15 +15,16 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
+import com.caramelheaven.lennach.datasource.model.File;
 
 import java.util.ArrayList;
 
 public class ImageViewPagerAdapter extends PagerAdapter {
 
     private FragmentActivity activity;
-    private ArrayList<iFile> iFiles;
+    private ArrayList<File> iFiles;
 
-    public ImageViewPagerAdapter(FragmentActivity activity, ArrayList<iFile> iFiles) {
+    public ImageViewPagerAdapter(FragmentActivity activity, ArrayList<File> iFiles) {
         this.activity = activity;
         this.iFiles = iFiles;
     }

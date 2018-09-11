@@ -56,31 +56,12 @@ public class ThreadPresenter extends MvpPresenter<ThreadView> {
         getViewState().showProgress();
         disposable.add(apiService.getPostsByThreadId(boardName, idThread, idThread)
                 .subscribeOn(Schedulers.io())
-                .doOnSuccess(posts -> {
-                    String threadId = posts.get(0).getNum();
-                    for (Post post : posts) {
-                        iPost iPost = new iPost(post.getNum(), post.getBanned(), post.getComment(),
-                                post.getTimestamp(), post.getOp(), post.getDate(), post.getSubject(), threadId);
-                        List<iFile> iFiles = new ArrayList<>();
-                        for (File file : post.getFiles()) {
-                            iFile iFile = new iFile(file.getDisplayname(), file.getDisplayname(),
-                                    file.getFullname(), file.getHeight(), file.getWidth(),
-                                    file.getPath(), file.getSize(), file.getThumbnail(), post.getNum());
-                            iFiles.add(iFile);
-                        }
-                        database.postDao().insertPost(iPost);
-                        database.fileDao().insertFiles(iFiles);
-                    }
-                })
-                .flatMap((Function<List<Post>, SingleSource<List<PostsHelper>>>) posts ->
-                        database.postDao().getPostsFromThread(posts.get(0).getNum()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(posts -> {
                     getViewState().hideProgress();
                     getViewState().showItems(posts);
                 }));
     }
-
 
 //    public void getPosts(String threadNumber) {
 //
