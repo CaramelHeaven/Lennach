@@ -53,7 +53,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     private Button btnSend;
 
     private ThreadAdapter adapter;
-    private StringBuilder cacheAnswer = new StringBuilder();
+    private StringBuilder cacheAnswer;
 
     public static ThreadFragment newInstance(String boardName, String idThread) {
         Bundle args = new Bundle();
@@ -91,6 +91,8 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
         btnSend = view.findViewById(R.id.btn_send);
+
+        cacheAnswer = new StringBuilder();
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,8 +185,15 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             topSheetBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
             String answerToPost = ">>" + post.getNum() + "\n";
-            etMessage.setText(answerToPost);
-            etMessage.setSelection(answerToPost.length());
+            if (cacheAnswer.length() != 0) {
+                cacheAnswer.setLength(0);
+                cacheAnswer.append(etMessage.getText().toString()).append("\n").append(answerToPost);
+            } else {
+                cacheAnswer.append(answerToPost);
+            }
+            etMessage.setText("");
+            etMessage.setText(cacheAnswer.toString());
+            etMessage.setSelection(cacheAnswer.toString().length());
         });
     }
 
@@ -282,7 +291,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                Timber.d("beforeTextChanged: " + s.toString() + " start: " + start + " count: " + count + " after: " + after);
             }
 
             @Override
@@ -293,7 +302,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                Timber.d("afterTextChanged: " + s.toString());
             }
         });
     }
