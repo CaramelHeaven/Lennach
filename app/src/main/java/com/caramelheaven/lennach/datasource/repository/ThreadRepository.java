@@ -46,7 +46,7 @@ public class ThreadRepository {
                         List<iFile> iFiles = new ArrayList<>();
                         for (File file : post.getFiles()) {
                             iFile iFile = new iFile(file.getDisplayname(), file.getDisplayname(),
-                                    file.getFullname(), file.getHeight(), file.getWidth(),
+                                    file.getFullName(), file.getHeight(), file.getWidth(),
                                     file.getPath(), file.getSize(), file.getThumbnail(), post.getNum());
                             iFiles.add(iFile);
                         }

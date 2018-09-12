@@ -18,6 +18,7 @@ import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
+import com.caramelheaven.lennach.datasource.model.File;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImagePresenter;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImageView;
 
@@ -27,7 +28,7 @@ import timber.log.Timber;
 
 public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implements SliderImageView {
 
-    private ArrayList<iFile> filesList;
+    private ArrayList<File> filesList;
     private int selectedPos;
     private ImageViewPagerAdapter pagerAdapter;
 
@@ -37,7 +38,7 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
     @InjectPresenter
     SliderImagePresenter presenter;
 
-    public static SliderImageDialogFragment newInstance(int currentPosition, ArrayList<iFile> container) {
+    public static SliderImageDialogFragment newInstance(int currentPosition, ArrayList<File> container) {
         Bundle args = new Bundle();
         args.putInt("POS", currentPosition);
         args.putParcelableArrayList("IMAGES", container);
@@ -106,7 +107,6 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
             }
         });
     }
-
 
 
 }

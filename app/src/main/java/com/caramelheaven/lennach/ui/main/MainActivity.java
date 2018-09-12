@@ -1,11 +1,15 @@
 package com.caramelheaven.lennach.ui.main;
 
+import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.ui.board.BoardFragment;
+
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
