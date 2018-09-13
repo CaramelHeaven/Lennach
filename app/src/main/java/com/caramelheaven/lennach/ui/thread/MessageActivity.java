@@ -17,6 +17,9 @@ import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+
 public class MessageActivity extends AppCompatActivity {
     EditText msg;
     ImageView captchaImg;
@@ -24,7 +27,7 @@ public class MessageActivity extends AppCompatActivity {
     String captchaId;
     Button postMsg;
     MessagePresenter messagePresenter;
-    Map<String,String> options;
+    Map<String,RequestBody> options;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,12 +51,13 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         postMsg.setOnClickListener(view -> {
-            options.put("board",boardNumber);
-            options.put("thread",threadNumber);
-            options.put("comment",msg.getText().toString());
-            options.put("captcha_type","2chaptcha");
-            options.put("2chaptcha_id",captchaId);
-            options.put("2chaptcha_value",captchaEdit.getText().toString());
+
+            options.put("board",RequestBody.create(MediaType.parse("text/plain"),boardNumber));
+            options.put("thread",RequestBody.create(MediaType.parse("text/plain"),threadNumber));
+            options.put("comment",RequestBody.create(MediaType.parse("text/plain"),msg.getText().toString()));
+            options.put("captcha_type",RequestBody.create(MediaType.parse("text/plain"),"2chaptcha"));
+            options.put("2chaptcha_id",RequestBody.create(MediaType.parse("text/plain"),captchaId));
+            options.put("2chaptcha_value",RequestBody.create(MediaType.parse("text/plain"),captchaEdit.getText().toString()));
 
             messagePresenter.postMessage(options);
         });

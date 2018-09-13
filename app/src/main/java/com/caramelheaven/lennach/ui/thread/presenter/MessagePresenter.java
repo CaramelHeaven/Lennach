@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
 
 public class MessagePresenter extends MvpPresenter<MessageView> {
     private CompositeDisposable disposable;
@@ -36,7 +37,7 @@ public class MessagePresenter extends MvpPresenter<MessageView> {
                 }));
     }
 
-    public void postMessage(Map<String,String > options) {
+    public void postMessage(Map<String, RequestBody> options) {
         disposable.add(apiService.sendPostInThread(options)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
