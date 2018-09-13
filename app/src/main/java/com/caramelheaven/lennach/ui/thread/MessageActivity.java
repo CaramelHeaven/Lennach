@@ -3,7 +3,6 @@ package com.caramelheaven.lennach.ui.thread;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,8 +41,8 @@ public class MessageActivity extends AppCompatActivity {
         String threadNumber = extras.getString("THREADNUMB");
 
         msg = (EditText) findViewById(R.id.msg_edit);
-        captchaEdit = (EditText) findViewById(R.id.captcha_edit);
-        captchaImg = (ImageView) findViewById(R.id.captcha_img);
+        captchaEdit = (EditText) findViewById(R.id.captcha_edit_dialog);
+        captchaImg = (ImageView) findViewById(R.id.captcha_img_dialog);
         postMsg = (Button) findViewById(R.id.postMsg);
 
         captchaImg.setOnClickListener(view -> {

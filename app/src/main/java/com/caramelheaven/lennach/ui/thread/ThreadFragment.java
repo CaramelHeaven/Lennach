@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -52,6 +52,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     private CoordinatorLayout coordinatorLayout;
     private ImageButton btnSend, btnCatalog;
     private TextView tvCounter;
+    private String threadNumber;
 
     private ThreadAdapter adapter;
     private StringBuilder cacheAnswer;
@@ -60,7 +61,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         Bundle args = new Bundle();
         args.putString("BOARD_NAME", boardName);
         args.putString("THREAD_ID", idThread);
-
         ThreadFragment fragment = new ThreadFragment();
         fragment.setArguments(args);
         return fragment;
@@ -71,6 +71,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
     @ProvidePresenter
     ThreadPresenter provideThreadPresenter() {
+        threadNumber = getArguments().getString("THREAD_ID");
         return new ThreadPresenter(getArguments()
                 .getString("BOARD_NAME"), getArguments().getString("THREAD_ID"));
     }
@@ -309,6 +310,19 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 1. Start format final POST response to server.
+
+                String msg = etMessage.getText().toString();
+                Bundle args = new Bundle();
+                args.putString("MESSAGE",msg);
+                args.putString("THREADNUMB",threadNumber);
+
+                // 2. Calls CaptchaDialog
+                FragmentManager fm = getFragmentManager();
+                CaptchaDialog editNameDialogFragment = CaptchaDialog.newInstance("Some Title");
+                editNameDialogFragment.setArguments(args);
+                editNameDialogFragment.show(fm, "fragment_edit_name");
+
                 Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
             }
         });
