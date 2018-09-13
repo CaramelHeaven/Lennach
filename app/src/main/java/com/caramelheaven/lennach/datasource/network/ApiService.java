@@ -11,9 +11,12 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.RequestBody;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -38,8 +41,11 @@ public interface ApiService {
 
 
 
+    @Multipart
     @POST("makaba/posting.fcgi?json=1&task=post")
-    Single<PostInThread> sendPostInThread(@QueryMap Map<String, String> options);
+    Single<PostInThread> sendPostInThread(@PartMap Map<String, RequestBody> options);
+
+
 
 
 }
