@@ -5,6 +5,7 @@ import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
+import com.caramelheaven.lennach.datasource.model.Post;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public interface ThreadView extends MvpView {
     void showError();
 
     @StateStrategyType(value = SingleStateStrategy.class)
-    void refteshItems(List<PostsHelper> posts);
+    void refteshItems(List<Post> posts);
 
     @StateStrategyType(value = SingleStateStrategy.class)
-    void showItems(List<PostsHelper> posts);
+    void showItems(List<Post> posts);
 }

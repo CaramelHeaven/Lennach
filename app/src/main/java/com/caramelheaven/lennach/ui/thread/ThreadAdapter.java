@@ -18,9 +18,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
-import com.caramelheaven.lennach.datasource.database.entity.iFile;
+import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.ui.base.AdapterMethods;
 import com.caramelheaven.lennach.utils.imageOnItemClickListener;
+import com.caramelheaven.lennach.utils.item_touch.ItemTouchCallback;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,16 +29,18 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AdapterMethods<PostsHelper> {
+public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements AdapterMethods<Post> {
 
-    private List<PostsHelper> postsHelpers;
-    private Set<PostsHelper> postsUnique;
+    private List<Post> posts;
+    private Set<Post> postsUnique;
 
     private Context context;
     private imageOnItemClickListener imageOnItemClickListener;
+    private ItemTouchCallback itemTouchCallback;
 
-    public ThreadAdapter(List<PostsHelper> postsHelpers, Context context) {
-        this.postsHelpers = postsHelpers;
+    public ThreadAdapter(List<Post> posts) {
+        this.posts = posts;
         postsUnique = new LinkedHashSet<>();
         this.context = context;
     }
@@ -52,83 +55,74 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         PostVH postVH = (PostVH) viewHolder;
-        postVH.tvDescription.setText(Html.fromHtml(postsHelpers.get(i).iPost.getComment()));
-        postVH.tvDate.setText(postsHelpers.get(i).iPost.getDate());
+        postVH.tvDescription.setText(Html.fromHtml(posts.get(i).getComment()));
+        postVH.tvDate.setText(posts.get(i).getDate());
         postVH.tvCountPost.setText(String.valueOf(i));
 
-        Timber.d("postsHelpers.get(i).iFileList.size() " + postsHelpers.get(i).iFileList.size() + " iii: " + i);
-        if (postsHelpers.get(i).iFileList.size() != 0) {
-            for (int q = 0; q < postsHelpers.get(i).iFileList.size(); q++) {
-                ImageView imageView = new ImageView(postVH.itemView.getContext());
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
-                params.setMarginStart(4);
-                imageView.setLayoutParams(params);
-                Glide.with(imageView.getContext())
-                        .load("https://2ch.hk" + postsHelpers.get(i).iFileList.get(q).getPath())
-                        .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-                        .into(imageView);
-                postVH.llContainer.addView(imageView);
-            }
+        Timber.d("postsHelpers.get(i).iFileList.size() " + posts.get(i).getFiles().size() + " iii: " + i);
+        if (posts.get(i).getFiles().size() != 0) {
+            Glide.with(postVH.ivPicture.getContext())
+                    .load("https://2ch.hk" + posts.get(i).getFiles().get(0).getPath())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(postVH.ivPicture);
         }
-
-        postVH.postButton.setOnClickListener(view -> {
-            Intent intent = new Intent(context,MessageActivity.class);
-            intent.putExtra("THREADNUMB",postsHelpers.get(i).iPost.getIdThread());
-            context.startActivity(intent);
-        });
 
 
     }
 
     @Override
     public int getItemCount() {
-        return postsHelpers.size();
+        return posts.size();
     }
 
     @Override
-    public void updateAdapter(List<PostsHelper> models) {
+    public void updateAdapter(List<Post> models) {
         postsUnique.addAll(models);
-        if (postsHelpers.size() != 0)
-            postsHelpers.clear();
-        postsHelpers.addAll(postsUnique);
+        if (posts.size() != 0)
+            posts.clear();
+        posts.addAll(postsUnique);
         notifyDataSetChanged();
     }
 
     @Override
-    public PostsHelper getItemByPosition(int position) {
-        return postsHelpers.get(position);
+    public Post getItemByPosition(int position) {
+        return posts.get(position);
     }
 
     @Override
-    public List<PostsHelper> getItems() {
-        return postsHelpers;
+    public List<Post> getItems() {
+        return posts;
     }
 
     public void setImageOnItemClickListener(com.caramelheaven.lennach.utils.imageOnItemClickListener imageOnItemClickListener) {
         this.imageOnItemClickListener = imageOnItemClickListener;
     }
 
-    private class PostVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void sendCallbackFromSwipe(int position) {
+        itemTouchCallback.sendAnswer(posts.get(position));
+    }
+
+    public class PostVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvDescription, tvDate, tvCountPost;
-        LinearLayout llContainer;
-        Button postButton;
+        ImageView ivPicture;
 
         public PostVH(@NonNull View itemView) {
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvDate = itemView.findViewById(R.id.tv_date);
             tvCountPost = itemView.findViewById(R.id.tv_count_post);
-            llContainer = itemView.findViewById(R.id.ll_container);
-            llContainer.setOnClickListener(this::onClick);
-            postButton = itemView.findViewById(R.id.post_btn);
+            ivPicture = itemView.findViewById(R.id.iv_picture_thread);
+            ivPicture.setOnClickListener(this::onClick);
         }
 
         @Override
         public void onClick(View view) {
-            if (llContainer == view) {
-                imageOnItemClickListener.onItemClick(view, getAdapterPosition());
-            }
+            imageOnItemClickListener.onItemClick(view, getAdapterPosition());
         }
+    }
+
+    public void setItemTouchCallback(ItemTouchCallback itemTouchCallback) {
+        this.itemTouchCallback = itemTouchCallback;
     }
 }
