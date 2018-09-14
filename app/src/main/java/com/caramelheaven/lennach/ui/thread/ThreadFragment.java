@@ -321,11 +321,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                 args.putString("MESSAGE",msg);
                 args.putString("THREADNUMB",threadNumber);
 
-                FragmentManager fm = getFragmentManager();
-                CaptchaDialog captchaDialog = CaptchaDialog.newInstance("Captcha");
+                CaptchaDialog captchaDialog = CaptchaDialog.newInstance();
                 captchaDialog.setArguments(args);
                 captchaDialog.setTargetFragment(ThreadFragment.this,1337);
-                captchaDialog.show(fm, "dialog");
+                captchaDialog.show(getFragmentManager(), "dialog");
             }
         });
 

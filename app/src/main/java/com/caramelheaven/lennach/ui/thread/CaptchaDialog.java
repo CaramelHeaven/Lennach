@@ -43,12 +43,8 @@ public class CaptchaDialog extends DialogFragment{
 
     }
 
-    public static CaptchaDialog newInstance(String title) {
-        CaptchaDialog frag = new CaptchaDialog();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
-        return frag;
+    public static CaptchaDialog newInstance() {
+        return new CaptchaDialog();
     }
 
     @Nullable
@@ -76,15 +72,16 @@ public class CaptchaDialog extends DialogFragment{
         captchaImg = (ImageView) view.findViewById(R.id.captcha_img_dialog);
         captchaEdit = (EditText) view.findViewById(R.id.captcha_edit_dialog);
 
-        // Fetch arguments from bundle and set title
+/*        // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
         getDialog().setTitle(title);
 
         // Show soft keyboard automatically and request focus to field
         captchaEdit.requestFocus();
         getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);*/
 
+        captchaEdit.requestFocus();
 
         captchaImg.setOnClickListener(new View.OnClickListener() {
             @Override
