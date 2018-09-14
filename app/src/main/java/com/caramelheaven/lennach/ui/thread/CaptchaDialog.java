@@ -140,4 +140,13 @@ public class CaptchaDialog extends DialogFragment{
 
         messagePresenter.postMessage(options);
     }
+
+    public void errorMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void correctCaptcha() {
+        //Update Thread
+    }
+
 }

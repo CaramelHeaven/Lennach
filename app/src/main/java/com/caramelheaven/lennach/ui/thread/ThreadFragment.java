@@ -305,7 +305,9 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             }
         });
     }
+    private void updateThread() {
 
+    }
     private void provideButtons() {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override

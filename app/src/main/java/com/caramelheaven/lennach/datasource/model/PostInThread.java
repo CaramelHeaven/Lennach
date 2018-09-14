@@ -7,7 +7,7 @@ public class PostInThread {
 
     @SerializedName("Error")
     @Expose
-    private Object error;
+    private Integer error;
     @SerializedName("Status")
     @Expose
     private String status;
@@ -15,11 +15,11 @@ public class PostInThread {
     @Expose
     private Integer num;
 
-    public Object getError() {
+    public Integer getError() {
         return error;
     }
 
-    public void setError(Object error) {
+    public void setError(Integer error) {
         this.error = error;
     }
 
