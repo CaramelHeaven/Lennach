@@ -44,9 +44,9 @@ public class MessagePresenter extends MvpPresenter<CaptchaDialogView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(postInThread -> {
                     System.out.println(postInThread.getStatus());
-                    if (postInThread.getError() == null) {
-                        if (postInThread.getStatus() == "OK")
-                            view.correctCaptcha();
+                    System.out.println(postInThread.getStatus().equals("OK"));
+                    if (postInThread.getStatus().equals("OK")) {
+                        view.correctCaptcha();
                     } else {
                         switch (postInThread.getError()) {
                             case -4:

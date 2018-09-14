@@ -20,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
+import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +32,6 @@ public class CaptchaDialog extends DialogFragment{
 
     ImageView captchaImg;
     EditText captchaEdit;
-    Button postMsg;
-    Button cancel;
     MessagePresenter messagePresenter;
     String msg;
     String threadNumber;
@@ -76,8 +75,6 @@ public class CaptchaDialog extends DialogFragment{
 
         captchaImg = (ImageView) view.findViewById(R.id.captcha_img_dialog);
         captchaEdit = (EditText) view.findViewById(R.id.captcha_edit_dialog);
-        postMsg = (Button) view.findViewById(R.id.postMsg_dialog);
-        cancel = (Button) view.findViewById(R.id.cancel_dialog);
 
         // Fetch arguments from bundle and set title
         String title = getArguments().getString("title", "Enter Name");
@@ -146,7 +143,10 @@ public class CaptchaDialog extends DialogFragment{
     }
 
     public void correctCaptcha() {
-        //Update Thread
+        ThreadFragment threadFragment = (ThreadFragment) getTargetFragment();
+        threadFragment.updateThread();
+        dismiss();
+
     }
 
 }

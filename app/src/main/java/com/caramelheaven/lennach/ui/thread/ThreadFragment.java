@@ -305,8 +305,9 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             }
         });
     }
-    private void updateThread() {
 
+    public void updateThread() {
+        presenter.loadPosts();
     }
     private void provideButtons() {
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -321,9 +322,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
                 // 2. Calls CaptchaDialog
                 FragmentManager fm = getFragmentManager();
-                CaptchaDialog editNameDialogFragment = CaptchaDialog.newInstance("Some Title");
-                editNameDialogFragment.setArguments(args);
-                editNameDialogFragment.show(fm, "fragment_edit_name");
+                CaptchaDialog captchaDialog = CaptchaDialog.newInstance("Captcha");
+                captchaDialog.setArguments(args);
+                captchaDialog.setTargetFragment(ThreadFragment.this,1337);
+                captchaDialog.show(fm, "dialog");
             }
         });
 
