@@ -146,7 +146,6 @@ public class CaptchaDialog extends DialogFragment{
         ThreadFragment threadFragment = (ThreadFragment) getTargetFragment();
         threadFragment.updateThread();
         dismiss();
-
     }
 
 }

@@ -316,14 +316,11 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 1. Start format final POST response to server.
-
                 String msg = etMessage.getText().toString();
                 Bundle args = new Bundle();
                 args.putString("MESSAGE",msg);
                 args.putString("THREADNUMB",threadNumber);
 
-                // 2. Calls CaptchaDialog
                 FragmentManager fm = getFragmentManager();
                 CaptchaDialog captchaDialog = CaptchaDialog.newInstance("Captcha");
                 captchaDialog.setArguments(args);

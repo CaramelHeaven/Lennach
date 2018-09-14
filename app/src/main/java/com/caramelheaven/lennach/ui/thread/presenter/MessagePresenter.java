@@ -2,10 +2,8 @@ package com.caramelheaven.lennach.ui.thread.presenter;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
-import com.caramelheaven.lennach.datasource.database.LennachDatabase;
 import com.caramelheaven.lennach.datasource.network.ApiService;
 import com.caramelheaven.lennach.ui.thread.CaptchaDialog;
-import com.caramelheaven.lennach.ui.thread.MessageActivity;
 
 import java.util.Map;
 
@@ -49,19 +47,15 @@ public class MessagePresenter extends MvpPresenter<CaptchaDialogView> {
                     } else {
                         switch (postInThread.getError()) {
                             case -4:
-                                System.out.println("!!!!!!!!!!!!!!!!!!Постинг запрещен!!!!!!!!!!!!!!!!");
                                 view.errorMessage("Постинг запрещен");
                                 break;
                             case -5:
-                                System.out.println("!!!!!!!!!!!!!!!!!!Кача неликвидна!!!!!!!!!!!!!!!!");
                                 view.errorMessage("Кача неликвидна");
                                 break;
 
                             case -20:
-                                System.out.println("!!!!!!!!!!!!!!!!!!Вы ничего не запостили!!!!!!!!!!!!!!!!");
                                 view.errorMessage("Вы ничего не запостили");
                                 break;
-
                             case -8:
                                 view.errorMessage("Вы постите слишком быстро.");
                                 break;
