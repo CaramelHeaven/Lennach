@@ -307,6 +307,9 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     }
 
     public void updateThread() {
+        etMessage.setText("");
+        etMessage.clearFocus();
+        topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
         presenter.loadPosts();
     }
     private void provideButtons() {
