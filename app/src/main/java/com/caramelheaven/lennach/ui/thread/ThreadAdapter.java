@@ -81,6 +81,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (posts.size() != 0)
             posts.clear();
         posts.addAll(postsUnique);
+        postsUnique.clear();
         notifyDataSetChanged();
     }
 

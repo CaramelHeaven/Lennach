@@ -61,6 +61,10 @@ public class MessagePresenter extends MvpPresenter<CaptchaDialogView> {
                                 System.out.println("!!!!!!!!!!!!!!!!!!Вы ничего не запостили!!!!!!!!!!!!!!!!");
                                 view.errorMessage("Вы ничего не запостили");
                                 break;
+
+                            case -8:
+                                view.errorMessage("Вы постите слишком быстро.");
+                                break;
                         }
                     }
                 }));
