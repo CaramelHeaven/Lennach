@@ -7,16 +7,16 @@
 
     <RelativeLayout
         android:layout_width="357dp"
-        android:layout_height="265dp">
+        android:layout_height="228dp"
+        android:background="#fef8f7">
 
         <TextView
             android:id="@+id/captcha_txt_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/msg_edit"
             android:layout_marginStart="32dp"
             android:layout_marginTop="10dp"
-            android:text="Click on grey arena to get captcha" />
+            android:text="Click on grey area to get captcha" />
 
         <ImageView
             android:id="@+id/captcha_img_dialog"
@@ -24,7 +24,7 @@
             android:layout_height="119dp"
             android:layout_below="@+id/captcha_txt_dialog"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="12dp"
             android:src="@color/colorGray" />
 
         <TextView
@@ -42,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/captcha_img_dialog"
             android:layout_marginLeft="165dp" />
-
 
 
     </RelativeLayout>
