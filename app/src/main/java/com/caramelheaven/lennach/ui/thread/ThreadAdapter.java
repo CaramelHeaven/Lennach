@@ -1,11 +1,14 @@
 package com.caramelheaven.lennach.ui.thread;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,12 +35,14 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<Post> posts;
     private Set<Post> postsUnique;
 
+    private Context context;
     private imageOnItemClickListener imageOnItemClickListener;
     private ItemTouchCallback itemTouchCallback;
 
     public ThreadAdapter(List<Post> posts) {
         this.posts = posts;
         postsUnique = new LinkedHashSet<>();
+        this.context = context;
     }
 
     @NonNull
@@ -61,6 +66,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(postVH.ivPicture);
         }
+
+
     }
 
     @Override
@@ -74,6 +81,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (posts.size() != 0)
             posts.clear();
         posts.addAll(postsUnique);
+        postsUnique.clear();
         notifyDataSetChanged();
     }
 
