@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,29 +96,24 @@ public class CaptchaDialog extends DialogFragment{
             }
         });
 
-        postMsg.setOnClickListener(new View.OnClickListener() {
+        captchaEdit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
 
-                options.put("board", RequestBody.create(MediaType.parse("text/plain"),boardNumber));
-                options.put("thread",RequestBody.create(MediaType.parse("text/plain"),threadNumber));
-                options.put("comment",RequestBody.create(MediaType.parse("text/plain"),msg.getText().toString()));
-                options.put("captcha_type",RequestBody.create(MediaType.parse("text/plain"),"2chaptcha"));
-                options.put("2chaptcha_id",RequestBody.create(MediaType.parse("text/plain"),captchaId));
-                options.put("2chaptcha_value",RequestBody.create(MediaType.parse("text/plain"),captchaEdit.getText().toString()));
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
 
-                messagePresenter.postMessage(options);
-                Toast.makeText(getActivity(), "Send Message to Server", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.length() == 6) {
+                    postMessage();
+                }
             }
         });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
 
     }
 
@@ -131,5 +128,16 @@ public class CaptchaDialog extends DialogFragment{
                 .load("https://2ch.hk/api/captcha/2chaptcha/image/"+captchaId)
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(captchaImg);
+    }
+
+    public void postMessage() {
+        options.put("board", RequestBody.create(MediaType.parse("text/plain"),boardNumber));
+        options.put("thread",RequestBody.create(MediaType.parse("text/plain"),threadNumber));
+        options.put("comment",RequestBody.create(MediaType.parse("text/plain"),msg));
+        options.put("captcha_type",RequestBody.create(MediaType.parse("text/plain"),"2chaptcha"));
+        options.put("2chaptcha_id",RequestBody.create(MediaType.parse("text/plain"),captchaId));
+        options.put("2chaptcha_value",RequestBody.create(MediaType.parse("text/plain"),captchaEdit.getText().toString()));
+
+        messagePresenter.postMessage(options);
     }
 }

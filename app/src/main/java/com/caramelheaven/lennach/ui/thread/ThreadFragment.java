@@ -322,8 +322,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                 CaptchaDialog editNameDialogFragment = CaptchaDialog.newInstance("Some Title");
                 editNameDialogFragment.setArguments(args);
                 editNameDialogFragment.show(fm, "fragment_edit_name");
-
-                Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -20,7 +20,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class MessageActivity extends AppCompatActivity {
-    EditText msg;
+/*    EditText msg;
     ImageView captchaImg;
     EditText captchaEdit;
     String captchaId;
@@ -73,5 +73,5 @@ public class MessageActivity extends AppCompatActivity {
                 .load("https://2ch.hk/api/captcha/2chaptcha/image/"+captchaId)
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(captchaImg);
-    }
+    }*/
 }
