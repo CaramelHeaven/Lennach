@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -42,7 +41,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment {
+public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment, SendMessageListener {
 
     private RecyclerView rvContaner;
     private ProgressBar progressBar;
@@ -73,7 +72,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     ThreadPresenter provideThreadPresenter() {
         threadNumber = getArguments().getString("THREAD_ID");
         return new ThreadPresenter(getArguments()
-                .getString("BOARD_NAME"), getArguments().getString("THREAD_ID"));
+                .getString("BOARD_NAME"), threadNumber);
     }
 
     @Nullable
@@ -306,12 +305,14 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         });
     }
 
+    @Override
     public void updateThread() {
         etMessage.setText("");
         etMessage.clearFocus();
         topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
         presenter.loadPosts();
     }
+
     private void provideButtons() {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -321,7 +322,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                 args.putString("MESSAGE",msg);
                 args.putString("THREADNUMB",threadNumber);
 
-                CaptchaDialog captchaDialog = CaptchaDialog.newInstance();
+                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance();
                 captchaDialog.setArguments(args);
                 captchaDialog.setTargetFragment(ThreadFragment.this,1337);
                 captchaDialog.show(getFragmentManager(), "dialog");

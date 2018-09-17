@@ -3,7 +3,7 @@ package com.caramelheaven.lennach.ui.thread.presenter;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.network.ApiService;
-import com.caramelheaven.lennach.ui.thread.CaptchaDialog;
+import com.caramelheaven.lennach.ui.thread.CaptchaDialogFragment;
 
 import java.util.Map;
 
@@ -16,12 +16,12 @@ import okhttp3.RequestBody;
 
 public class MessagePresenter extends MvpPresenter<CaptchaDialogView> {
     private CompositeDisposable disposable;
-    private CaptchaDialog view;
+    private CaptchaDialogFragment view;
 
     @Inject
     ApiService apiService;
 
-    public MessagePresenter(CaptchaDialog view) {
+    public MessagePresenter(CaptchaDialogFragment view) {
         disposable = new CompositeDisposable();
         this.view = view;
         Lennach.getComponent().injectMessagePresenter(this);

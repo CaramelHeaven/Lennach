@@ -30,4 +30,5 @@ public interface ThreadView extends MvpView {
 
     @StateStrategyType(value = SingleStateStrategy.class)
     void showItems(List<Post> posts);
+
 }
