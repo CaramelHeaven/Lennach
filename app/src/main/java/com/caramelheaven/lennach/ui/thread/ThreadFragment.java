@@ -221,10 +221,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        Timber.d("юзер отпустил пальчик и лист не скролица");
+                        //      Timber.d("юзер отпустил пальчик и лист не скролица");
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-                        Timber.d("SCROLL_STATE_SETTING, eto konez lista");
+                        //   Timber.d("SCROLL_STATE_SETTING, eto konez lista");
                         break;
                 }
             }
@@ -235,30 +235,15 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             }
         });
 
-        coordinatorLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                Rect r = new Rect();
-                //r will be populated with the coordinates of your view that area still visible.
-                coordinatorLayout.getWindowVisibleDisplayFrame(r);
-                int screenHeight = coordinatorLayout.getRootView().getHeight();
-                int heightDiff = coordinatorLayout.getRootView().getHeight() - r.top;
-                int bottomDiff = coordinatorLayout.getRootView().getHeight() - r.bottom;
-                Timber.d("bottomDif: " + bottomDiff);
-                Timber.d("screenHeight: " + screenHeight);
-                Timber.d("heightDiff: " + heightDiff);
+        coordinatorLayout.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            Rect r = new Rect();
+            //r will be populated with the coordinates of your view that area still visible.
+            coordinatorLayout.getWindowVisibleDisplayFrame(r);
+            int screenHeight = coordinatorLayout.getRootView().getHeight();
+            int heightDiff = coordinatorLayout.getRootView().getHeight() - r.top;
 
-                if (heightDiff > screenHeight * 0.15) {
-                    Timber.d("OKAY");
-                } else {
-                    Timber.d("screenHeight: " + screenHeight);
-                    Timber.d("heightDiff: " + heightDiff);
-                    topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
-                    /*if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
-                        Timber.d("topSheetBehavior> " + topSheetBehavior.getState());
-                        topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
-                    }*/
-                }
+            if (!(heightDiff > screenHeight * 0.15)) {
+                topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
             }
         });
     }
@@ -267,13 +252,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                Timber.d("newState: " + newState);
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
-                Timber.d("calling");
-                Timber.d("slideOffset: " + slideOffset);
             }
         });
 
@@ -290,8 +272,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-             //   tvCounter.setText(String.valueOf(start) + "/2000");
-                Timber.d("beforeTextChanged: " + s.toString() + " start: " + start + " count: " + count + " after: " + after);
             }
 
             @Override
@@ -301,7 +281,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
             @Override
             public void afterTextChanged(Editable s) {
-                Timber.d("afterTextChanged: " + s.toString());
             }
         });
     }
@@ -312,18 +291,19 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
         presenter.loadPosts();
     }
+
     private void provideButtons() {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = etMessage.getText().toString();
                 Bundle args = new Bundle();
-                args.putString("MESSAGE",msg);
-                args.putString("THREADNUMB",threadNumber);
+                args.putString("MESSAGE", msg);
+                args.putString("THREADNUMB", threadNumber);
 
                 CaptchaDialog captchaDialog = CaptchaDialog.newInstance();
                 captchaDialog.setArguments(args);
-                captchaDialog.setTargetFragment(ThreadFragment.this,1337);
+                captchaDialog.setTargetFragment(ThreadFragment.this, 1337);
                 captchaDialog.show(getFragmentManager(), "dialog");
             }
         });

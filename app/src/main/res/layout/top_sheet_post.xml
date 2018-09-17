@@ -41,6 +41,7 @@
             android:layout_toStartOf="@id/btn_send"
             android:foregroundGravity="top"
             android:gravity="top"
+            android:imeOptions="flagNoExtractUi"
             android:maxLength="2000"
             android:textColor="@color/colorAccent" />
 

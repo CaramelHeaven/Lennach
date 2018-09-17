@@ -60,6 +60,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Timber.d("I'm desctoed");
         disposable.clear();
     }
 
@@ -74,9 +75,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         Timber.d("board repository: " + repository.hashCode() + " simple:  " + repository);
         disposable.add(repository.getBoardByName(boardName, page)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(d -> {
-                    isLoading = true;
-                })
+                .doOnSubscribe(d -> isLoading = true)
                 .flatMap((Function<List<Thread>, SingleSource<List<iThread>>>) threads -> {
                     List<iThread> iThreads = new ArrayList<>();
                     //мы раскрываем это, т.к. в каждом итеме треда нужно пихать заголовок и картиночку
@@ -130,6 +129,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         if (totalPage != currentPage) {
             isLoading = true;
             currentPage++;
+            Timber.d("loadMoreThreads called " + " current page: " + currentPage);
             loadThreads("b", currentPage);
         }
     }
