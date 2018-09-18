@@ -51,7 +51,6 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (threadList.get(i).getiFile() != null) {
             Glide.with(boardVH.ivThread.getContext())
                     .load("https://2ch.hk" + threadList.get(i).getiFile().getPath())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .apply(new RequestOptions().override(150, 150))
                     .into(boardVH.ivThread);
         }

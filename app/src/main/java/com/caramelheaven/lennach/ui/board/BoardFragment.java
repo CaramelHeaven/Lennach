@@ -86,22 +86,22 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView<Pos
                     .commit();
         });
 
-        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                presenter.loadMoreThreads();
-            }
-
-            @Override
-            protected boolean isLoading() {
-                return presenter.isLoading();
-            }
-
-            @Override
-            protected boolean isLastPage() {
-                return presenter.isLastPage();
-            }
-        });
+//        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+//            @Override
+//            protected void loadMoreItems() {
+//                presenter.loadMoreThreads();
+//            }
+//
+//            @Override
+//            protected boolean isLoading() {
+//                return presenter.isLoading();
+//            }
+//
+//            @Override
+//            protected boolean isLastPage() {
+//                return presenter.isLastPage();
+//            }
+//        });
     }
 
     @Override

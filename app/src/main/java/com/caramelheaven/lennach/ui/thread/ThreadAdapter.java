@@ -63,7 +63,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (posts.get(i).getFiles().size() != 0) {
             Glide.with(postVH.ivPicture.getContext())
                     .load("https://2ch.hk" + posts.get(i).getFiles().get(0).getPath())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .apply(new RequestOptions().override(150, 150))
                     .into(postVH.ivPicture);
         }
 
