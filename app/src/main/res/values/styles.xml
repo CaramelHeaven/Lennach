@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
     <style name="AppTheme.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -31,4 +32,14 @@
         <item name="android:padding">0dp</item>
         <item name="android:windowBackground">@color/colorBlack</item>
     </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/colorGray</item>
+        <item name="android:textSize">20sp</item>
+
+        <item name="colorAccent">#b41f55</item>
+        <item name="colorControlNormal">@color/colorBlack</item>
+        <item name="colorControlActivated">#D2691E</item>
+    </style>
+
 </resources>

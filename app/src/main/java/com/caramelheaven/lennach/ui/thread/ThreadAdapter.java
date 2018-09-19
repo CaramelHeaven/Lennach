@@ -35,14 +35,12 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<Post> posts;
     private Set<Post> postsUnique;
 
-    private Context context;
     private imageOnItemClickListener imageOnItemClickListener;
     private ItemTouchCallback itemTouchCallback;
 
     public ThreadAdapter(List<Post> posts) {
         this.posts = posts;
         postsUnique = new LinkedHashSet<>();
-        this.context = context;
     }
 
     @NonNull
