@@ -30,6 +30,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.model.File;
 import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
+import com.caramelheaven.lennach.ui.captcha.CaptchaDialogFragment;
 import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;

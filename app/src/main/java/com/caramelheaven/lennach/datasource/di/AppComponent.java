@@ -5,7 +5,7 @@ import android.app.Application;
 import com.caramelheaven.lennach.datasource.di.module.AppModule;
 import com.caramelheaven.lennach.datasource.di.module.RepositoryModule;
 import com.caramelheaven.lennach.ui.board.presenter.BoardPresenter;
-import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
+import com.caramelheaven.lennach.ui.captcha.presenter.CaptchaPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 
 import javax.inject.Singleton;
@@ -23,7 +23,7 @@ public interface AppComponent {
 
     void injectThreadPresenter(ThreadPresenter threadPresenter);
 
-    void injectMessagePresenter(MessagePresenter messagePresenter);
+    void injectCaptchaPresenter(CaptchaPresenter captchaPresenter);
 
     @Component.Builder
     interface MyBuilder {

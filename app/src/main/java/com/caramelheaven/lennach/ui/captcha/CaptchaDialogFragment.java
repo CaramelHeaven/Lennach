@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.ui.thread;
+package com.caramelheaven.lennach.ui.captcha;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.ui.thread.presenter.MessagePresenter;
-import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
+import com.caramelheaven.lennach.ui.captcha.presenter.CaptchaDialogView;
+import com.caramelheaven.lennach.ui.thread.SendMessageListener;
+import com.caramelheaven.lennach.ui.captcha.presenter.CaptchaPresenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,11 +27,11 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class CaptchaDialogFragment extends DialogFragment {
+public class CaptchaDialogFragment extends DialogFragment implements CaptchaDialogView{
 
     ImageView captchaImg;
     EditText captchaEdit;
-    MessagePresenter messagePresenter;
+    CaptchaPresenter captchaPresenter;
     String msg;
     String threadNumber;
     String boardNumber;
@@ -54,7 +55,7 @@ public class CaptchaDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        messagePresenter = new MessagePresenter(this);
+        captchaPresenter = new CaptchaPresenter(this);
         options = new HashMap<String, RequestBody>();
 
         boardNumber = "b";
@@ -68,7 +69,7 @@ public class CaptchaDialogFragment extends DialogFragment {
         captchaImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messagePresenter.getCaptchaId(boardNumber, threadNumber);
+                captchaPresenter.getCaptchaId(boardNumber, threadNumber);
             }
         });
 
@@ -93,12 +94,14 @@ public class CaptchaDialogFragment extends DialogFragment {
 
     }
 
-    public void setCaptchaId(String capthacaId) {
-        this.captchaId = capthacaId;
+    @Override
+    public void setCaptchaId(String captchaId) {
+        this.captchaId = captchaId;
         setCaptchaImg();
 
     }
 
+    @Override
     public void setCaptchaImg() {
         Glide.with(this)
                 .load("https://2ch.hk/api/captcha/2chaptcha/image/" + captchaId)
@@ -106,6 +109,7 @@ public class CaptchaDialogFragment extends DialogFragment {
                 .into(captchaImg);
     }
 
+    @Override
     public void postMessage() {
         options.put("board", RequestBody.create(MediaType.parse("text/plain"), boardNumber));
         options.put("thread", RequestBody.create(MediaType.parse("text/plain"), threadNumber));
@@ -114,13 +118,15 @@ public class CaptchaDialogFragment extends DialogFragment {
         options.put("2chaptcha_id", RequestBody.create(MediaType.parse("text/plain"), captchaId));
         options.put("2chaptcha_value", RequestBody.create(MediaType.parse("text/plain"), captchaEdit.getText().toString()));
 
-        messagePresenter.postMessage(options);
+        captchaPresenter.postMessage(options);
     }
 
+    @Override
     public void errorMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void correctCaptcha() {
         Toast.makeText(getActivity(), "Сообщение отправлено!", Toast.LENGTH_SHORT).show();
         SendMessageListener threadView = (SendMessageListener) getTargetFragment();
