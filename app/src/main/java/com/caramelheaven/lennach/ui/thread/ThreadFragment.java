@@ -83,6 +83,12 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        threadNumber = getArguments().getString("THREAD_ID");
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvContaner = view.findViewById(R.id.recyclerView);
@@ -319,12 +325,8 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             @Override
             public void onClick(View v) {
                 String msg = etMessage.getText().toString();
-                Bundle args = new Bundle();
-                args.putString("MESSAGE",msg);
-                args.putString("THREADNUMB",threadNumber);
 
-                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance();
-                captchaDialog.setArguments(args);
+                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance(threadNumber,msg);
                 captchaDialog.setTargetFragment(ThreadFragment.this,1337);
                 captchaDialog.show(getFragmentManager(), "dialog");
             }

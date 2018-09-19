@@ -42,8 +42,13 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
 
     }
 
-    public static CaptchaDialogFragment newInstance() {
-        return new CaptchaDialogFragment();
+    public static CaptchaDialogFragment newInstance(String threadNumber, String msg) {
+        CaptchaDialogFragment fragment = new CaptchaDialogFragment();
+        Bundle args = new Bundle();
+        args.putString("THREADNUMB",threadNumber);
+        args.putString("MESSAGE",msg);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Nullable
@@ -111,6 +116,12 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
 
     @Override
     public void postMessage() {
+        System.out.println("!!!!!!!!!!!!!!");
+        System.out.println("boardNumber: " +boardNumber );
+        System.out.println("threadNumber: " +threadNumber );
+        System.out.println("msg: " +msg );
+        System.out.println("captchaEdit.getText().toString(): " +captchaEdit.getText().toString() );
+        System.out.println("!!!!!!!!!!!!!!");
         options.put("board", RequestBody.create(MediaType.parse("text/plain"), boardNumber));
         options.put("thread", RequestBody.create(MediaType.parse("text/plain"), threadNumber));
         options.put("comment", RequestBody.create(MediaType.parse("text/plain"), msg));
