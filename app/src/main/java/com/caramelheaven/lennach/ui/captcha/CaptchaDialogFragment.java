@@ -27,7 +27,7 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class CaptchaDialogFragment extends DialogFragment implements CaptchaDialogView{
+public class CaptchaDialogFragment extends DialogFragment implements CaptchaDialogView {
 
     ImageView captchaImg;
     EditText captchaEdit;
@@ -45,8 +45,8 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
     public static CaptchaDialogFragment newInstance(String threadNumber, String msg) {
         CaptchaDialogFragment fragment = new CaptchaDialogFragment();
         Bundle args = new Bundle();
-        args.putString("THREADNUMB",threadNumber);
-        args.putString("MESSAGE",msg);
+        args.putString("THREADNUMB", threadNumber);
+        args.putString("MESSAGE", msg);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +69,6 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
 
         captchaImg = (ImageView) view.findViewById(R.id.captcha_img_dialog);
         captchaEdit = (EditText) view.findViewById(R.id.captcha_edit_dialog);
-        captchaEdit.requestFocus();
 
         captchaImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,12 +115,6 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
 
     @Override
     public void postMessage() {
-        System.out.println("!!!!!!!!!!!!!!");
-        System.out.println("boardNumber: " +boardNumber );
-        System.out.println("threadNumber: " +threadNumber );
-        System.out.println("msg: " +msg );
-        System.out.println("captchaEdit.getText().toString(): " +captchaEdit.getText().toString() );
-        System.out.println("!!!!!!!!!!!!!!");
         options.put("board", RequestBody.create(MediaType.parse("text/plain"), boardNumber));
         options.put("thread", RequestBody.create(MediaType.parse("text/plain"), threadNumber));
         options.put("comment", RequestBody.create(MediaType.parse("text/plain"), msg));
