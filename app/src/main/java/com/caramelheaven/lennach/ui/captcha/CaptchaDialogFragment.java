@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -91,6 +92,12 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.length() == 6) {
+
+                    // hide keyboard
+                    View view = getActivity().getCurrentFocus();
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                     postMessage();
                 }
             }
@@ -132,6 +139,7 @@ public class CaptchaDialogFragment extends DialogFragment implements CaptchaDial
 
     @Override
     public void correctCaptcha() {
+
         Toast.makeText(getActivity(), "Сообщение отправлено!", Toast.LENGTH_SHORT).show();
         SendMessageListener threadView = (SendMessageListener) getTargetFragment();
         dismiss();
