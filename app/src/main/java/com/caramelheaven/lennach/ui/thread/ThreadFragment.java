@@ -1,5 +1,6 @@
 package com.caramelheaven.lennach.ui.thread;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment, SendMessageListener {
 
@@ -296,7 +299,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-             //   tvCounter.setText(String.valueOf(start) + "/2000");
+                //   tvCounter.setText(String.valueOf(start) + "/2000");
                 Timber.d("beforeTextChanged: " + s.toString() + " start: " + start + " count: " + count + " after: " + after);
             }
 
@@ -324,11 +327,17 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // hide keyboard
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 String msg = etMessage.getText().toString();
 
-                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance(threadNumber,msg);
-                captchaDialog.setTargetFragment(ThreadFragment.this,1337);
+                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance(threadNumber, msg);
+                captchaDialog.setTargetFragment(ThreadFragment.this, 1337);
                 captchaDialog.show(getFragmentManager(), "dialog");
+
             }
         });
 
