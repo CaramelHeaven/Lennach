@@ -2,6 +2,9 @@ package com.caramelheaven.lennach.utils;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import timber.log.Timber;
 
 public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
@@ -19,9 +22,12 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
         int totalItemCount = layoutManager.getItemCount();
         int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
+        Timber.d("isLoadingPagination: " + isLoading() + " and last page: " + isLastPage());
         if (!isLoading() && !isLastPage()) {
+            Timber.d("inside if");
             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                     && firstVisibleItemPosition >= 0) {
+                Timber.d("load more: " + visibleItemCount + " total: " + totalItemCount + " first; " + firstVisibleItemPosition);
                 loadMoreItems();
             }
         }

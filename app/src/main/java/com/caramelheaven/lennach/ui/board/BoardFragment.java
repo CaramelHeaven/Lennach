@@ -66,6 +66,7 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView<Pos
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
 
+        Timber.d("onViewCreated");
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -86,22 +87,25 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView<Pos
                     .commit();
         });
 
-//        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
-//            @Override
-//            protected void loadMoreItems() {
-//                presenter.loadMoreThreads();
-//            }
-//
-//            @Override
-//            protected boolean isLoading() {
-//                return presenter.isLoading();
-//            }
-//
-//            @Override
-//            protected boolean isLastPage() {
-//                return presenter.isLastPage();
-//            }
-//        });
+        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                Timber.d("loadMoreItems:");
+                presenter.loadMoreThreads();
+            }
+
+            @Override
+            protected boolean isLoading() {
+                Timber.log(3, "isLoading: " + presenter.isLoading());
+                return presenter.isLoading();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                Timber.d("presenter is last page: " + presenter.isLastPage());
+                return presenter.isLastPage();
+            }
+        });
     }
 
     @Override
@@ -109,6 +113,18 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView<Pos
         super.onDestroyView();
         recyclerView = null;
         progressBar = null;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Timber.i("onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Timber.d("onDestroy");
     }
 
     @Override
@@ -139,6 +155,9 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView<Pos
     @Override
     public void showItems(List<PostFileThread> models) {
         Timber.d("models size: " + models.size());
+        for (PostFileThread thread : models) {
+            Timber.d("thread: " + thread.toString());
+        }
         adapter.updateAdapter(models);
     }
 }

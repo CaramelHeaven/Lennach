@@ -1,7 +1,6 @@
 package com.caramelheaven.lennach.datasource.network;
 
 import com.caramelheaven.lennach.datasource.model.Board;
-import com.caramelheaven.lennach.datasource.model.BoardSettings;
 import com.caramelheaven.lennach.datasource.model.Captcha;
 import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.datasource.model.PostInThread;
@@ -9,17 +8,14 @@ import com.caramelheaven.lennach.datasource.model.PostInThread;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.RequestBody;
 import retrofit2.http.GET;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 /**
  * Created by CaramelHeaven on 27.07.2018

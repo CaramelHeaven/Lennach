@@ -15,7 +15,9 @@ import com.caramelheaven.lennach.datasource.model.Thread;
 import com.caramelheaven.lennach.datasource.repository.BoardRepository;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -40,6 +42,8 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
     private CompositeDisposable disposable = new CompositeDisposable();
     private int totalPage = 0;
 
+    private Set<PostFileThread> cacheList;
+
     @Inject
     BoardRepository repository;
 
@@ -48,7 +52,9 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
 
     public BoardPresenter(String boardName) {
         this.boardName = boardName;
+        Timber.d("BoardPresenter created");
         Lennach.getComponent().injectBoardPresenter(this);
+        cacheList = new LinkedHashSet<>();
     }
 
     @Override
@@ -62,6 +68,7 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         super.onDestroy();
         Timber.d("I'm desctoed");
         disposable.clear();
+        cacheList = null;
     }
 
     public void initLoad() {
@@ -75,7 +82,6 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
         Timber.d("board repository: " + repository.hashCode() + " simple:  " + repository);
         disposable.add(repository.getBoardByName(boardName, page)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(d -> isLoading = true)
                 .flatMap((Function<List<Thread>, SingleSource<List<iThread>>>) threads -> {
                     List<iThread> iThreads = new ArrayList<>();
                     //мы раскрываем это, т.к. в каждом итеме треда нужно пихать заголовок и картиночку
@@ -121,11 +127,13 @@ public class BoardPresenter extends MvpPresenter<BoardView> {
             totalPage = repository.getTotalPage();
             getViewState().hideProgress();
         }
-        getViewState().showItems(models);
+        cacheList.addAll(models);
+        getViewState().showItems(new ArrayList(cacheList));
         isLoading = false;
     }
 
     public void loadMoreThreads() {
+        Timber.d("total page: " + totalPage + " current: " + currentPage);
         if (totalPage != currentPage) {
             isLoading = true;
             currentPage++;

@@ -21,6 +21,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import timber.log.Timber;
+
 /**
  * Created by CaramelHeaven on 29.07.2018
  */
@@ -31,6 +33,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private myOnItemClickListener myOnItemClickListener;
 
     public BoardAdapter(List<PostFileThread> threadList) {
+        Timber.d("board Adapter created");
         this.threadList = threadList;
         threadUniq = new LinkedHashSet<>();
     }
@@ -62,7 +65,9 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void updateAdapter(List<PostFileThread> iThreadList) {
+        Timber.d("adapter size unique: " + threadUniq.size());
         threadUniq.addAll(iThreadList);
+        Timber.d("adapter size unique after update: " + threadUniq.size());
         threadList.clear();
         threadList.addAll(threadUniq);
         notifyDataSetChanged();

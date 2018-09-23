@@ -66,8 +66,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .apply(new RequestOptions().override(150, 150))
                     .into(postVH.ivPicture);
         }
-
-
     }
 
     @Override
