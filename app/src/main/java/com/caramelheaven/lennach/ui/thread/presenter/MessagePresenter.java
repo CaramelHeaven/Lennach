@@ -1,7 +1,6 @@
 package com.caramelheaven.lennach.ui.thread.presenter;
 
 import com.arellomobile.mvp.MvpPresenter;
-import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.network.ApiService;
 import com.caramelheaven.lennach.ui.thread.CaptchaDialog;
 
@@ -24,7 +23,6 @@ public class MessagePresenter extends MvpPresenter<CaptchaDialogView> {
     public MessagePresenter(CaptchaDialog view) {
         disposable = new CompositeDisposable();
         this.view = view;
-        Lennach.getComponent().injectMessagePresenter(this);
     }
 
     public void getCaptchaId(String boardNumber, String threadNumber) {

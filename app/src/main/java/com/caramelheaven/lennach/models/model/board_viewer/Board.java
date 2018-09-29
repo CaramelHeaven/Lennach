@@ -10,6 +10,8 @@ public class Board {
     private Integer bumpLimit;
     private Integer maxComment;
     private Integer maxFileSize;
+    private List<Integer> pages;
+    private Integer currentPage;
     private List<Usenet> usenetList;
 
     @Override
@@ -21,6 +23,8 @@ public class Board {
                 ", bumpLimit=" + bumpLimit +
                 ", maxComment=" + maxComment +
                 ", maxFileSize=" + maxFileSize +
+                ", pages=" + pages +
+                ", currentPage=" + currentPage +
                 ", usenetList=" + usenetList +
                 '}';
     }
@@ -36,8 +40,23 @@ public class Board {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(board, boardName);
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public List<Integer> getPages() {
+        return pages;
+    }
+
+    public void setPages(List<Integer> pages) {
+        this.pages = pages;
     }
 
     public String getBoard() {

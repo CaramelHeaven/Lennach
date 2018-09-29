@@ -1,7 +1,6 @@
 package com.caramelheaven.lennach.datasource.repository;
 
 import com.caramelheaven.lennach.datasource.database.LennachDatabase;
-import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.datasource.database.entity.iPost;
 import com.caramelheaven.lennach.datasource.model.File;
@@ -11,15 +10,10 @@ import com.caramelheaven.lennach.datasource.network.ApiService;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-@Singleton
 public class ThreadRepository {
 
     private final ApiService apiService;
@@ -27,7 +21,6 @@ public class ThreadRepository {
     private static String THREAD_NUMBER = "";
     private CompositeDisposable disposable;
 
-    @Inject
     public ThreadRepository(ApiService apiService, LennachDatabase database) {
         this.apiService = apiService;
         this.database = database;

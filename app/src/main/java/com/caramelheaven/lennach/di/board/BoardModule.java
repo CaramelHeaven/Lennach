@@ -24,6 +24,12 @@ public class BoardModule {
 
     @BoardScope
     @Provides
+    BoardLocalRepository provideBoardLocalRepository() {
+        return new BoardLocalRepository();
+    }
+
+    @BoardScope
+    @Provides
     BoardMapper provideBoardMapper(BoardResponseToBoard boardResponseToBoard,
                                    BoardEntityToBoard boardEntityToBoard) {
         return new BoardMapper(boardResponseToBoard, boardEntityToBoard);
