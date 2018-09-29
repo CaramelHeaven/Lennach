@@ -22,6 +22,7 @@ public class GetBoard {
 
     public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
+        Timber.d("pageIndex: " + pageIndex);
     }
 
     public int getPageIndex() {

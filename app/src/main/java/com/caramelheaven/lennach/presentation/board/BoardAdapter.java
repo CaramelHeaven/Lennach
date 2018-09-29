@@ -1,5 +1,6 @@
 package com.caramelheaven.lennach.presentation.board;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.common.AdapterMethods;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,8 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Usenet> usenetList;
     private Set<Usenet> usenetUnique;
+
+    private BoardOnItemClickListener boardOnItemClickListener;
 
     public BoardAdapter(List<Usenet> usenetList) {
         this.usenetList = usenetList;
@@ -43,12 +46,11 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         UsenetVH usenetVH = (UsenetVH) viewHolder;
         usenetVH.tvTitle.setText(Html.fromHtml(usenetList.get(i).getComment()));
-        usenetVH.tvDate.setText(usenetList.get(i).getDate());
+        usenetVH.tvDate.setText("Anon - " + usenetList.get(i).getDate());
 
         if (usenetList.get(i).getThumbnail() != null) {
             Glide.with(usenetVH.ivThread.getContext())
                     .load("https://2ch.hk" + usenetList.get(i).getThumbnail())
-                    .apply(new RequestOptions().override(150, 150))
                     .into(usenetVH.ivThread);
         }
     }
@@ -71,18 +73,40 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return usenetList.get(position);
     }
 
-    private class UsenetVH extends RecyclerView.ViewHolder {
+    private class UsenetVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvTitle, tvDate;
         ImageView ivThread;
-        CardView cardView;
+        CardView cvContainer, cvImage;
 
         UsenetVH(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDate = itemView.findViewById(R.id.tv_date);
             ivThread = itemView.findViewById(R.id.ivThread);
-            cardView = itemView.findViewById(R.id.cardView);
+            cvContainer = itemView.findViewById(R.id.cardView);
+            cvImage = itemView.findViewById(R.id.cv_container_image);
+            cvImage.setOnClickListener(this::onClick);
+            cvContainer.setOnClickListener(this::onClick);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (v instanceof CardView) {
+                if (v == cvImage) {
+                    boardOnItemClickListener.onImageClick(getAdapterPosition(), ivThread);
+                } else {
+                    boardOnItemClickListener.onUsenetClick(getAdapterPosition());
+                }
+            }
+        }
+    }
+
+    public void setBoardOnItemClickListener(BoardOnItemClickListener boardOnItemClickListener) {
+        this.boardOnItemClickListener = boardOnItemClickListener;
+    }
+
+    public ArrayList<Usenet> getUsenetList() {
+        return new ArrayList<>(usenetList);
     }
 }

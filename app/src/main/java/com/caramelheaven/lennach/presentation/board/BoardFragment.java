@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -17,6 +19,7 @@ import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
+import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     private ProgressBar progressBar;
 
     private BoardAdapter boardAdapter;
+    private LinearLayoutManager layoutManager;
 
     @InjectPresenter
     BoardPresenter presenter;
@@ -70,11 +74,46 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     @Override
     protected void initRecyclerAndAdapter() {
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
-                false));
+        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
+                false);
+        recyclerView.setLayoutManager(layoutManager);
 
         boardAdapter = new BoardAdapter(new ArrayList<>());
         recyclerView.setAdapter(boardAdapter);
+
+        boardAdapter.setBoardOnItemClickListener(new BoardOnItemClickListener() {
+            @Override
+            public void onImageClick(int position, ImageView image) {
+                Toast.makeText(getActivity(), "image", Toast.LENGTH_SHORT).show();
+
+        /*        SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, boardAdapter.getUsenetList());
+                dialogFragment.show(getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction(), null);*/
+            }
+
+            @Override
+            public void onUsenetClick(int position) {
+                Toast.makeText(getActivity(), "usenet", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        recyclerView.addOnScrollListener(new PaginationScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                presenter.loadNextPage();
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return presenter.isLoading();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return presenter.isLastPage();
+            }
+        });
     }
 
     @Override

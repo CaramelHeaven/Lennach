@@ -1,12 +1,15 @@
 package com.caramelheaven.lennach.ui.slider;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.view.DragEvent;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.database.entity.iFile;
 import com.caramelheaven.lennach.datasource.model.File;
+import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImagePresenter;
 import com.caramelheaven.lennach.ui.slider.presenter.SliderImageView;
 
@@ -28,7 +32,7 @@ import timber.log.Timber;
 
 public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implements SliderImageView {
 
-    private ArrayList<File> filesList;
+    private ArrayList<Usenet> filesList;
     private int selectedPos;
     private ImageViewPagerAdapter pagerAdapter;
 
@@ -38,7 +42,7 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
     @InjectPresenter
     SliderImagePresenter presenter;
 
-    public static SliderImageDialogFragment newInstance(int currentPosition, ArrayList<File> container) {
+    public static SliderImageDialogFragment newInstance(int currentPosition, ArrayList<Usenet> container) {
         Bundle args = new Bundle();
         args.putInt("POS", currentPosition);
         args.putParcelableArrayList("IMAGES", container);
@@ -52,6 +56,23 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_slider, container, false);
+
+        GestureDetector gesture = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                Timber.d("onDown");
+                return true;
+            }
+
+        });
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Timber.d("event!: " + event.toString());
+                return gesture.onTouchEvent(event);
+            }
+        });
+
         return view;
     }
 
@@ -71,6 +92,7 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
 
+        getDialog().getWindow().setDimAmount(0.60f);
         super.onResume();
     }
 
@@ -88,25 +110,50 @@ public class SliderImageDialogFragment extends MvpAppCompatDialogFragment implem
         pagerAdapter = new ImageViewPagerAdapter(getActivity(), filesList);
         viewPager.setAdapter(pagerAdapter);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @SuppressLint("SetTextI18n")
+        GestureDetector gesture = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                tvCount.setText(String.valueOf(i) + " of " + String.valueOf(filesList.size()));
-                Timber.d("onPageScrolled");
+            public boolean onDown(MotionEvent e) {
+                Timber.d("onDown");
+                return true;
             }
 
             @Override
-            public void onPageSelected(int i) {
-                Timber.d("OnPageSelected");
+            public void onShowPress(MotionEvent e) {
+                Timber.d("onShowPress");
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) {
+            public boolean onSingleTapUp(MotionEvent e) {
+                Timber.d("onSigleTapUp");
+                return true;
+            }
 
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                Timber.d("OnScroll" + " distX: " + distanceX + " y: " + distanceY);
+                Timber.d("mot e1: " + e1 + " e2: " + e2);
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                Timber.d("onLongPress");
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                Timber.d("onFLing: " + " e1: " + e1 + " e2 " + e2 + "veloX: " + velocityX + " veY " + velocityY);
+                return true;
             }
         });
-    }
 
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gesture.onTouchEvent(event);
+            }
+        });
+
+    }
 
 }

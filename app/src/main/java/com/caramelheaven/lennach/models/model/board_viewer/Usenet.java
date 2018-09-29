@@ -1,8 +1,11 @@
 package com.caramelheaven.lennach.models.model.board_viewer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
-public class Usenet {
+public class Usenet implements Parcelable {
     //info
     private Integer filesCount;
     private Integer postsCount;
@@ -157,4 +160,58 @@ public class Usenet {
     public void setHeightImage(Integer heightImage) {
         this.heightImage = heightImage;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.filesCount);
+        dest.writeValue(this.postsCount);
+        dest.writeString(this.threadNum);
+        dest.writeString(this.displayNameImage);
+        dest.writeString(this.nameImage);
+        dest.writeValue(this.sizeImage);
+        dest.writeString(this.thumbnail);
+        dest.writeValue(this.widthImage);
+        dest.writeValue(this.heightImage);
+        dest.writeString(this.comment);
+        dest.writeString(this.date);
+        dest.writeString(this.name);
+        dest.writeString(this.num);
+    }
+
+    public Usenet() {
+    }
+
+    protected Usenet(Parcel in) {
+        this.filesCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.postsCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.threadNum = in.readString();
+        this.displayNameImage = in.readString();
+        this.nameImage = in.readString();
+        this.sizeImage = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.thumbnail = in.readString();
+        this.widthImage = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.heightImage = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.comment = in.readString();
+        this.date = in.readString();
+        this.name = in.readString();
+        this.num = in.readString();
+    }
+
+    public static final Parcelable.Creator<Usenet> CREATOR = new Parcelable.Creator<Usenet>() {
+        @Override
+        public Usenet createFromParcel(Parcel source) {
+            return new Usenet(source);
+        }
+
+        @Override
+        public Usenet[] newArray(int size) {
+            return new Usenet[size];
+        }
+    };
 }

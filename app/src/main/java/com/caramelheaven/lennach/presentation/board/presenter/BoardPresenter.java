@@ -9,7 +9,9 @@ import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -26,6 +28,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     private boolean isLoading = false;
     private String boardName;
     private CompositeDisposable disposable;
+    private Set<Usenet> cacheUsenets;
 
     @Inject
     GetBoard getBoard;
@@ -52,6 +55,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
                 .usenetListComponent(new UsenetListModule())
                 .inject(this);
         disposable = new CompositeDisposable();
+        cacheUsenets = new LinkedHashSet<>();
         this.boardName = boardName;
     }
 
@@ -66,6 +70,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
                 .doOnEvent((board, throwable) -> {
                     totalPage = board.getPages().get(board.getPages().size() - 1);
                     currentPage = board.getCurrentPage();
+                    Timber.d("currentPage: " + currentPage);
                 })
                 .map(Board::getUsenetList)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,10 +78,11 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     }
 
     private void successfulLoad(List<Usenet> usenets) {
-        Timber.d("successFulLoad");
-        isLoading = false;
-        getViewState().showItems(usenets);
+        Timber.d("successFulLoad: " + currentPage);
+        cacheUsenets.addAll(usenets);
         getViewState().hideLoading();
+        getViewState().showItems(new ArrayList<>(cacheUsenets));
+        isLoading = false;
     }
 
     private void unsuccessfulLoad(Throwable throwable) {
@@ -86,8 +92,10 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     }
 
     public void loadNextPage() {
+        Timber.d("current: " + currentPage + " totaL: " + totalPage);
         if (currentPage != totalPage) {
-            getBoard.setPageIndex(currentPage++);
+            currentPage += 1;
+            getBoard.setPageIndex(currentPage);
             loadThreads();
         }
     }

@@ -9,7 +9,7 @@ import com.caramelheaven.lennach.presentation.base.ParentView;
 
 import java.util.List;
 
-public interface BoardView<T> extends MvpView {
+public interface BoardView<T> extends ParentView {
 
     @StateStrategyType(value = SingleStateStrategy.class)
     void showItems(List<T> items);

@@ -171,11 +171,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         helper.attachToRecyclerView(rvContaner);
 
         adapter.setImageOnItemClickListener((view, position) -> {
-            SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));
-            dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
-            dialogFragment.show(getActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction(), null);
+
         });
 
         adapter.setItemTouchCallback(post -> {
