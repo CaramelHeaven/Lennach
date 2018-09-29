@@ -1,12 +1,12 @@
 package com.caramelheaven.lennach.ui.thread;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -31,6 +31,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.datasource.model.File;
 import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
+import com.caramelheaven.lennach.ui.captcha.CaptchaDialogFragment;
 import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
@@ -42,7 +43,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment {
+import static android.support.v4.content.ContextCompat.getSystemService;
+
+public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment, SendMessageListener {
 
     private RecyclerView rvContaner;
     private ProgressBar progressBar;
@@ -73,13 +76,19 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     ThreadPresenter provideThreadPresenter() {
         threadNumber = getArguments().getString("THREAD_ID");
         return new ThreadPresenter(getArguments()
-                .getString("BOARD_NAME"), getArguments().getString("THREAD_ID"));
+                .getString("BOARD_NAME"), threadNumber);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_thread, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        threadNumber = getArguments().getString("THREAD_ID");
     }
 
     @Override
@@ -171,7 +180,11 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         helper.attachToRecyclerView(rvContaner);
 
         adapter.setImageOnItemClickListener((view, position) -> {
-
+            SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));
+            dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+            dialogFragment.show(getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction(), null);
         });
 
         adapter.setItemTouchCallback(post -> {
@@ -217,10 +230,10 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        //      Timber.d("юзер отпустил пальчик и лист не скролица");
+                        Timber.d("юзер отпустил пальчик и лист не скролица");
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-                        //   Timber.d("SCROLL_STATE_SETTING, eto konez lista");
+                        Timber.d("SCROLL_STATE_SETTING, eto konez lista");
                         break;
                 }
             }
@@ -231,15 +244,30 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             }
         });
 
-        coordinatorLayout.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            Rect r = new Rect();
-            //r will be populated with the coordinates of your view that area still visible.
-            coordinatorLayout.getWindowVisibleDisplayFrame(r);
-            int screenHeight = coordinatorLayout.getRootView().getHeight();
-            int heightDiff = coordinatorLayout.getRootView().getHeight() - r.top;
+        coordinatorLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                Rect r = new Rect();
+                //r will be populated with the coordinates of your view that area still visible.
+                coordinatorLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = coordinatorLayout.getRootView().getHeight();
+                int heightDiff = coordinatorLayout.getRootView().getHeight() - r.top;
+                int bottomDiff = coordinatorLayout.getRootView().getHeight() - r.bottom;
+                Timber.d("bottomDif: " + bottomDiff);
+                Timber.d("screenHeight: " + screenHeight);
+                Timber.d("heightDiff: " + heightDiff);
 
-            if (!(heightDiff > screenHeight * 0.15)) {
-                topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
+                if (heightDiff > screenHeight * 0.15) {
+                    Timber.d("OKAY");
+                } else {
+                    Timber.d("screenHeight: " + screenHeight);
+                    Timber.d("heightDiff: " + heightDiff);
+                    topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
+                    /*if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
+                        Timber.d("topSheetBehavior> " + topSheetBehavior.getState());
+                        topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
+                    }*/
+                }
             }
         });
     }
@@ -248,10 +276,13 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                Timber.d("newState: " + newState);
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
+                Timber.d("calling");
+                Timber.d("slideOffset: " + slideOffset);
             }
         });
 
@@ -268,6 +299,8 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //   tvCounter.setText(String.valueOf(start) + "/2000");
+                Timber.d("beforeTextChanged: " + s.toString() + " start: " + start + " count: " + count + " after: " + after);
             }
 
             @Override
@@ -277,10 +310,12 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
             @Override
             public void afterTextChanged(Editable s) {
+                Timber.d("afterTextChanged: " + s.toString());
             }
         });
     }
 
+    @Override
     public void updateThread() {
         etMessage.setText("");
         etMessage.clearFocus();
@@ -292,15 +327,17 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = etMessage.getText().toString();
-                Bundle args = new Bundle();
-                args.putString("MESSAGE", msg);
-                args.putString("THREADNUMB", threadNumber);
 
-                CaptchaDialog captchaDialog = CaptchaDialog.newInstance();
-                captchaDialog.setArguments(args);
+                // hide keyboard
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                String msg = etMessage.getText().toString();
+
+                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance(threadNumber, msg);
                 captchaDialog.setTargetFragment(ThreadFragment.this, 1337);
                 captchaDialog.show(getFragmentManager(), "dialog");
+
             }
         });
 

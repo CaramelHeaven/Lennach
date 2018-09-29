@@ -41,7 +41,4 @@ public interface ApiService {
     @POST("makaba/posting.fcgi?json=1&task=post")
     Single<PostInThread> sendPostInThread(@PartMap Map<String, RequestBody> options);
 
-
-
-
 }
