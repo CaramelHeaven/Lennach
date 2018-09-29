@@ -4,9 +4,9 @@ import com.caramelheaven.lennach.data.datasource.network.LennachApiService;
 import com.caramelheaven.lennach.data.repository.board.BoardLocalRepository;
 import com.caramelheaven.lennach.data.repository.board.BoardRemoteRepository;
 import com.caramelheaven.lennach.domain.BoardRepository;
-import com.caramelheaven.lennach.models.mapper.BoardEntityToBoard;
-import com.caramelheaven.lennach.models.mapper.BoardMapper;
-import com.caramelheaven.lennach.models.mapper.BoardResponseToBoard;
+import com.caramelheaven.lennach.models.mapper.board.BoardEntityToBoard;
+import com.caramelheaven.lennach.models.mapper.board.BoardMapper;
+import com.caramelheaven.lennach.models.mapper.board.BoardResponseToBoard;
 
 import dagger.Module;
 import dagger.Provides;

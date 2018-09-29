@@ -1,11 +1,8 @@
-package com.caramelheaven.lennach.models.mapper;
+package com.caramelheaven.lennach.models.mapper.board;
 
 import com.caramelheaven.lennach.models.database.BoardEntity;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
-import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.models.network.BoardResponse;
-
-import java.util.List;
 
 public class BoardMapper {
     private BoardResponseToBoard boardResponseToBoard;

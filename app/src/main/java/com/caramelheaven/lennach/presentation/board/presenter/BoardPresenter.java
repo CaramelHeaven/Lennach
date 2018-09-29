@@ -52,7 +52,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     private void initConstructor(String boardName) {
         Lennach.getComponentsManager()
                 .plusBoardComponent()
-                .usenetListComponent(new UsenetListModule())
+                .plutUsenetListComponent(new UsenetListModule())
                 .inject(this);
         disposable = new CompositeDisposable();
         cacheUsenets = new LinkedHashSet<>();

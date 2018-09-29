@@ -48,9 +48,9 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         usenetVH.tvTitle.setText(Html.fromHtml(usenetList.get(i).getComment()));
         usenetVH.tvDate.setText("Anon - " + usenetList.get(i).getDate());
 
-        if (usenetList.get(i).getThumbnail() != null) {
+        if (usenetList.get(i).getImage().getThumbnail() != null) {
             Glide.with(usenetVH.ivThread.getContext())
-                    .load("https://2ch.hk" + usenetList.get(i).getThumbnail())
+                    .load("https://2ch.hk" + usenetList.get(i).getImage().getThumbnail())
                     .into(usenetVH.ivThread);
         }
     }

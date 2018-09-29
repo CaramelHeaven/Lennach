@@ -37,10 +37,10 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_image_fullscreen, container, false);
         ImageView ivFullscreen = view.findViewById(R.id.iv_fullscreen);
 
-        Glide.with(ivFullscreen.getContext())
-                .load("https://2ch.hk" + iFiles.get(position).getThumbnail())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-                .into(ivFullscreen);
+//        Glide.with(ivFullscreen.getContext())
+//                .load("https://2ch.hk" + iFiles.get(position).getThumbnail())
+//                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+//                .into(ivFullscreen);
 
         container.addView(view);
         return view;

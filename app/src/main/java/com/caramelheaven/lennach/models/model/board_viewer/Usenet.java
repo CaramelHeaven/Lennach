@@ -3,6 +3,8 @@ package com.caramelheaven.lennach.models.model.board_viewer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.caramelheaven.lennach.models.model.common.DataSet;
+
 import java.util.Objects;
 
 public class Usenet implements Parcelable {
@@ -11,13 +13,7 @@ public class Usenet implements Parcelable {
     private Integer postsCount;
     private String threadNum;
 
-    //image
-    private String displayNameImage;
-    private String nameImage;
-    private Integer sizeImage;
-    private String thumbnail;
-    private Integer widthImage;
-    private Integer heightImage;
+    DataSet image;
 
     //post
     private String comment;
@@ -31,12 +27,7 @@ public class Usenet implements Parcelable {
                 "filesCount=" + filesCount +
                 ", postsCount=" + postsCount +
                 ", threadNum='" + threadNum + '\'' +
-                ", displayNameImage='" + displayNameImage + '\'' +
-                ", nameImage='" + nameImage + '\'' +
-                ", sizeImage=" + sizeImage +
-                ", thumbnail='" + thumbnail + '\'' +
-                ", widthImage=" + widthImage +
-                ", heightImage=" + heightImage +
+                ", image=" + image +
                 ", comment='" + comment + '\'' +
                 ", date='" + date + '\'' +
                 ", name='" + name + '\'' +
@@ -49,12 +40,13 @@ public class Usenet implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usenet usenet = (Usenet) o;
-        return Objects.equals(threadNum, usenet.threadNum);
+        return Objects.equals(threadNum, usenet.threadNum) &&
+                Objects.equals(date, usenet.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(threadNum);
+        return Objects.hash(threadNum, date);
     }
 
     public String getComment() {
@@ -113,54 +105,13 @@ public class Usenet implements Parcelable {
         this.threadNum = threadNum;
     }
 
-    public String getDisplayNameImage() {
-        return displayNameImage;
+    public DataSet getImage() {
+        return image;
     }
 
-    public void setDisplayNameImage(String displayNameImage) {
-        this.displayNameImage = displayNameImage;
+    public void setImage(DataSet image) {
+        this.image = image;
     }
-
-    public String getNameImage() {
-        return nameImage;
-    }
-
-    public void setNameImage(String nameImage) {
-        this.nameImage = nameImage;
-    }
-
-    public Integer getSizeImage() {
-        return sizeImage;
-    }
-
-    public void setSizeImage(Integer sizeImage) {
-        this.sizeImage = sizeImage;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Integer getWidthImage() {
-        return widthImage;
-    }
-
-    public void setWidthImage(Integer widthImage) {
-        this.widthImage = widthImage;
-    }
-
-    public Integer getHeightImage() {
-        return heightImage;
-    }
-
-    public void setHeightImage(Integer heightImage) {
-        this.heightImage = heightImage;
-    }
-
 
     @Override
     public int describeContents() {
@@ -172,12 +123,7 @@ public class Usenet implements Parcelable {
         dest.writeValue(this.filesCount);
         dest.writeValue(this.postsCount);
         dest.writeString(this.threadNum);
-        dest.writeString(this.displayNameImage);
-        dest.writeString(this.nameImage);
-        dest.writeValue(this.sizeImage);
-        dest.writeString(this.thumbnail);
-        dest.writeValue(this.widthImage);
-        dest.writeValue(this.heightImage);
+        dest.writeParcelable(this.image, flags);
         dest.writeString(this.comment);
         dest.writeString(this.date);
         dest.writeString(this.name);
@@ -191,19 +137,14 @@ public class Usenet implements Parcelable {
         this.filesCount = (Integer) in.readValue(Integer.class.getClassLoader());
         this.postsCount = (Integer) in.readValue(Integer.class.getClassLoader());
         this.threadNum = in.readString();
-        this.displayNameImage = in.readString();
-        this.nameImage = in.readString();
-        this.sizeImage = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.thumbnail = in.readString();
-        this.widthImage = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.heightImage = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.image = in.readParcelable(DataSet.class.getClassLoader());
         this.comment = in.readString();
         this.date = in.readString();
         this.name = in.readString();
         this.num = in.readString();
     }
 
-    public static final Parcelable.Creator<Usenet> CREATOR = new Parcelable.Creator<Usenet>() {
+    public static final Creator<Usenet> CREATOR = new Creator<Usenet>() {
         @Override
         public Usenet createFromParcel(Parcel source) {
             return new Usenet(source);

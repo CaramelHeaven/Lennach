@@ -19,6 +19,7 @@ import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
+import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
@@ -95,6 +96,15 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
             @Override
             public void onUsenetClick(int position) {
                 Toast.makeText(getActivity(), "usenet", Toast.LENGTH_SHORT).show();
+                String threadId = boardAdapter.getItemByPosition(position).getNum();
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container,
+                                ThreadFragment.newInstance(getArguments().getString("BOARD_NAME"), threadId))
+                        .addToBackStack(null)
+                        .commit();
+
             }
         });
 

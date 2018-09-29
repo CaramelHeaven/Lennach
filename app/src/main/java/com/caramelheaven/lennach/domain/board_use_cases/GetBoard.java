@@ -15,17 +15,10 @@ public class GetBoard {
     }
 
     public Single<Board> createUseCase(String boardName) {
-        Timber.d("board repository: " + boardRepository.toString());
-        Timber.d("board name: " + boardName + " and page: " + pageIndex);
         return boardRepository.getBoard(boardName, pageIndex);
     }
 
     public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
-        Timber.d("pageIndex: " + pageIndex);
-    }
-
-    public int getPageIndex() {
-        return pageIndex;
     }
 }

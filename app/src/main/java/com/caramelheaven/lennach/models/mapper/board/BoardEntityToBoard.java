@@ -1,6 +1,7 @@
-package com.caramelheaven.lennach.models.mapper;
+package com.caramelheaven.lennach.models.mapper.board;
 
 import com.caramelheaven.lennach.models.database.BoardEntity;
+import com.caramelheaven.lennach.models.mapper.Mapper;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 
 public class BoardEntityToBoard extends Mapper<Board, BoardEntity> {
@@ -12,7 +13,6 @@ public class BoardEntityToBoard extends Mapper<Board, BoardEntity> {
         return boardEntity;
     }
 
-    @Override
     public Board reverseMap(BoardEntity value) {
         final Board board = new Board();
         fillBoard(board, value);

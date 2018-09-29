@@ -2,7 +2,7 @@ package com.caramelheaven.lennach.data.repository.board;
 
 import com.caramelheaven.lennach.data.datasource.network.LennachApiService;
 import com.caramelheaven.lennach.domain.BoardRepository;
-import com.caramelheaven.lennach.models.mapper.BoardMapper;
+import com.caramelheaven.lennach.models.mapper.board.BoardMapper;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.network.BoardResponse;
 
@@ -26,7 +26,8 @@ public class BoardRemoteRepository implements BoardRepository {
 
     @Override
     public Single<Board> getBoard(String boardName, int page) {
-        return apiService.getBoard(boardName, page)
+        return apiService
+                .getBoard(boardName, page)
                 .compose(saveToDatabaseBoard());
     }
 
