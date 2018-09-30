@@ -11,25 +11,24 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_appbar"
+        android:id="@+id/bottom_app_bar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
         android:minHeight="?actionBarSize"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
+        app:fabCradleMargin="4dp"
         app:fabCradleRoundedCornerRadius="26dp"
         app:hideOnScroll="true"
-        app:layout_anchorGravity="center_horizontal"
-        app:layout_scrollFlags="scroll|enterAlways" />
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_menu" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_create_thread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:clickable="true"
-        android:focusable="true"
         android:src="@drawable/ic_create"
-        app:layout_anchor="@+id/bottom_appbar" />
+        app:layout_anchor="@+id/bottom_app_bar" />
 </android.support.design.widget.CoordinatorLayout>
