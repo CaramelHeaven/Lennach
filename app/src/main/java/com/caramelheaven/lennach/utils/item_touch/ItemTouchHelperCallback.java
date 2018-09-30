@@ -4,7 +4,8 @@ import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.caramelheaven.lennach.ui.thread.ThreadAdapter;
+
+import com.caramelheaven.lennach.presentation.thread.ThreadAdapter;
 
 import timber.log.Timber;
 

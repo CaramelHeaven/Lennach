@@ -13,4 +13,16 @@ public class CaptchaResponse {
     @SerializedName("type")
     @Expose
     private String type;
+
+    public String getId() {
+        return id;
+    }
+
+    public Integer getResult() {
+        return result;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

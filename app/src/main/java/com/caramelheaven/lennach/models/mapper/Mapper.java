@@ -2,6 +2,9 @@ package com.caramelheaven.lennach.models.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 public abstract class Mapper<T1, T2> {
     public abstract T2 map(T1 value);

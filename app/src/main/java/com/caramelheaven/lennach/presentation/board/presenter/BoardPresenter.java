@@ -93,7 +93,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
 
     public void loadNextPage() {
         Timber.d("current: " + currentPage + " totaL: " + totalPage);
-        if (currentPage != totalPage) {
+        if (currentPage != totalPage - 1) {
             currentPage += 1;
             getBoard.setPageIndex(currentPage);
             loadThreads();

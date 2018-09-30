@@ -35,8 +35,6 @@ public interface ApiService {
                                           @Query("thread") String threadId,
                                           @Query("num") String numId);
 
-
-
     @Multipart
     @POST("makaba/posting.fcgi?json=1&task=post")
     Single<PostInThread> sendPostInThread(@PartMap Map<String, RequestBody> options);

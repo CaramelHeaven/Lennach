@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread_viewer.Post;
 import com.caramelheaven.lennach.presentation.common.AdapterMethods;
+import com.caramelheaven.lennach.utils.item_touch.ItemTouchCallback;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -24,6 +25,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Post> postList;
     private Set<Post> postsUnique;
+
+    private ItemTouchCallback<Post> itemTouchCallback;
 
     public ThreadAdapter(List<Post> postList) {
         this.postList = postList;
@@ -70,7 +73,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return postList.get(position);
     }
 
-    private class PostVH extends RecyclerView.ViewHolder {
+    public class PostVH extends RecyclerView.ViewHolder {
 
         TextView tvDescription, tvDate, tvCountPost;
         ImageView ivPicture;
@@ -82,5 +85,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             tvCountPost = itemView.findViewById(R.id.tv_count_post);
             ivPicture = itemView.findViewById(R.id.iv_picture_thread);
         }
+    }
+
+    public void sendCallbackFromSwipe(int position) {
+        itemTouchCallback.sendAnswer(postList.get(position));
+    }
+
+    public void setItemTouchCallback(ItemTouchCallback<Post> itemTouchCallback) {
+        this.itemTouchCallback = itemTouchCallback;
     }
 }
