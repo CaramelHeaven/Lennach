@@ -27,6 +27,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread_viewer.Post;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.captcha.CaptchaDialogFragment;
+import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
@@ -188,6 +189,8 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "get Catalog", Toast.LENGTH_SHORT).show();
+                ImageViewerDialogFragment fragment = ImageViewerDialogFragment.newInstance();
+                fragment.show(getFragmentManager(), null);
             }
         });
     }
