@@ -3,8 +3,17 @@ package com.caramelheaven.lennach.presentation.board;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.Fade;
+import android.support.transition.Slide;
+import android.support.transition.TransitionInflater;
+import android.support.transition.TransitionSet;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +28,7 @@ import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
+import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
@@ -86,11 +96,33 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
             @Override
             public void onImageClick(int position, ImageView image) {
                 Toast.makeText(getActivity(), "image", Toast.LENGTH_SHORT).show();
+                Fragment previosFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                ImageViewerDialogFragment nextFragment = ImageViewerDialogFragment.newInstance(boardAdapter.getUsenetList());
+                nextFragment.show(getActivity().getSupportFragmentManager(), null);
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                Fade exitFade = new Fade();
+//                exitFade.setDuration(300);
+//                previosFragment.setExitTransition(exitFade);
+//
+//                // 2. Shared Elements Transition
+//                TransitionSet enterTransitionSet = new TransitionSet();
+//                enterTransitionSet.addTransition(TransitionInflater.from(getActivity()).inflateTransition(android.R.transition.move));
+//                enterTransitionSet.setDuration(300);
+//                enterTransitionSet.setStartDelay(300);
+//                nextFragment.setSharedElementEnterTransition(enterTransitionSet);
+//
+//                // 3. Enter Transition for New Fragment
+//                Fade enterFade = new Fade();
+//                enterFade.setStartDelay(300 + 300);
+//                enterFade.setDuration(300);
+//                nextFragment.setEnterTransition(enterFade);
+//                transaction.addSharedElement(image, image.getTransitionName());
+//               // transaction.add(R.id.fragment_container, nextFragment);
+//             //   transaction.commitAllowingStateLoss();
+//                //transaction.commitAllowingStateLoss();
+//               nextFragment.show(transaction, null);
 
-        /*        SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, boardAdapter.getUsenetList());
-                dialogFragment.show(getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction(), null);*/
+                // nextFragment.show(getActivity().getSupportFragmentManager(), null);
             }
 
             @Override

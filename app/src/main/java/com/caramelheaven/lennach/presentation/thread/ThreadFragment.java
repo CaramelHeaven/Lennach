@@ -189,8 +189,8 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "get Catalog", Toast.LENGTH_SHORT).show();
-                ImageViewerDialogFragment fragment = ImageViewerDialogFragment.newInstance();
-                fragment.show(getFragmentManager(), null);
+                //ImageViewerDialogFragment fragment = ImageViewerDialogFragment.newInstance();
+                //fragment.show(getFragmentManager(), null);
             }
         });
     }
