@@ -27,6 +27,9 @@ public class ImageViewPager extends PagerAdapter {
     private FragmentActivity fragmentActivity;
     private List<Usenet> usenetList;
 
+    private float saveStartedLocation = 0f;
+    private float currentStateLocation = 0f;
+
     public ImageViewPager(FragmentActivity fragmentActivity, List<Usenet> usenetList) {
         this.fragmentActivity = fragmentActivity;
         this.usenetList = usenetList;
@@ -52,25 +55,29 @@ public class ImageViewPager extends PagerAdapter {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Timber.d("pressed: " + event.getRawY());
-                        //saveStartedLocation = event.getRawY();
+                        saveStartedLocation = event.getRawY();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         Timber.d("test: " + event.getRawY() + " getRawX: " + event.getRawX());
-                        if (event.getRawX() > 500f) {
-                            Timber.d("event > 500f");
-                            // vpGallery.setCurrentItem(1, true);
+                        if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
+                            currentStateLocation = event.getRawY() - saveStartedLocation;
+                            v.animate()
+                                    .y(currentStateLocation)
+                                    .setDuration(0)
+                                    .start();
                         }
                         break;
                     case MotionEvent.TOOL_TYPE_FINGER:
                         Timber.d("finger: " + event.getRawY() + " dx " + event.getRawX());
-
-                        Timber.d("entered");
-                        v.animate()
-                                .y(0f)
-                                .setDuration(200)
-                                .start();
-
-                        Timber.d("simple: " + event.getX() + " y: " + event.getY());
+                        if (currentStateLocation > 250f) {
+                            Timber.d("KEKKEKEKEKEK");
+                        } else {
+                            Timber.d("entered");
+                            v.animate()
+                                    .y(0f)
+                                    .setDuration(200)
+                                    .start();
+                        }
                         break;
                     case MotionEvent.ACTION_CANCEL:
                         Timber.d("Action Cancel: " + event.getX() + " y: " + event.getY());

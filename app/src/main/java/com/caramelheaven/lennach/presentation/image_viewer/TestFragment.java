@@ -28,7 +28,6 @@ public class TestFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_fullscreen, container, false);
 
-
         return view;
     }
 
@@ -38,6 +37,7 @@ public class TestFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rlContainer = view.findViewById(R.id.rl_container);
+
     }
 
     @Override
@@ -49,8 +49,8 @@ public class TestFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        rlContainer.setBackgroundColor(Color.parseColor("#33000000"));
+        // rlContainer.setBackgroundColor(Color.parseColor("#33000000"));
 
-        rlContainer.setBackgroundDrawable(rlContainer.getBackground());
+        //rlContainer.setBackgroundDrawable(rlContainer.getBackground());
     }
 }

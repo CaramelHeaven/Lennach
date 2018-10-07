@@ -29,6 +29,7 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerDialogFragment;
+import com.caramelheaven.lennach.presentation.image_viewer.TestFragment;
 import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
@@ -97,8 +98,15 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
             public void onImageClick(int position, ImageView image) {
                 Toast.makeText(getActivity(), "image", Toast.LENGTH_SHORT).show();
                 Fragment previosFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                ImageViewerDialogFragment nextFragment = ImageViewerDialogFragment.newInstance(boardAdapter.getUsenetList());
-                nextFragment.show(getActivity().getSupportFragmentManager(), null);
+//                ImageViewerDialogFragment nextFragment = ImageViewerDialogFragment.newInstance(boardAdapter.getUsenetList());
+//                nextFragment.show(getActivity().getSupportFragmentManager(), null);
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, TestFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
 //                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 //                Fade exitFade = new Fade();
 //                exitFade.setDuration(300);

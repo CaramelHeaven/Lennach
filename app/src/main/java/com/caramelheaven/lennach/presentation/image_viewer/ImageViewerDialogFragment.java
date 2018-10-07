@@ -85,8 +85,6 @@ public class ImageViewerDialogFragment extends MvpAppCompatDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.fragment_dialog_rounded);
-        //rlContainer.setBackgroundColor(Color.parseColor("#33000000"));
         if (getDialog() != null) {
             Timber.d("dialog");
             getDialog().getWindow().setBackgroundDrawable(rlContainer.getBackground());

@@ -5,6 +5,7 @@
     <color name="colorAccent">#442C2E</color>
 
     <color name="colorBackground">#fef8f7</color>
+    <color name="transp">#80000000</color>
 
     <color name="colorBlack">#212121</color>
     <color name="colorGray">#FFD8D8D8</color>
