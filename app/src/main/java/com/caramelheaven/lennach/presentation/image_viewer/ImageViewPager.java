@@ -26,9 +26,9 @@ public class ImageViewPager extends PagerAdapter {
 
     private FragmentActivity fragmentActivity;
     private List<Usenet> usenetList;
+    private ImageViewerCallback imageViewerCallback;
 
-    private float saveStartedLocation = 0f;
-    private float currentStateLocation = 0f;
+    private float currentCloseLocation = 0f, saveStartedLocation = 0f;
 
     public ImageViewPager(FragmentActivity fragmentActivity, List<Usenet> usenetList) {
         this.fragmentActivity = fragmentActivity;
@@ -43,56 +43,53 @@ public class ImageViewPager extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_image_fullscreen, container, false);
         ImageView ivPicture = view.findViewById(R.id.iv_picture_thread);
 
+        Timber.d("calling instantiateItem");
         Glide.with(ivPicture.getContext())
                 .load(Constants.BASE_URL + usenetList.get(position).getImage().getThumbnail())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(ivPicture);
 
-        ivPicture.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+        ivPicture.setOnTouchListener((v, event) -> {
 
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        Timber.d("pressed: " + event.getRawY());
-                        saveStartedLocation = event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        Timber.d("test: " + event.getRawY() + " getRawX: " + event.getRawX());
-                        if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
-                            currentStateLocation = event.getRawY() - saveStartedLocation;
-                            v.animate()
-                                    .y(currentStateLocation)
-                                    .setDuration(0)
-                                    .start();
-                        }
-                        break;
-                    case MotionEvent.TOOL_TYPE_FINGER:
-                        Timber.d("finger: " + event.getRawY() + " dx " + event.getRawX());
-                        if (currentStateLocation > 250f) {
-                            Timber.d("KEKKEKEKEKEK");
-                        } else {
-                            Timber.d("entered");
-                            v.animate()
-                                    .y(0f)
-                                    .setDuration(200)
-                                    .start();
-                        }
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                        Timber.d("Action Cancel: " + event.getX() + " y: " + event.getY());
-                        break;
-                    case MotionEvent.ACTION_SCROLL:
-                        Timber.d("Action SCROLL: " + event.getX() + " y: " + event.getY());
-                        break;
-                    case MotionEvent.AXIS_SCROLL:
-                        Timber.d("Action AXIS SCROLL: " + event.getX() + " y: " + event.getY());
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    Timber.d("pressed: " + event.getRawY());
+                    saveStartedLocation = event.getRawY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
+                        currentCloseLocation = event.getRawY() - saveStartedLocation;
+                        v.animate()
+                                .y(currentCloseLocation)
+                                .setDuration(0)
+                                .start();
+                    }
+                    break;
+                case MotionEvent.TOOL_TYPE_FINGER:
+                    Timber.d("finger: " + event.getRawY() + " dx " + event.getRawX());
+                    if (currentCloseLocation > 300f || Math.abs(currentCloseLocation) > 300f) {
+                        imageViewerCallback.close(true);
+                    } else {
+                        Timber.d("entered");
+                        v.animate()
+                                .y(0f)
+                                .setDuration(200)
+                                .start();
+                    }
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    Timber.d("Action Cancel: " + event.getX() + " y: " + event.getY());
+                    break;
+                case MotionEvent.ACTION_SCROLL:
+                    Timber.d("Action SCROLL: " + event.getX() + " y: " + event.getY());
+                    break;
+                case MotionEvent.AXIS_SCROLL:
+                    Timber.d("Action AXIS SCROLL: " + event.getX() + " y: " + event.getY());
+                    break;
+                default:
+                    return false;
             }
+            return true;
         });
 
         container.addView(view);
@@ -112,5 +109,9 @@ public class ImageViewPager extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
+    }
+
+    public void setImageViewerCallback(ImageViewerCallback imageViewerCallback) {
+        this.imageViewerCallback = imageViewerCallback;
     }
 }

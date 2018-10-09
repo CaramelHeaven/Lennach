@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.common.AdapterMethods;
@@ -51,6 +53,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (usenetList.get(i).getImage().getThumbnail() != null) {
             Glide.with(usenetVH.ivThread.getContext())
                     .load("https://2ch.hk" + usenetList.get(i).getImage().getThumbnail())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(usenetVH.ivThread);
         }
     }

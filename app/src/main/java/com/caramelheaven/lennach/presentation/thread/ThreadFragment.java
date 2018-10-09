@@ -27,7 +27,6 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread_viewer.Post;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.captcha.CaptchaDialogFragment;
-import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;

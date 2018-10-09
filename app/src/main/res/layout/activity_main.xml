@@ -18,7 +18,6 @@
         android:minHeight="?actionBarSize"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:fabCradleMargin="4dp"
         app:fabCradleRoundedCornerRadius="26dp"
         app:hideOnScroll="true"
         app:layout_scrollFlags="scroll|enterAlways"
