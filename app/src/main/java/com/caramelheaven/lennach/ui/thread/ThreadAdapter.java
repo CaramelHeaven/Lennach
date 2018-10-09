@@ -1,11 +1,14 @@
 package com.caramelheaven.lennach.ui.thread;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,7 +61,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (posts.get(i).getFiles().size() != 0) {
             Glide.with(postVH.ivPicture.getContext())
                     .load("https://2ch.hk" + posts.get(i).getFiles().get(0).getPath())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .apply(new RequestOptions().override(150, 150))
                     .into(postVH.ivPicture);
         }
     }
@@ -74,6 +77,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (posts.size() != 0)
             posts.clear();
         posts.addAll(postsUnique);
+        postsUnique.clear();
         notifyDataSetChanged();
     }
 

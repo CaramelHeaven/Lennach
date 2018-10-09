@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -28,13 +25,10 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.datasource.model.File;
 import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.ui.base.BaseFragment;
-import com.caramelheaven.lennach.ui.slider.SliderImageDialogFragment;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.ui.thread.presenter.ThreadView;
-import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
 import java.util.ArrayList;
@@ -42,7 +36,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment {
+public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, BaseFragment, SendMessageListener {
 
     private RecyclerView rvContaner;
     private ProgressBar progressBar;
@@ -52,6 +46,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
     private CoordinatorLayout coordinatorLayout;
     private ImageButton btnSend, btnCatalog;
     private TextView tvCounter;
+    private String threadNumber;
 
     private ThreadAdapter adapter;
     private StringBuilder cacheAnswer;
@@ -60,7 +55,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         Bundle args = new Bundle();
         args.putString("BOARD_NAME", boardName);
         args.putString("THREAD_ID", idThread);
-
         ThreadFragment fragment = new ThreadFragment();
         fragment.setArguments(args);
         return fragment;
@@ -71,14 +65,21 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
     @ProvidePresenter
     ThreadPresenter provideThreadPresenter() {
+        threadNumber = getArguments().getString("THREAD_ID");
         return new ThreadPresenter(getArguments()
-                .getString("BOARD_NAME"), getArguments().getString("THREAD_ID"));
+                .getString("BOARD_NAME"), threadNumber);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_thread, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        threadNumber = getArguments().getString("THREAD_ID");
     }
 
     @Override
@@ -99,7 +100,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
 
 
         provideRecyclerAndAdapter();
-        provideEtMessageListeners();
         provideScrollBehavior();
         provideTopSheet();
         provideEtMessageListeners();
@@ -165,16 +165,12 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         adapter = new ThreadAdapter(new ArrayList<>());
         rvContaner.setAdapter(adapter);
 
-        ItemTouchHelperCallback callback = new ItemTouchHelperCallback(adapter);
-        ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(rvContaner);
-
         adapter.setImageOnItemClickListener((view, position) -> {
-            SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));
-            dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
-            dialogFragment.show(getActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction(), null);
+//            SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, mappingFiles(adapter.getItems()));
+//            dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+//            dialogFragment.show(getActivity()
+//                    .getSupportFragmentManager()
+//                    .beginTransaction(), null);
         });
 
         adapter.setItemTouchCallback(post -> {
@@ -182,7 +178,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
             topSheetBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
-            String answerToPost = ">>" + post.getNum() + "\n";
+            String answerToPost = "";
             if (cacheAnswer.length() != 0) {
                 cacheAnswer.setLength(0);
                 cacheAnswer.append(etMessage.getText().toString()).append("\n").append(answerToPost);
@@ -193,16 +189,6 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
             etMessage.setText(cacheAnswer.toString());
             etMessage.setSelection(cacheAnswer.toString().length());
         });
-    }
-
-    private ArrayList<File> mappingFiles(List<Post> postsHelpers) {
-        ArrayList<File> fileList = new ArrayList<>();
-        for (Post post : postsHelpers) {
-            if (post.getFiles().size() != 0) {
-                fileList.addAll(post.getFiles());
-            }
-        }
-        return fileList;
     }
 
     private void provideScrollBehavior() {
@@ -289,7 +275,7 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-             //   tvCounter.setText(String.valueOf(start) + "/2000");
+                //   tvCounter.setText(String.valueOf(start) + "/2000");
                 Timber.d("beforeTextChanged: " + s.toString() + " start: " + start + " count: " + count + " after: " + after);
             }
 
@@ -305,11 +291,29 @@ public class ThreadFragment extends MvpAppCompatFragment implements ThreadView, 
         });
     }
 
+    @Override
+    public void updateThread() {
+        etMessage.setText("");
+        etMessage.clearFocus();
+        topSheetBehavior.setState(TopSheetBehavior.STATE_HIDDEN);
+        presenter.loadPosts();
+    }
+
     private void provideButtons() {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Send!", Toast.LENGTH_SHORT).show();
+
+                // hide keyboard
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                String msg = etMessage.getText().toString();
+
+//                CaptchaDialogFragment captchaDialog = CaptchaDialogFragment.newInstance(threadNumber, msg);
+//                captchaDialog.setTargetFragment(ThreadFragment.this, 1337);
+//                captchaDialog.show(getFragmentManager(), "dialog");
+
             }
         });
 

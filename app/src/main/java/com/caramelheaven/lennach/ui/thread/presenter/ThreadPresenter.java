@@ -2,25 +2,14 @@ package com.caramelheaven.lennach.ui.thread.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.datasource.database.LennachDatabase;
-import com.caramelheaven.lennach.datasource.database.entity.helpers.PostsHelper;
-import com.caramelheaven.lennach.datasource.database.entity.iFile;
-import com.caramelheaven.lennach.datasource.database.entity.iPost;
-import com.caramelheaven.lennach.datasource.model.File;
-import com.caramelheaven.lennach.datasource.model.Post;
 import com.caramelheaven.lennach.datasource.network.ApiService;
 import com.caramelheaven.lennach.datasource.repository.ThreadRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
@@ -43,7 +32,6 @@ public class ThreadPresenter extends MvpPresenter<ThreadView> {
         this.boardName = boardName;
         this.idThread = idThread;
         disposable = new CompositeDisposable();
-        Lennach.getComponent().injectThreadPresenter(this);
     }
 
     @Override

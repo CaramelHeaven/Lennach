@@ -2,8 +2,7 @@ package com.caramelheaven.lennach;
 
 import android.app.Application;
 
-import com.caramelheaven.lennach.datasource.di.AppComponent;
-import com.caramelheaven.lennach.datasource.di.DaggerAppComponent;
+import com.caramelheaven.lennach.di.ComponentsManager;
 
 import timber.log.Timber;
 
@@ -12,8 +11,8 @@ import timber.log.Timber;
  */
 public class Lennach extends Application {
 
-    private static AppComponent component;
     private static Lennach lennach;
+    private static ComponentsManager componentsManager;
 
     @Override
     public void onCreate() {
@@ -21,12 +20,11 @@ public class Lennach extends Application {
         Timber.plant(new Timber.DebugTree());
         lennach = this;
 
-        component = DaggerAppComponent.builder()
-                .methodForSettingAppModule(lennach)
-                .letsBuildThisComponent();
+        componentsManager = new ComponentsManager();
+        componentsManager.getAppComponent();
     }
 
-    public static AppComponent getComponent() {
-        return component;
+    public static ComponentsManager getComponentsManager() {
+        return componentsManager;
     }
 }
