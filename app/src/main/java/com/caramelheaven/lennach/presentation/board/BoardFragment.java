@@ -34,7 +34,6 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerFragment;
-import com.caramelheaven.lennach.presentation.image_viewer.TestFragment;
 import com.caramelheaven.lennach.presentation.main.MainActivity;
 import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.HideImageViewer;

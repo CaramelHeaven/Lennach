@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.presentation.image_viewer;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionInflater;
@@ -16,6 +17,7 @@ import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerPresenter;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerView;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.HideImageViewer;
 import com.caramelheaven.lennach.utils.HideMainBottomBar;
 
@@ -60,7 +62,7 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //  rlContainer = view.findViewById(R.id.rl_container);
+        rlContainer = view.findViewById(R.id.rl_container);
         vpGallery = view.findViewById(R.id.vp_gallery);
         List<Usenet> usenets = getArguments().getParcelableArrayList("IMAGES");
         int position = getArguments().getInt("POS");
@@ -68,6 +70,7 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
         imageViewPager = new ImageViewPager(getActivity(), usenets);
         vpGallery.setAdapter(imageViewPager);
 
+        rlContainer.getBackground().setAlpha(255);
         vpGallery.setCurrentItem(position);
         vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -85,12 +88,29 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
             }
         });
 
-        imageViewPager.setImageViewerCallback(flag -> {
-            presenter.closeGallery(true);
-            getActivity()
+        imageViewPager.setImageViewerCallback(new ImageViewerCallback() {
+            @Override
+            public void close(boolean flag) {
+                presenter.closeGallery(true);
+            /*getActivity()
                     .getSupportFragmentManager()
-                    .popBackStack();
+                    .popBackStack();*/
+            }
+
+            @Override
+            public void passAlphaCounter(float moving) {
+                if (moving == Constants.BLACK_BACKGROUND) {
+                    rlContainer.getBackground().setAlpha(255);
+                } else {
+                    Timber.d("moving: " + moving);
+                    Timber.d("convering: " + Math.round(moving) / 2);
+                    rlContainer.getBackground().setAlpha(255 - (Math.round(moving) / 2));
+                }
+            }
         });
+    }
+
+    private void updateAlphaUI() {
     }
 
     @Override

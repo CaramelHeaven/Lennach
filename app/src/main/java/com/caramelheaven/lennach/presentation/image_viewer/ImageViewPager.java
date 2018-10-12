@@ -1,5 +1,6 @@
 package com.caramelheaven.lennach.presentation.image_viewer;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -59,6 +60,9 @@ public class ImageViewPager extends PagerAdapter {
                 case MotionEvent.ACTION_MOVE:
                     if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
                         currentCloseLocation = event.getRawY() - saveStartedLocation;
+                        if (Math.abs(currentCloseLocation) < 130) {
+                            imageViewerCallback.passAlphaCounter(Math.abs(currentCloseLocation));
+                        }
                         v.animate()
                                 .y(currentCloseLocation)
                                 .setDuration(0)
@@ -71,6 +75,7 @@ public class ImageViewPager extends PagerAdapter {
                         imageViewerCallback.close(true);
                     } else {
                         Timber.d("entered");
+                        imageViewerCallback.passAlphaCounter(Constants.BLACK_BACKGROUND);
                         v.animate()
                                 .y(0f)
                                 .setDuration(200)
