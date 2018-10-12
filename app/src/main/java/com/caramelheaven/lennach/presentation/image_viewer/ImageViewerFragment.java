@@ -16,6 +16,7 @@ import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerPresenter;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerView;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.HideImageViewer;
 import com.caramelheaven.lennach.utils.HideMainBottomBar;
 
@@ -28,7 +29,6 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
 
     private RelativeLayout rlContainer;
     private ViewPager vpGallery;
-    private HideImageViewer hideImageViewer;
 
     private ImageViewPager imageViewPager;
 
@@ -60,7 +60,7 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //  rlContainer = view.findViewById(R.id.rl_container);
+        rlContainer = view.findViewById(R.id.rl_container);
         vpGallery = view.findViewById(R.id.vp_gallery);
         List<Usenet> usenets = getArguments().getParcelableArrayList("IMAGES");
         int position = getArguments().getInt("POS");
@@ -68,7 +68,10 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
         imageViewPager = new ImageViewPager(getActivity(), usenets);
         vpGallery.setAdapter(imageViewPager);
 
+
+        rlContainer.getBackground().setAlpha(255);
         vpGallery.setCurrentItem(position);
+
         vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -85,11 +88,24 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
             }
         });
 
-        imageViewPager.setImageViewerCallback(flag -> {
-            presenter.closeGallery(true);
-            getActivity()
-                    .getSupportFragmentManager()
-                    .popBackStack();
+        imageViewPager.setImageViewerCallback(new ImageViewerCallback() {
+            @Override
+            public void close(boolean flag) {
+                presenter.closeGallery(true);
+                getActivity()
+                        .getSupportFragmentManager()
+                        .popBackStack();
+            }
+
+            @Override
+            public void passAlphaCounter(float data) {
+                Timber.d("data: " + data);
+                if (data == Constants.BLACK_BACKGROUND) {
+                    rlContainer.getBackground().setAlpha(255);
+                } else {
+                    rlContainer.getBackground().setAlpha(255 - (Math.round(data) / 2));
+                }
+            }
         });
     }
 

@@ -9,6 +9,7 @@ public class DataSet implements Parcelable {
     private String nameImage;
     private Integer sizeImage;
     private String thumbnail;
+    private String path;
     private Integer widthImage;
     private Integer heightImage;
 
@@ -19,6 +20,7 @@ public class DataSet implements Parcelable {
                 ", nameImage='" + nameImage + '\'' +
                 ", sizeImage=" + sizeImage +
                 ", thumbnail='" + thumbnail + '\'' +
+                ", path='" + path + '\'' +
                 ", widthImage=" + widthImage +
                 ", heightImage=" + heightImage +
                 '}';
@@ -72,6 +74,13 @@ public class DataSet implements Parcelable {
         this.heightImage = heightImage;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     @Override
     public int describeContents() {
@@ -84,6 +93,7 @@ public class DataSet implements Parcelable {
         dest.writeString(this.nameImage);
         dest.writeValue(this.sizeImage);
         dest.writeString(this.thumbnail);
+        dest.writeString(this.path);
         dest.writeValue(this.widthImage);
         dest.writeValue(this.heightImage);
     }
@@ -96,11 +106,12 @@ public class DataSet implements Parcelable {
         this.nameImage = in.readString();
         this.sizeImage = (Integer) in.readValue(Integer.class.getClassLoader());
         this.thumbnail = in.readString();
+        this.path = in.readString();
         this.widthImage = (Integer) in.readValue(Integer.class.getClassLoader());
         this.heightImage = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<DataSet> CREATOR = new Parcelable.Creator<DataSet>() {
+    public static final Creator<DataSet> CREATOR = new Creator<DataSet>() {
         @Override
         public DataSet createFromParcel(Parcel source) {
             return new DataSet(source);

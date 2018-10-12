@@ -9,4 +9,5 @@ public class Constants {
     public static final int TOO_FAST_PUBLICATION = -8;
     public static final String LOAD_CAPTCHA_IMAGE = "https://2ch.hk/api/captcha/2chaptcha/image/";
 
+    public static final float BLACK_BACKGROUND = 400;
 }

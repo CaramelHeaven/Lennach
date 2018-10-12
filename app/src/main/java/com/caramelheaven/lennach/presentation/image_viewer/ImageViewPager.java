@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.utils.Constants;
@@ -43,10 +44,11 @@ public class ImageViewPager extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_image_fullscreen, container, false);
         ImageView ivPicture = view.findViewById(R.id.iv_picture_thread);
 
-        Timber.d("calling instantiateItem");
         Glide.with(ivPicture.getContext())
-                .load(Constants.BASE_URL + usenetList.get(position).getImage().getThumbnail())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                .load(Constants.BASE_URL + usenetList.get(position).getImage().getPath())
+                .apply(new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontTransform())
                 .into(ivPicture);
 
         ivPicture.setOnTouchListener((v, event) -> {
@@ -59,6 +61,9 @@ public class ImageViewPager extends PagerAdapter {
                 case MotionEvent.ACTION_MOVE:
                     if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
                         currentCloseLocation = event.getRawY() - saveStartedLocation;
+                        if ((Math.abs(currentCloseLocation) > 50) && (Math.abs(currentCloseLocation) < 180)) {
+                            imageViewerCallback.passAlphaCounter(Math.abs(currentCloseLocation) - 50);
+                        }
                         v.animate()
                                 .y(currentCloseLocation)
                                 .setDuration(0)
@@ -66,32 +71,21 @@ public class ImageViewPager extends PagerAdapter {
                     }
                     break;
                 case MotionEvent.TOOL_TYPE_FINGER:
-                    Timber.d("finger: " + event.getRawY() + " dx " + event.getRawX());
-                    if (currentCloseLocation > 300f || Math.abs(currentCloseLocation) > 300f) {
+                    if (Math.abs(currentCloseLocation) > 300f) {
                         imageViewerCallback.close(true);
                     } else {
-                        Timber.d("entered");
+                        imageViewerCallback.passAlphaCounter(Constants.BLACK_BACKGROUND);
                         v.animate()
                                 .y(0f)
                                 .setDuration(200)
                                 .start();
                     }
                     break;
-                case MotionEvent.ACTION_CANCEL:
-                    Timber.d("Action Cancel: " + event.getX() + " y: " + event.getY());
-                    break;
-                case MotionEvent.ACTION_SCROLL:
-                    Timber.d("Action SCROLL: " + event.getX() + " y: " + event.getY());
-                    break;
-                case MotionEvent.AXIS_SCROLL:
-                    Timber.d("Action AXIS SCROLL: " + event.getX() + " y: " + event.getY());
-                    break;
                 default:
                     return false;
             }
             return true;
         });
-
         container.addView(view);
         return view;
     }
