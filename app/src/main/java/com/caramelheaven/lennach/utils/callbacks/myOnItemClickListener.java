@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.utils;
+package com.caramelheaven.lennach.utils.callbacks;
 
 public interface myOnItemClickListener {
     void onItemClick(int position);

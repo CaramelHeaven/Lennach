@@ -8,7 +8,6 @@ import com.caramelheaven.lennach.domain.board_use_cases.GetBoard;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.board.Channel;
-import com.caramelheaven.lennach.utils.HideImageViewer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

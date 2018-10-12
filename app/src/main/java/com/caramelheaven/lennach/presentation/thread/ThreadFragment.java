@@ -29,6 +29,7 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.captcha.CaptchaDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
+import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
@@ -50,6 +51,7 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
 
     private ThreadAdapter threadAdapter;
     private StringBuilder cacheAnswer;
+    private BottomBarHandler bottomBarHandler;
 
     @InjectPresenter
     ThreadPresenter presenter;
@@ -98,6 +100,14 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         initTopSheet();
         initEtMessageListeners();
         initButtons();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof BottomBarHandler) {
+            bottomBarHandler = (BottomBarHandler) getActivity();
+        }
     }
 
     @Override
@@ -237,7 +247,6 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
                 InputMethodManager imm = (InputMethodManager)
                         getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
-
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
@@ -255,7 +264,11 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    bottomBarHandler.scrollBehavior("HIDE");
+                } else {
+                    bottomBarHandler.scrollBehavior("SHOW");
+                }
             }
         });
 

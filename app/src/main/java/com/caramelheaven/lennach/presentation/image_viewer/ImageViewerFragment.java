@@ -3,7 +3,6 @@ package com.caramelheaven.lennach.presentation.image_viewer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionInflater;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +16,7 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerPresenter;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerView;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.HideImageViewer;
-import com.caramelheaven.lennach.utils.HideMainBottomBar;
+import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +47,6 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
     }
 
     @Nullable
@@ -64,14 +61,40 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
         vpGallery = view.findViewById(R.id.vp_gallery);
         List<Usenet> usenets = getArguments().getParcelableArrayList("IMAGES");
         int position = getArguments().getInt("POS");
-        Timber.d("posotion: " + position);
         imageViewPager = new ImageViewPager(getActivity(), usenets);
         vpGallery.setAdapter(imageViewPager);
 
-
         rlContainer.getBackground().setAlpha(255);
         vpGallery.setCurrentItem(position);
+        provideViewPager();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    protected void initRecyclerAndAdapter() {
+
+    }
+
+    private void provideViewPager() {
         vpGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -107,26 +130,5 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
                 }
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    protected void initRecyclerAndAdapter() {
-
     }
 }
