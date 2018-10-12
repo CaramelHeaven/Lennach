@@ -188,9 +188,9 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     private void startViewerImages(int position, ImageView image) {
         ImageViewerFragment currentGallery = ImageViewerFragment.newInstance(position, boardAdapter.getUsenetList());
         hideMainBottomBar.hide(true);
+
         getFragmentManager()
                 .beginTransaction()
-                .addSharedElement(image, ViewCompat.getTransitionName(image))
                 .addToBackStack(null)
                 .add(R.id.fragment_container, currentGallery)
                 .commit();

@@ -1,5 +1,7 @@
 package com.caramelheaven.lennach.presentation.image_viewer;
 
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -9,9 +11,16 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
@@ -51,7 +60,6 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
     }
 
     @Nullable
@@ -65,6 +73,9 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
         rlContainer = view.findViewById(R.id.rl_container);
         vpGallery = view.findViewById(R.id.vp_gallery);
         List<Usenet> usenets = getArguments().getParcelableArrayList("IMAGES");
+
+        Timber.d("request: " + Constants.BASE_URL + usenets.get(0).getImage().getThumbnail());
+
         int position = getArguments().getInt("POS");
         Timber.d("posotion: " + position);
         imageViewPager = new ImageViewPager(getActivity(), usenets);

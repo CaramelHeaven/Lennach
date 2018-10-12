@@ -60,8 +60,8 @@ public class ImageViewPager extends PagerAdapter {
                 case MotionEvent.ACTION_MOVE:
                     if (event.getAction() != MotionEvent.TOOL_TYPE_FINGER) {
                         currentCloseLocation = event.getRawY() - saveStartedLocation;
-                        if (Math.abs(currentCloseLocation) < 130) {
-                            imageViewerCallback.passAlphaCounter(Math.abs(currentCloseLocation));
+                        if ((Math.abs(currentCloseLocation) > 50) && (Math.abs(currentCloseLocation) < 180)) {
+                            imageViewerCallback.passAlphaCounter(Math.abs(currentCloseLocation - 50));
                         }
                         v.animate()
                                 .y(currentCloseLocation)
