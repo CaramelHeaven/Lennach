@@ -6,6 +6,8 @@ import com.caramelheaven.lennach.models.mapper.captcha.CaptchaMapper;
 import com.caramelheaven.lennach.models.model.common.Captcha;
 import com.caramelheaven.lennach.models.model.common.Message;
 
+import java.io.File;
+
 import io.reactivex.Single;
 
 public class CaptchaRemoteRepository implements CaptchaRepository {
@@ -25,10 +27,10 @@ public class CaptchaRemoteRepository implements CaptchaRepository {
     }
 
     @Override
-    public Single<Message> getMessage(String board, String thread, String message, String captchaId,
+    public Single<Message> getMessage(String board, String thread, String message, String filePath, String captchaId,
                                       String captchaValue) {
         return apiService
-                .sendMessage(captchaMessageMapper.mapData(board, thread, message, captchaId, captchaValue))
+                .sendMessage(captchaMessageMapper.mapData(board, thread, message, filePath,captchaId, captchaValue))
                 .map(captchaMessageMapper::mapMessage);
     }
 }

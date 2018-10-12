@@ -9,6 +9,7 @@ import com.caramelheaven.lennach.models.model.common.Captcha;
 import com.caramelheaven.lennach.models.model.common.Message;
 import com.caramelheaven.lennach.utils.Constants;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ public class CaptchaPresenter extends MvpPresenter<CaptchaDialogView> {
 
     private CompositeDisposable disposable;
     private String board, thread, message, captchaId;
+    private String filePath;
 
     @Inject
     GetCaptcha getCaptcha;
@@ -31,10 +33,11 @@ public class CaptchaPresenter extends MvpPresenter<CaptchaDialogView> {
     @Inject
     GetMessage getResult;
 
-    public CaptchaPresenter(String board, String thread, String message) {
+    public CaptchaPresenter(String board, String thread, String message, String filePath) {
         this.board = board;
         this.thread = thread;
         this.message = message;
+        this.filePath = filePath;
         Lennach.getComponentsManager()
                 .plusCaptchaComponent()
                 .inject(this);
@@ -73,7 +76,7 @@ public class CaptchaPresenter extends MvpPresenter<CaptchaDialogView> {
     }
 
     public void postMessage(String captchaValue) {
-        disposable.add(getResult.createUseCase(board, thread, message, captchaId, captchaValue)
+        disposable.add(getResult.createUseCase(board, thread, message,filePath, captchaId, captchaValue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::resultPostMessage, this::resultErrorPostMessage));

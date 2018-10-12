@@ -27,6 +27,9 @@ import com.caramelheaven.lennach.presentation.captcha.presenter.CaptchaDialogVie
 import com.caramelheaven.lennach.presentation.captcha.presenter.CaptchaPresenter;
 import com.caramelheaven.lennach.utils.Constants;
 
+import java.io.File;
+import java.io.Serializable;
+
 public class CaptchaDialogFragment extends MvpAppCompatDialogFragment implements CaptchaDialogView {
 
     private ImageView captchaImg;
@@ -40,15 +43,19 @@ public class CaptchaDialogFragment extends MvpAppCompatDialogFragment implements
     CaptchaPresenter provideCaptchaPresenter() {
         return new CaptchaPresenter(getArguments().getString("BOARD_NAME"),
                 getArguments().getString("THREAD_ID"),
-                getArguments().getString("MESSAGE"));
+                getArguments().getString("MESSAGE"),
+                getArguments().getString("FILE_PATH"));
     }
 
-    public static CaptchaDialogFragment newInstance(String board, String threadNumber, String msg) {
+    public static CaptchaDialogFragment newInstance(String board, String threadNumber, String msg, String filePath) {
         CaptchaDialogFragment fragment = new CaptchaDialogFragment();
         Bundle args = new Bundle();
         args.putString("BOARD_NAME", board);
         args.putString("THREAD_ID", threadNumber);
         args.putString("MESSAGE", msg);
+        if(filePath!= null) {
+            args.putString("FILE_PATH", filePath);
+        }
         fragment.setArguments(args);
         return fragment;
     }
