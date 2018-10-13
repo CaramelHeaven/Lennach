@@ -18,4 +18,7 @@ public interface BoardView<T> extends ParentView {
     void showError();
 
     void refreshItems(List<T> items);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showMainBottomBar(boolean flag);
 }

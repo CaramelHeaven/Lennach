@@ -41,6 +41,8 @@ public class BoardResponseToBoard {
                         .getPostsList().get(0).getFiles().get(0).getName());
                 dataSet.setThumbnail(boardResponse.getThreadList().get(q)
                         .getPostsList().get(0).getFiles().get(0).getThumbnail());
+                dataSet.setPath(boardResponse.getThreadList().get(q)
+                        .getPostsList().get(0).getFiles().get(0).getPath());
                 usenet.setImage(dataSet);
 
                 usenet.setComment(boardResponse.getThreadList().get(q)

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -19,11 +18,15 @@ import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
+import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerFragment;
 import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
+import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
@@ -32,6 +35,8 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
     private BoardAdapter boardAdapter;
     private LinearLayoutManager layoutManager;
+    private BottomBarHandler bottomBarHandler;
+
 
     @InjectPresenter
     BoardPresenter presenter;
@@ -61,8 +66,15 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-
         initRecyclerAndAdapter();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof BottomBarHandler) {
+            bottomBarHandler = (BottomBarHandler) getActivity();
+        }
     }
 
     @Override
@@ -85,26 +97,22 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
         boardAdapter.setBoardOnItemClickListener(new BoardOnItemClickListener() {
             @Override
             public void onImageClick(int position, ImageView image) {
-                Toast.makeText(getActivity(), "image", Toast.LENGTH_SHORT).show();
-
-        /*        SliderImageDialogFragment dialogFragment = SliderImageDialogFragment.newInstance(position, boardAdapter.getUsenetList());
-                dialogFragment.show(getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction(), null);*/
+                startViewerImages(position, image);
             }
 
             @Override
             public void onUsenetClick(int position) {
-                Toast.makeText(getActivity(), "usenet", Toast.LENGTH_SHORT).show();
-                String threadId = boardAdapter.getItemByPosition(position).getNum();
+                bottomBarHandler.transformToUsenet(true);
+                Usenet usenet = boardAdapter.getItemByPosition(position);
+                presenter.saveThreadInNavigation(usenet);
+                String threadId = usenet.getNum();
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.fragment_container,
                                 ThreadFragment.newInstance(getArguments().getString("BOARD_NAME"), threadId))
-                        .addToBackStack(null)
                         .commit();
-
             }
         });
 
@@ -124,6 +132,12 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
                 return presenter.isLastPage();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Timber.d("onDesctoyed");
     }
 
     @Override
@@ -149,5 +163,21 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     @Override
     public void refreshItems(List<Usenet> items) {
 
+    }
+
+    @Override
+    public void showMainBottomBar(boolean flag) {
+        bottomBarHandler.hide(flag);
+    }
+
+    private void startViewerImages(int position, ImageView image) {
+        ImageViewerFragment currentGallery = ImageViewerFragment.newInstance(position, boardAdapter.getUsenetList());
+        bottomBarHandler.hide(true);
+
+        getFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.fragment_container, currentGallery)
+                .commit();
     }
 }

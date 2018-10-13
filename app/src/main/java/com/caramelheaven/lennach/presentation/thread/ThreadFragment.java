@@ -43,6 +43,7 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.captcha.CaptchaDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
+import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
@@ -66,6 +67,7 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
 
     private ThreadAdapter threadAdapter;
     private StringBuilder cacheAnswer;
+    private BottomBarHandler bottomBarHandler;
 
     public static final int PICK_IMAGE = 100;
     String filePath;
@@ -123,6 +125,14 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         initTopSheet();
         initEtMessageListeners();
         initButtons();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof BottomBarHandler) {
+            bottomBarHandler = (BottomBarHandler) getActivity();
+        }
     }
 
     @Override
@@ -214,11 +224,16 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "get Catalog", Toast.LENGTH_SHORT).show();
+
                 verifyStoragePermissions(getActivity());
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+
+                //ImageViewerDialogFragment fragment = ImageViewerDialogFragment.newInstance();
+                //fragment.show(getFragmentManager(), null);
+
             }
         });
     }
@@ -247,7 +262,6 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
             }
         }
     }
-
 
     public static String getRealPathFromUri(Context context, Uri contentUri) {
         Cursor cursor = null;
@@ -368,10 +382,11 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         rvContainer.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                InputMethodManager imm = (InputMethodManager)
-                        getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
-
+                if (etMessage != null) {
+                    InputMethodManager imm = (InputMethodManager)
+                            getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+                }
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {
@@ -389,7 +404,11 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    bottomBarHandler.scrollBehavior("HIDE");
+                } else {
+                    bottomBarHandler.scrollBehavior("SHOW");
+                }
             }
         });
 

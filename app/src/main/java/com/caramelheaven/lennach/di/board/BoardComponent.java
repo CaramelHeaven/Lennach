@@ -8,5 +8,5 @@ import dagger.Subcomponent;
 @BoardScope
 @Subcomponent(modules = BoardModule.class)
 public interface BoardComponent {
-    UsenetListComponent plutUsenetListComponent(UsenetListModule usenetListModule);
+    UsenetListComponent plusUsenetListComponent(UsenetListModule usenetListModule);
 }

@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {NetworkModule.class})
+@Component(modules = {NetworkModule.class, AppModule.class})
 public interface AppComponent {
 
     BoardComponent plusBoardComponent(BoardModule boardModule);
