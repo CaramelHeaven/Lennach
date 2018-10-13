@@ -210,7 +210,7 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                 CaptchaDialogFragment captchaDialog =
-                        CaptchaDialogFragment.newInstance(board, threadId, msg,filePath);
+                        CaptchaDialogFragment.newInstance(board, threadId, msg, filePath);
                 captchaDialog.setTargetFragment(ThreadFragment.this, 1337);
                 captchaDialog.show(getActivity().getSupportFragmentManager(), null);
 //                CaptchaDialog captchaDialog = CaptchaDialog.newInstance();
@@ -257,24 +257,22 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
+                Timber.d("onActivityResult");
                 Uri selectedImage = data.getData();
                 filePath = getRealPathFromUri(getActivity(), selectedImage);
+                Timber.d("checing file path: " + filePath);
             }
         }
     }
 
     public static String getRealPathFromUri(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        String[] proj = {MediaStore.Images.Media.DATA};
+        try (Cursor cursor = context.getContentResolver().query(contentUri, proj,
+                null, null, null)) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            Timber.d("column index: " + column_index);
             cursor.moveToFirst();
             return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 

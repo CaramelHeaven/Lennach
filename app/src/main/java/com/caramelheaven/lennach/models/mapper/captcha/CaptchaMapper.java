@@ -8,6 +8,7 @@ import com.caramelheaven.lennach.models.network.MessagePostResponse;
 import java.io.File;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class CaptchaMapper {
@@ -31,5 +32,14 @@ public class CaptchaMapper {
     public Map<String, RequestBody> mapData(String board, String thread, String message, String filePath,
                                             String captchaId, String captchaValue) {
         return messagePostResponseToMessage.map(board, thread, message, filePath, captchaId, captchaValue);
+    }
+
+    public Map<String, RequestBody> mapTest(String board, String thread, String message,
+                                            String captchaId, String captchaValue) {
+        return messagePostResponseToMessage.mapTest(board, thread, message, captchaId, captchaValue);
+    }
+
+    public MultipartBody.Part mapPhoto(String filePath) {
+        return messagePostResponseToMessage.getFileFromPath(filePath);
     }
 }

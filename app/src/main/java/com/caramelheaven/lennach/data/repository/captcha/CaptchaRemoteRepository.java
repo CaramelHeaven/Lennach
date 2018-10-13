@@ -5,10 +5,15 @@ import com.caramelheaven.lennach.domain.CaptchaRepository;
 import com.caramelheaven.lennach.models.mapper.captcha.CaptchaMapper;
 import com.caramelheaven.lennach.models.model.common.Captcha;
 import com.caramelheaven.lennach.models.model.common.Message;
+import com.caramelheaven.lennach.models.network.MessagePostResponse;
 
 import java.io.File;
+import java.util.Map;
 
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Part;
 
 public class CaptchaRemoteRepository implements CaptchaRepository {
     private final LennachApiService apiService;
@@ -26,11 +31,19 @@ public class CaptchaRemoteRepository implements CaptchaRepository {
                 .map(captchaMessageMapper::mapCaptcha);
     }
 
-    @Override
+    /*@Override
     public Single<Message> getMessage(String board, String thread, String message, String filePath, String captchaId,
                                       String captchaValue) {
         return apiService
-                .sendMessage(captchaMessageMapper.mapData(board, thread, message, filePath,captchaId, captchaValue))
+                .sendMessage(captchaMessageMapper.mapData(board, thread, message, filePath, captchaId, captchaValue))
+                .map(captchaMessageMapper::mapMessage);
+    }*/
+
+    @Override
+    public Single<Message> getMessage(String board, String thread, String message, String filePath, String captchaId,
+                                      String captchaValue) {
+        return apiService.sendTestImage(captchaMessageMapper.mapTest(board, thread, message, captchaId, captchaValue),
+                captchaMessageMapper.mapPhoto(filePath))
                 .map(captchaMessageMapper::mapMessage);
     }
 }
