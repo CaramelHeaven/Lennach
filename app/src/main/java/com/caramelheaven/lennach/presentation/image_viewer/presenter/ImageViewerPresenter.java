@@ -4,6 +4,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.presentation.board.Channel;
 
+import timber.log.Timber;
+
 @InjectViewState
 public class ImageViewerPresenter extends MvpPresenter<ImageViewerView> {
 
@@ -22,5 +24,7 @@ public class ImageViewerPresenter extends MvpPresenter<ImageViewerView> {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Timber.d("DESCTROPED");
+        closeGallery(false);
     }
 }

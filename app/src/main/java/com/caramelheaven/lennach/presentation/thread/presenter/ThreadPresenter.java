@@ -6,6 +6,7 @@ import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.di.thread.post_list.PostListModule;
 import com.caramelheaven.lennach.domain.thread_use_cases.GetThread;
 import com.caramelheaven.lennach.models.model.thread_viewer.Post;
+import com.caramelheaven.lennach.presentation.board.Channel;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class ThreadPresenter extends MvpPresenter<ThreadView<Post>> {
@@ -42,6 +44,8 @@ public class ThreadPresenter extends MvpPresenter<ThreadView<Post>> {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Timber.d("onDestroye Thread");
+        Channel.sendData(false);
     }
 
     private void initConstructor() {

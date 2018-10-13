@@ -49,7 +49,6 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
         bottomAppBar.setNavigationOnClickListener(v -> {
             BottomNavigationDrawerFragment bottomNav = BottomNavigationDrawerFragment.newInstance();
             bottomNav.show(getSupportFragmentManager(), null);
-
         });
 
 
@@ -78,18 +77,50 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
     @Override
     public void transformToUsenet(boolean flag) {
         if (flag) {
-            bottomAppBar.setNavigationIcon(null);
-            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-            bottomAppBar.replaceMenu(R.menu.bottom_menu_secondary);
-            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_history));
+            fabCreateThread.animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            bottomAppBar.setNavigationIcon(null);
+                            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+                            bottomAppBar.replaceMenu(R.menu.bottom_menu_secondary);
+                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_history));
+                            fabCreateThread.animate()
+                                    .alpha(1)
+                                    .setDuration(300)
+                                    .start();
+                        }
+                    })
+                    .start();
         } else {
-            fabCreateThread.hide();
+            Timber.d("OLOLO");
+            fabCreateThread.animate()
+                    .alpha(0)
+                    .setDuration(300)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+                            bottomAppBar.replaceMenu(R.menu.bottom_menu_primary);
+                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_create));
+                            fabCreateThread.animate()
+                                    .alpha(1)
+                                    .setDuration(300)
+                                    .start();
+                        }
+                    })
+                    .start();
         }
     }
 
     @SuppressLint("RestrictedApi")
     @Override
     public void menuBehavior(boolean flag) {
+        Timber.d("FLAG: " + flag);
         if (flag) {
             bottomAppBar.setVisibility(View.GONE);
             fabCreateThread.setVisibility(View.GONE);
@@ -114,6 +145,7 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
                                     presenter.setAllowToHide(true);
+                                    bottomAppBar.setVisibility(View.GONE);
                                 }
                             })
                             .start();
@@ -125,6 +157,7 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
                 break;
             case "SHOW":
                 if (presenter.isAllowToShow()) {
+                    bottomAppBar.setVisibility(View.VISIBLE);
                     presenter.setAllowToShow(false);
                     bottomAppBar.animate()
                             .translationY(0)

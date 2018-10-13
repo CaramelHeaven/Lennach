@@ -166,8 +166,8 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     }
 
     @Override
-    public void showMainBottomBar() {
-        bottomBarHandler.hide(false);
+    public void showMainBottomBar(boolean flag) {
+        bottomBarHandler.hide(flag);
     }
 
     private void startViewerImages(int position, ImageView image) {

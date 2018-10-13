@@ -114,7 +114,6 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
         imageViewPager.setImageViewerCallback(new ImageViewerCallback() {
             @Override
             public void close(boolean flag) {
-                presenter.closeGallery(true);
                 getActivity()
                         .getSupportFragmentManager()
                         .popBackStack();
@@ -122,7 +121,6 @@ public class ImageViewerFragment extends ParentFragment implements ImageViewerVi
 
             @Override
             public void passAlphaCounter(float data) {
-                Timber.d("data: " + data);
                 if (data == Constants.BLACK_BACKGROUND) {
                     rlContainer.getBackground().setAlpha(255);
                 } else {

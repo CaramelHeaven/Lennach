@@ -17,8 +17,6 @@
         android:minHeight="?actionBarSize"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:hideOnScroll="true"
-        app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@drawable/ic_menu" />
 
     <android.support.design.widget.FloatingActionButton

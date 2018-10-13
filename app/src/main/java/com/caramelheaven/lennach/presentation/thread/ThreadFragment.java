@@ -244,7 +244,7 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         rvContainer.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (etMessage.getWindowToken() != null) {
+                if (etMessage != null) {
                     InputMethodManager imm = (InputMethodManager)
                             getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);

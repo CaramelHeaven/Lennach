@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.presentation.board;
 
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 public class Channel {
 
@@ -24,6 +25,7 @@ public class Channel {
     }
 
     public static void sendData(boolean flag) {
+        Timber.d("sedning data: " + flag);
         publishSubject.onNext(flag);
     }
 }

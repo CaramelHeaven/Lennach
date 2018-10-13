@@ -114,10 +114,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
 
     private void provideListenerOnGallery() {
         disposable.add(Channel.getInstance().getPublishSubject()
-                .subscribe(result -> {
-                    getViewState().showMainBottomBar();
-                    Timber.d("result: " + result);
-                }));
+                .subscribe(result -> getViewState().showMainBottomBar(result)));
     }
 
     public boolean isLoading() {
@@ -128,7 +125,6 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
         return currentPage == totalPage;
     }
 
-    @SuppressLint("CheckResult")
     public void saveThreadInNavigation(Usenet usenet) {
         saveUsenet.createUseCase(usenet)
                 .subscribeOn(Schedulers.io())
