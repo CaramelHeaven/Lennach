@@ -1,6 +1,9 @@
 package com.caramelheaven.lennach.di;
 
+import android.content.Context;
+
 import com.caramelheaven.lennach.di.application.AppComponent;
+import com.caramelheaven.lennach.di.application.AppModule;
 import com.caramelheaven.lennach.di.application.DaggerAppComponent;
 import com.caramelheaven.lennach.di.board.BoardComponent;
 import com.caramelheaven.lennach.di.board.BoardModule;
@@ -14,10 +17,17 @@ public class ComponentsManager {
     private BoardComponent boardComponent;
     private ThreadComponent threadComponent;
     private CaptchaComponent captchaComponent;
+    private Context context;
+
+    public ComponentsManager(Context context) {
+        this.context = context;
+    }
 
     public AppComponent getAppComponent() {
         if (appComponent == null) {
-            appComponent = DaggerAppComponent.create();
+            appComponent = DaggerAppComponent.builder()
+                    .appModule(new AppModule(context))
+                    .build();
         }
         return appComponent;
     }

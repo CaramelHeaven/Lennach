@@ -3,9 +3,11 @@ package com.caramelheaven.lennach.models.database;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "BoardTable")
 public class BoardEntity {
+    @NonNull
     @PrimaryKey
     @ColumnInfo(name = "board")
     private String board;
@@ -19,13 +21,21 @@ public class BoardEntity {
     private Integer maxComment;
     @ColumnInfo(name = "max_file_size")
     private Integer maxFileSize;
-    @ColumnInfo(name = "pages")
-    private int[] pages;
-    @ColumnInfo(name = "current_page")
-    private Integer currentPage;
 
     public BoardEntity() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "BoardEntity{" +
+                "board='" + board + '\'' +
+                ", boardName='" + boardName + '\'' +
+                ", boardSpeed=" + boardSpeed +
+                ", bumpLimit=" + bumpLimit +
+                ", maxComment=" + maxComment +
+                ", maxFileSize=" + maxFileSize +
+                '}';
     }
 
     public String getBoard() {
@@ -74,21 +84,5 @@ public class BoardEntity {
 
     public void setMaxFileSize(Integer maxFileSize) {
         this.maxFileSize = maxFileSize;
-    }
-
-    public int[] getPages() {
-        return pages;
-    }
-
-    public void setPages(int[] pages) {
-        this.pages = pages;
-    }
-
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
     }
 }

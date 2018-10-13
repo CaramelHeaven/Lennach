@@ -1,10 +1,13 @@
 package com.caramelheaven.lennach.presentation.board.presenter;
 
+import android.annotation.SuppressLint;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.di.board.usenet_list.UsenetListModule;
 import com.caramelheaven.lennach.domain.board_use_cases.GetBoard;
+import com.caramelheaven.lennach.domain.board_use_cases.SaveUsenet;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.presentation.board.Channel;
@@ -16,8 +19,12 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import io.reactivex.CompletableObserver;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -33,6 +40,9 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
 
     @Inject
     GetBoard getBoard;
+
+    @Inject
+    SaveUsenet saveUsenet;
 
     public BoardPresenter(String boardName) {
         initConstructor(boardName);
@@ -53,7 +63,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     private void initConstructor(String boardName) {
         Lennach.getComponentsManager()
                 .plusBoardComponent()
-                .plutUsenetListComponent(new UsenetListModule())
+                .plusUsenetListComponent(new UsenetListModule())
                 .inject(this);
         disposable = new CompositeDisposable();
         cacheUsenets = new LinkedHashSet<>();
@@ -118,5 +128,27 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
         return currentPage == totalPage;
     }
 
+    @SuppressLint("CheckResult")
+    public void saveThreadInNavigation(Usenet usenet) {
+        saveUsenet.createUseCase(usenet)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Timber.d("onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("onError: " + e.getCause());
+                        Timber.d("onError: " + e.getMessage());
+                    }
+                });
+    }
 }

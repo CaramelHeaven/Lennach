@@ -6,7 +6,7 @@ import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import dagger.Subcomponent;
 
 @ActivityScope
-@Subcomponent(modules = UsenetListModule.class)
+@Subcomponent(modules = {UsenetListModule.class, UsenetFavouriteModule.class})
 public interface UsenetListComponent {
     void inject(BoardPresenter boardPresenter);
 }

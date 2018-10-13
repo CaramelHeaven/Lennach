@@ -244,9 +244,11 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         rvContainer.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                InputMethodManager imm = (InputMethodManager)
-                        getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+                if (etMessage.getWindowToken() != null) {
+                    InputMethodManager imm = (InputMethodManager)
+                            getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etMessage.getWindowToken(), 0);
+                }
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         if (topSheetBehavior.getState() != TopSheetBehavior.STATE_HIDDEN) {

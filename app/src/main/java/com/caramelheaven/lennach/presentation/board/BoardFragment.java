@@ -103,13 +103,15 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
             @Override
             public void onUsenetClick(int position) {
                 bottomBarHandler.transformToUsenet(true);
-                String threadId = boardAdapter.getItemByPosition(position).getNum();
+                Usenet usenet = boardAdapter.getItemByPosition(position);
+                presenter.saveThreadInNavigation(usenet);
+                String threadId = usenet.getNum();
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.fragment_container,
                                 ThreadFragment.newInstance(getArguments().getString("BOARD_NAME"), threadId))
-                        .addToBackStack(null)
                         .commit();
             }
         });
