@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.presentation.board;
+package com.caramelheaven.lennach.utils.channel;
 
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
@@ -6,7 +6,7 @@ import timber.log.Timber;
 public class Channel {
 
     private static Channel INSTANCE;
-    private static PublishSubject<Boolean> publishSubject;
+    private static PublishSubject<SomeData> publishSubject;
 
     public static Channel getInstance() {
         if (INSTANCE == null) {
@@ -20,12 +20,12 @@ public class Channel {
         return INSTANCE;
     }
 
-    public static PublishSubject<Boolean> getPublishSubject() {
+    public static PublishSubject<SomeData> getPublishSubject() {
         return publishSubject;
     }
 
-    public static void sendData(boolean flag) {
-        Timber.d("sedning data: " + flag);
-        publishSubject.onNext(flag);
+    public static void sendData(SomeData data) {
+        Timber.d("sedning data: " + data.getData());
+        publishSubject.onNext(data);
     }
 }

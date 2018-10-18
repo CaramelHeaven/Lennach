@@ -20,8 +20,11 @@ import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerFragment;
 import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
+import com.caramelheaven.lennach.utils.channel.Channel;
+import com.caramelheaven.lennach.utils.channel.SomeData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +90,11 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     @Override
     protected void initRecyclerAndAdapter() {
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
                 false);
+        layoutManager.setInitialPrefetchItemCount(0);
         recyclerView.setLayoutManager(layoutManager);
 
         boardAdapter = new BoardAdapter(new ArrayList<>());
@@ -102,7 +108,7 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
             @Override
             public void onUsenetClick(int position) {
-                bottomBarHandler.transformToUsenet(true);
+                Channel.sendData(new SomeData(Constants.ENTER_FAB_STATE));
                 Usenet usenet = boardAdapter.getItemByPosition(position);
                 presenter.saveThreadInNavigation(usenet);
                 String threadId = usenet.getNum();
@@ -166,13 +172,13 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
     }
 
     @Override
-    public void showMainBottomBar(boolean flag) {
-        bottomBarHandler.hide(flag);
+    public void showMainBottomBar(SomeData data) {
+        bottomBarHandler.interactionBottomVisibility(data);
     }
 
     private void startViewerImages(int position, ImageView image) {
         ImageViewerFragment currentGallery = ImageViewerFragment.newInstance(position, boardAdapter.getUsenetList());
-        bottomBarHandler.hide(true);
+        bottomBarHandler.interactionBottomVisibility(new SomeData(Constants.HIDE_BOTTOM_BAR));
 
         getFragmentManager()
                 .beginTransaction()

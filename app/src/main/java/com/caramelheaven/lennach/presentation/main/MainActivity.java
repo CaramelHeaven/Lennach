@@ -7,7 +7,6 @@ import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -17,9 +16,10 @@ import com.caramelheaven.lennach.presentation.board.BoardFragment;
 import com.caramelheaven.lennach.presentation.main.navigation.BottomNavigationDrawerFragment;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
+import com.caramelheaven.lennach.utils.channel.SomeData;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -70,50 +70,12 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
     }
 
     @Override
-    public void hide(boolean flag) {
-        presenter.menuBehavior(flag);
-    }
-
-    @Override
-    public void transformToUsenet(boolean flag) {
-        if (flag) {
-            fabCreateThread.animate()
-                    .alpha(0)
-                    .setDuration(300)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            bottomAppBar.setNavigationIcon(null);
-                            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                            bottomAppBar.replaceMenu(R.menu.bottom_menu_secondary);
-                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_history));
-                            fabCreateThread.animate()
-                                    .alpha(1)
-                                    .setDuration(300)
-                                    .start();
-                        }
-                    })
-                    .start();
+    public void interactionBottomVisibility(SomeData data) {
+        Timber.d("checking data: " + data.getData());
+        if (data.getData() == Constants.HIDE_BOTTOM_BAR) {
+            presenter.menuBehavior(true);
         } else {
-            Timber.d("OLOLO");
-            fabCreateThread.animate()
-                    .alpha(0)
-                    .setDuration(300)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                            bottomAppBar.replaceMenu(R.menu.bottom_menu_primary);
-                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_create));
-                            fabCreateThread.animate()
-                                    .alpha(1)
-                                    .setDuration(300)
-                                    .start();
-                        }
-                    })
-                    .start();
+            presenter.menuBehavior(false);
         }
     }
 
@@ -131,54 +93,98 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
     }
 
     @Override
-    public void scrollBehavior(String data) {
-        switch (data) {
-            case "HIDE":
-                if (presenter.isAllowToHide()) {
-                    presenter.setAllowToHide(false);
-                    bottomAppBar.animate()
-                            .translationY(bottomAppBar.getHeight())
-                            .alpha(0)
-                            .setDuration(300)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    presenter.setAllowToHide(true);
-                                    bottomAppBar.setVisibility(View.GONE);
-                                }
-                            })
-                            .start();
-                    fabCreateThread.animate()
-                            .translationY(-fabCreateThread.getHeight() / 2 + 20)
-                            .setDuration(300)
-                            .start();
-                }
-                break;
-            case "SHOW":
-                if (presenter.isAllowToShow()) {
-                    bottomAppBar.setVisibility(View.VISIBLE);
-                    presenter.setAllowToShow(false);
-                    bottomAppBar.animate()
-                            .translationY(0)
-                            .alpha(1)
-                            .setDuration(300)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    presenter.setAllowToShow(true);
-                                }
-                            })
-                            .start();
-                    fabCreateThread.animate()
-                            .translationY(-fabCreateThread.getHeight() / 2)
-                            .setDuration(300)
-                            .start();
-                }
-                break;
-            default:
-                Timber.d("lalala");
+    public void menuTransform(boolean flag) {
+        Timber.d("flag: " + flag);
+        if (flag) {
+            fabCreateThread.animate()
+                    .alpha(0)
+                    .setDuration(50)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            bottomAppBar.setNavigationIcon(null);
+                            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+                            bottomAppBar.replaceMenu(R.menu.bottom_menu_secondary);
+                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_history));
+                            fabCreateThread.animate()
+                                    .alpha(1)
+                                    .setDuration(50)
+                                    .start();
+                        }
+                    })
+                    .start();
+        } else if (flag == false) {
+            Timber.d("KLFJSLJF");
+            fabCreateThread.animate()
+                    .alpha(0)
+                    .setDuration(50)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+                            bottomAppBar.replaceMenu(R.menu.bottom_menu_primary);
+                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_create));
+                            fabCreateThread.animate()
+                                    .alpha(1)
+                                    .setDuration(50)
+                                    .start();
+                        }
+                    })
+                    .start();
         }
+    }
+
+    @Override
+    public void scrollBehavior(String data) {
+//        switch (data) {
+//            case "HIDE":
+//                if (presenter.isAllowToHide()) {
+//                    presenter.setAllowToHide(false);
+//                    bottomAppBar.animate()
+//                            .translationY(bottomAppBar.getHeight())
+//                            .alpha(0)
+//                            .setDuration(50)
+//                            .setListener(new AnimatorListenerAdapter() {
+//                                @Override
+//                                public void onAnimationEnd(Animator animation) {
+//                                    super.onAnimationEnd(animation);
+//                                    presenter.setAllowToHide(true);
+//                                    bottomAppBar.setVisibility(View.GONE);
+//                                }
+//                            })
+//                            .start();
+//                    fabCreateThread.animate()
+//                            .translationY(-fabCreateThread.getHeight() / 2 + 20)
+//                            .setDuration(50)
+//                            .start();
+//                }
+//                break;
+//            case "SHOW":
+//                if (presenter.isAllowToShow()) {
+//                    bottomAppBar.setVisibility(View.VISIBLE);
+//                    presenter.setAllowToShow(false);
+//                    bottomAppBar.animate()
+//                            .translationY(0)
+//                            .alpha(1)
+//                            .setDuration(50)
+//                            .setListener(new AnimatorListenerAdapter() {
+//                                @Override
+//                                public void onAnimationEnd(Animator animation) {
+//                                    super.onAnimationEnd(animation);
+//                                    presenter.setAllowToShow(true);
+//                                }
+//                            })
+//                            .start();
+//                    fabCreateThread.animate()
+//                            .translationY(-fabCreateThread.getHeight() / 2)
+//                            .setDuration(50)
+//                            .start();
+//                }
+//                break;
+//            default:
+//                Timber.d("lalala");
+//        }
     }
 }

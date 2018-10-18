@@ -1,7 +1,5 @@
 package com.caramelheaven.lennach.presentation.board.presenter;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
@@ -10,7 +8,7 @@ import com.caramelheaven.lennach.domain.board_use_cases.GetBoard;
 import com.caramelheaven.lennach.domain.board_use_cases.SaveUsenet;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
-import com.caramelheaven.lennach.presentation.board.Channel;
+import com.caramelheaven.lennach.utils.channel.Channel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -20,11 +18,9 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import io.reactivex.CompletableObserver;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -113,8 +109,11 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     }
 
     private void provideListenerOnGallery() {
-        disposable.add(Channel.getInstance().getPublishSubject()
-                .subscribe(result -> getViewState().showMainBottomBar(result)));
+        Channel.getInstance().getPublishSubject()
+                .subscribe(result -> {
+                    Timber.d("BOARD STATE: " + result.getData());
+                    getViewState().showMainBottomBar(result);
+                });
     }
 
     public boolean isLoading() {

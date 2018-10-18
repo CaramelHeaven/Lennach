@@ -6,6 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.caramelheaven.lennach.presentation.base.ParentView;
+import com.caramelheaven.lennach.utils.channel.SomeData;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface BoardView<T> extends ParentView {
     void refreshItems(List<T> items);
 
     @StateStrategyType(value = OneExecutionStateStrategy.class)
-    void showMainBottomBar(boolean flag);
+    void showMainBottomBar(SomeData data);
 }

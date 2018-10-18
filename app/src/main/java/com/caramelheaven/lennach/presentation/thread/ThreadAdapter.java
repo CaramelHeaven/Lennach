@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread_viewer.Post;
@@ -47,12 +48,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         postVH.tvDate.setText(postList.get(i).getDate());
         postVH.tvCountPost.setText(String.valueOf(i));
 
-        if (postList.get(i).getFiles().size() != 0) {
-            Glide.with(postVH.ivPicture.getContext())
-                    .load("https://2ch.hk" + postList.get(i).getFiles().get(0).getThumbnail())
-                    .apply(new RequestOptions().override(150, 150))
-                    .into(postVH.ivPicture);
-        }
+//        if (postList.get(i).getFiles().size() != 0) {
+//            Glide.with(postVH.ivPicture.getContext())
+//                    .load("https://2ch.hk" + postList.get(i).getFiles().get(0).getThumbnail())
+//                    .apply(new RequestOptions().override(150, 150)
+//                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+//                    .into(postVH.ivPicture);
+//        }
     }
 
     @Override

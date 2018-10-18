@@ -1,9 +1,9 @@
 package com.caramelheaven.lennach.utils.callbacks;
 
-public interface BottomBarHandler {
-    void hide(boolean flag);
+import com.caramelheaven.lennach.utils.channel.SomeData;
 
-    void transformToUsenet(boolean flag);
+public interface BottomBarHandler {
+    void interactionBottomVisibility(SomeData data);
 
     void scrollBehavior(String data);
 }

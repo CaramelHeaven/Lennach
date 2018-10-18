@@ -6,7 +6,9 @@ import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.di.thread.post_list.PostListModule;
 import com.caramelheaven.lennach.domain.thread_use_cases.GetThread;
 import com.caramelheaven.lennach.models.model.thread_viewer.Post;
-import com.caramelheaven.lennach.presentation.board.Channel;
+import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.channel.Channel;
+import com.caramelheaven.lennach.utils.channel.SomeData;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,7 +47,7 @@ public class ThreadPresenter extends MvpPresenter<ThreadView<Post>> {
     public void onDestroy() {
         super.onDestroy();
         Timber.d("onDestroye Thread");
-        Channel.sendData(false);
+        Channel.sendData(new SomeData(Constants.EXIT_FAB_STATE));
     }
 
     private void initConstructor() {

@@ -55,8 +55,11 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .load("https://2ch.hk" + usenetList.get(i).getImage().getThumbnail())
                     .apply(new RequestOptions()
                             .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .signature(new RequestOptions().getSignature()))
                     .into(usenetVH.ivThread);
+        } else {
+            Glide.with(usenetVH.itemView.getContext()).clear(usenetVH.ivThread);
         }
     }
 

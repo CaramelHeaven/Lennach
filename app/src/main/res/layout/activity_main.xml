@@ -25,4 +25,5 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@+id/bottom_app_bar"
         app:srcCompat="@drawable/ic_create" />
+
 </android.support.design.widget.CoordinatorLayout>

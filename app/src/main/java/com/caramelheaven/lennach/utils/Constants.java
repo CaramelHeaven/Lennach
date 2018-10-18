@@ -10,4 +10,10 @@ public class Constants {
     public static final String LOAD_CAPTCHA_IMAGE = "https://2ch.hk/api/captcha/2chaptcha/image/";
 
     public static final float BLACK_BACKGROUND = 400;
+
+    //data messages for some actions
+    public static final int HIDE_BOTTOM_BAR = 1;
+    public static final int SHOW_BOTTOM_BAR = 2;
+    public static final int ENTER_FAB_STATE = 3;
+    public static final int EXIT_FAB_STATE = 4;
 }
