@@ -1,5 +1,7 @@
 package com.caramelheaven.lennach.presentation.main.presenter;
 
+import android.annotation.SuppressLint;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.utils.Constants;
@@ -19,6 +21,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
         disposable = new CompositeDisposable();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -26,8 +29,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribe(result -> {
                     Timber.d("MAIN channel: " + result.getData());
                     if (result.getData() == Constants.EXIT_FAB_STATE) {
+                        Timber.d("IN: " + result.getData());
                         getViewState().menuTransform(false);
-                    } else {
+                    } else if (result.getData() == Constants.ENTER_FAB_STATE) {
+                        Timber.d("IN: " + result.getData());
                         getViewState().menuTransform(true);
                     }
                 });

@@ -51,7 +51,6 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
             bottomNav.show(getSupportFragmentManager(), null);
         });
 
-
         fabCreateThread.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("CheckResult")
             @Override
@@ -98,7 +97,7 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
         if (flag) {
             fabCreateThread.animate()
                     .alpha(0)
-                    .setDuration(50)
+                    .setDuration(150)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -106,10 +105,9 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
                             bottomAppBar.setNavigationIcon(null);
                             bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
                             bottomAppBar.replaceMenu(R.menu.bottom_menu_secondary);
-                            fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_history));
                             fabCreateThread.animate()
                                     .alpha(1)
-                                    .setDuration(50)
+                                    .setDuration(150)
                                     .start();
                         }
                     })
@@ -118,17 +116,17 @@ public class MainActivity extends MvpAppCompatActivity implements BottomBarHandl
             Timber.d("KLFJSLJF");
             fabCreateThread.animate()
                     .alpha(0)
-                    .setDuration(50)
+                    .setDuration(150)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
+                            bottomAppBar.setNavigationIcon(R.drawable.ic_menu);
                             bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                            bottomAppBar.replaceMenu(R.menu.bottom_menu_primary);
                             fabCreateThread.setImageDrawable(getDrawable(R.drawable.ic_create));
                             fabCreateThread.animate()
                                     .alpha(1)
-                                    .setDuration(50)
+                                    .setDuration(150)
                                     .start();
                         }
                     })

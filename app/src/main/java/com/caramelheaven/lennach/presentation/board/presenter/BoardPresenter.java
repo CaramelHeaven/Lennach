@@ -1,5 +1,7 @@
 package com.caramelheaven.lennach.presentation.board.presenter;
 
+import android.annotation.SuppressLint;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
@@ -8,6 +10,7 @@ import com.caramelheaven.lennach.domain.board_use_cases.GetBoard;
 import com.caramelheaven.lennach.domain.board_use_cases.SaveUsenet;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.channel.Channel;
 
 import java.util.ArrayList;
@@ -108,11 +111,15 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
         }
     }
 
+    @SuppressLint("CheckResult")
     private void provideListenerOnGallery() {
         Channel.getInstance().getPublishSubject()
                 .subscribe(result -> {
-                    Timber.d("BOARD STATE: " + result.getData());
-                    getViewState().showMainBottomBar(result);
+                    if (result.getData() == Constants.SHOW_BOTTOM_BAR ||
+                            result.getData() == Constants.HIDE_BOTTOM_BAR) {
+                        Timber.d("BOARD STATE: " + result.getData());
+                        getViewState().showMainBottomBar(result);
+                    }
                 });
     }
 
