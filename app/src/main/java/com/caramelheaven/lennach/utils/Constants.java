@@ -16,4 +16,9 @@ public class Constants {
     public static final int SHOW_BOTTOM_BAR = 2;
     public static final int ENTER_FAB_STATE = 3;
     public static final int EXIT_FAB_STATE = 4;
+    public static final int SHOW_BOTTOM_BAR_SCROLL = 5;
+    public static final int HIDE_BOTTOM_BAR_SCROLL = 6;
+
+    public static final int SMOOTH_HIDE_BOTTOM_APP_BAR = 7;
+    public static final int SMOOTH_SHOW_BOTTOM_APP_BAR = 8;
 }

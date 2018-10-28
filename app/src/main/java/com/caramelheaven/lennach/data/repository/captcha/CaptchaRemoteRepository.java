@@ -31,19 +31,16 @@ public class CaptchaRemoteRepository implements CaptchaRepository {
                 .map(captchaMessageMapper::mapCaptcha);
     }
 
-    /*@Override
-    public Single<Message> getMessage(String board, String thread, String message, String filePath, String captchaId,
-                                      String captchaValue) {
-        return apiService
-                .sendMessage(captchaMessageMapper.mapData(board, thread, message, filePath, captchaId, captchaValue))
-                .map(captchaMessageMapper::mapMessage);
-    }*/
-
     @Override
     public Single<Message> getMessage(String board, String thread, String message, String filePath, String captchaId,
                                       String captchaValue) {
-        return apiService.sendTestImage(captchaMessageMapper.mapTest(board, thread, message, captchaId, captchaValue),
-                captchaMessageMapper.mapPhoto(filePath))
-                .map(captchaMessageMapper::mapMessage);
+        if (filePath != null) {
+            return apiService.sendMessageWithImage(captchaMessageMapper.mapTest(board, thread, message, captchaId, captchaValue),
+                    captchaMessageMapper.mapPhoto(filePath))
+                    .map(captchaMessageMapper::mapMessage);
+        } else {
+            return apiService.sendMessage(captchaMessageMapper.mapTest(board, thread, message, captchaId, captchaValue))
+                    .map(captchaMessageMapper::mapMessage);
+        }
     }
 }

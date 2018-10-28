@@ -65,13 +65,17 @@ public class MessagePostResponseToMessage extends Mapper<MessagePostResponse, Me
 
     public MultipartBody.Part getFileFromPath(String filePath) {
         File file = new File(filePath);
-        // create RequestBody instance from file
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("application/image"), file);
+        if (file != null) {
 
-        // MultipartBody.Part is used to send also the actual file name
-        // Should try to change logic of ApiService
-        return MultipartBody.Part.createFormData("SUKA", "dipalitest.png", requestFile);
+            // create RequestBody instance from file
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("application/image"), file);
 
+            // MultipartBody.Part is used to send also the actual file name
+            // Should try to change logic of ApiService
+            return MultipartBody.Part.createFormData("SUKA", "dipalitest.png", requestFile);
+        } else {
+            return null;
+        }
     }
 }

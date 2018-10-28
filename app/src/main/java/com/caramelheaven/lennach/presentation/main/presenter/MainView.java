@@ -9,4 +9,6 @@ public interface MainView extends MvpView {
     void menuBehavior(boolean flag);
 
     void menuTransform(boolean flag);
+
+    void menuBehaviorScroll(int state);
 }

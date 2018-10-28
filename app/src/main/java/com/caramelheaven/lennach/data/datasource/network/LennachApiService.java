@@ -18,6 +18,7 @@ import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface LennachApiService {
     @GET("{boardName}/{page}.json")
@@ -40,6 +41,6 @@ public interface LennachApiService {
 
     @Multipart
     @POST("makaba/posting.fcgi?json=1&task=post")
-    Single<MessagePostResponse> sendTestImage(@PartMap Map<String, RequestBody> options,
+    Single<MessagePostResponse> sendMessageWithImage(@PartMap Map<String, RequestBody> options,
                                               @Part MultipartBody.Part file);
 }

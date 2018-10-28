@@ -1,19 +1,14 @@
 package com.caramelheaven.lennach.presentation.thread;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,12 +38,12 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.captcha.CaptchaDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
-import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
+import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.channel.Channel;
+import com.caramelheaven.lennach.utils.channel.SomeData;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +62,6 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
 
     private ThreadAdapter threadAdapter;
     private StringBuilder cacheAnswer;
-    private BottomBarHandler bottomBarHandler;
 
     public static final int PICK_IMAGE = 100;
     String filePath;
@@ -125,14 +119,6 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
         initTopSheet();
         initEtMessageListeners();
         initButtons();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() instanceof BottomBarHandler) {
-            bottomBarHandler = (BottomBarHandler) getActivity();
-        }
     }
 
     @Override
@@ -204,7 +190,6 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
                 String msg = etMessage.getText().toString();
                 String board = getArguments().getString("BOARD_NAME");
                 String threadId = getArguments().getString("THREAD_ID");
-
 
                 InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -403,9 +388,9 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {
-                    bottomBarHandler.scrollBehavior("HIDE");
+                    Channel.sendData(new SomeData(Constants.HIDE_BOTTOM_BAR_SCROLL));
                 } else {
-                    bottomBarHandler.scrollBehavior("SHOW");
+                    Channel.sendData(new SomeData(Constants.SHOW_BOTTOM_BAR_SCROLL));
                 }
             }
         });
