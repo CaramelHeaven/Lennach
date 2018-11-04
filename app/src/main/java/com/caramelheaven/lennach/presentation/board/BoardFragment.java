@@ -20,11 +20,7 @@ import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 import com.caramelheaven.lennach.presentation.image_viewer.ImageViewerFragment;
 import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
-import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
-import com.caramelheaven.lennach.utils.channel.Channel;
-import com.caramelheaven.lennach.utils.channel.SomeData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +34,6 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
     private BoardAdapter boardAdapter;
     private LinearLayoutManager layoutManager;
-    private BottomBarHandler bottomBarHandler;
 
 
     @InjectPresenter
@@ -71,15 +66,7 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
         progressBar = view.findViewById(R.id.progressBar);
         initRecyclerAndAdapter();
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() instanceof BottomBarHandler) {
-            bottomBarHandler = (BottomBarHandler) getActivity();
-        }
-    }
-
+    
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -108,7 +95,6 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
             @Override
             public void onUsenetClick(int position) {
-                Channel.sendData(new SomeData(Constants.ENTER_FAB_STATE));
                 Usenet usenet = boardAdapter.getItemByPosition(position);
                 presenter.saveThreadInNavigation(usenet);
                 String threadId = usenet.getNum();
@@ -171,14 +157,8 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
     }
 
-    @Override
-    public void showMainBottomBar(SomeData data) {
-        bottomBarHandler.interactionBottomVisibility(data);
-    }
-
     private void startViewerImages(int position, ImageView image) {
         ImageViewerFragment currentGallery = ImageViewerFragment.newInstance(position, boardAdapter.getUsenetList());
-        bottomBarHandler.interactionBottomVisibility(new SomeData(Constants.HIDE_BOTTOM_BAR));
 
         getFragmentManager()
                 .beginTransaction()

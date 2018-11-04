@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.presentation.main.navigation;
+package com.caramelheaven.lennach.presentation.main.saved_history;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,15 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.presentation.main.saved_history.presenter.HistoryPresenter;
+import com.caramelheaven.lennach.presentation.main.saved_history.presenter.HistoryView;
 
-public class BottomNavigationFragment extends Fragment {
+public class HistoryFragment extends Fragment implements HistoryView {
 
-    public static BottomNavigationFragment newInstance() {
+    @InjectPresenter
+    HistoryPresenter presenter;
+
+    public static HistoryFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        BottomNavigationFragment fragment = new BottomNavigationFragment();
+        HistoryFragment fragment = new HistoryFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -30,5 +36,20 @@ public class BottomNavigationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
     }
 }

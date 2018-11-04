@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_favorite"
-        android:icon="@drawable/ic_image"
+        android:id="@+id/item_base_page"
+        android:icon="@drawable/ic_home"
         android:title="" />
 
     <item
-        android:id="@+id/item_send"
+        android:id="@+id/item_saved_history"
+        android:icon="@drawable/ic_saved_history"
+        android:title="" />
+
+    <item
+        android:id="@+id/item_create"
         android:icon="@drawable/ic_create"
         android:title="" />
 
     <item
+        android:id="@+id/item_favourite"
+        android:icon="@drawable/ic_favourite"
+        android:title="" />
+
+    <item
         android:id="@+id/item_menu"
-        android:icon="@drawable/ic_apps"
+        android:icon="@drawable/ic_menu"
         android:title="" />
 </menu>

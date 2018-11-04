@@ -11,7 +11,6 @@ import com.caramelheaven.lennach.domain.board_use_cases.SaveUsenet;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.channel.Channel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -67,7 +66,6 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
         disposable = new CompositeDisposable();
         cacheUsenets = new LinkedHashSet<>();
         this.boardName = boardName;
-        provideListenerOnGallery();
     }
 
     private void loadThreads() {
@@ -109,18 +107,6 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
             getBoard.setPageIndex(currentPage);
             loadThreads();
         }
-    }
-
-    @SuppressLint("CheckResult")
-    private void provideListenerOnGallery() {
-        Channel.getInstance().getPublishSubject()
-                .subscribe(result -> {
-                    if (result.getData() == Constants.SHOW_BOTTOM_BAR ||
-                            result.getData() == Constants.HIDE_BOTTOM_BAR) {
-                        Timber.d("BOARD STATE: " + result.getData());
-                        getViewState().showMainBottomBar(result);
-                    }
-                });
     }
 
     public boolean isLoading() {

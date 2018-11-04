@@ -39,8 +39,6 @@ import com.caramelheaven.lennach.presentation.captcha.CaptchaDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.channel.Channel;
-import com.caramelheaven.lennach.utils.channel.SomeData;
 import com.caramelheaven.lennach.utils.item_touch.ItemTouchHelperCallback;
 import com.caramelheaven.lennach.utils.view.TopSheetBehavior;
 
@@ -387,11 +385,6 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    Channel.sendData(new SomeData(Constants.HIDE_BOTTOM_BAR_SCROLL));
-                } else {
-                    Channel.sendData(new SomeData(Constants.SHOW_BOTTOM_BAR_SCROLL));
-                }
             }
         });
 

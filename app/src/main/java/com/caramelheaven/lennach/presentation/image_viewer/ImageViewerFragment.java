@@ -16,7 +16,6 @@ import com.caramelheaven.lennach.presentation.base.ParentFragment;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerPresenter;
 import com.caramelheaven.lennach.presentation.image_viewer.presenter.ImageViewerView;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.callbacks.BottomBarHandler;
 
 import java.util.ArrayList;
 import java.util.List;
