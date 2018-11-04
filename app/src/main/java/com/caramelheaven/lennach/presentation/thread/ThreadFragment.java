@@ -395,6 +395,7 @@ public class ThreadFragment extends ParentFragment implements ThreadView<Post> {
             }
         });
 
+
         coordinatorLayout.getViewTreeObserver().addOnScrollChangedListener(() -> {
             Rect r = new Rect();
             //r will be populated with the coordinates of your view that area still visible.

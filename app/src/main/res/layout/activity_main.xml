@@ -9,22 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
+    <com.caramelheaven.lennach.utils.libraries.bottom_navigation.BottomNavigationViewEx
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="44dp"
+        app:itemIconSize="26dp"
         android:layout_gravity="bottom"
-        android:minHeight="?actionBarSize"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabAlignmentMode="center" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_create_thread"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        app:layout_anchor="@+id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_apps" />
+        android:background="@color/colorPrimary"
+        app:itemIconTint="#000"
+        app:menu="@menu/bottom_menu_primary" />
 
     <include
         android:id="@+id/bottom_sheet"
