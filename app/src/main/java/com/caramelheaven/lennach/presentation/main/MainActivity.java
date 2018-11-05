@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -12,13 +13,17 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.presentation.board.BoardFragment;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
 import com.caramelheaven.lennach.presentation.main.saved_history.HistoryFragment;
+import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.libraries.bottom_navigation.BottomNavigationViewEx;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
@@ -74,7 +79,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     handlerHomePage();
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, BoardFragment.newInstance("b"))
+                            .replace(R.id.fragment_container, BoardFragment.newInstance("b"), "BOARD")
                             .commit();
                     return true;
                 case R.id.item_saved_history:
@@ -102,11 +107,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         if (!checkBottomExpandLayoutState()) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container_navigation, HistoryFragment.newInstance())
+                    .replace(R.id.fragment_container_navigation, HistoryFragment.newInstance(), "HISTORY")
+                    .addToBackStack(null)
                     .commit();
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -116,6 +123,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private void handlerItemFavourite() {
         closeBottomExpandLayout();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("BOARD");
+        if (fragment != null) {
+            if (fragment instanceof BoardFragment) {
+                ((BoardFragment) fragment).saveCurrentFavouriteThread();
+            }
+        } else {
+            Timber.d("fragment thread is not open");
+        }
     }
 
     private void handlerItemMenu() {

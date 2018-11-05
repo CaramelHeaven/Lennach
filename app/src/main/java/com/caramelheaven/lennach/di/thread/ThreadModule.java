@@ -5,6 +5,7 @@ import com.caramelheaven.lennach.data.repository.thread.ThreadRemoteRepository;
 import com.caramelheaven.lennach.domain.ThreadRepository;
 import com.caramelheaven.lennach.models.mapper.thread.ThreadMapper;
 import com.caramelheaven.lennach.models.mapper.thread.ThreadResponseToPosts;
+import com.caramelheaven.lennach.models.mapper.thread.UsenetEntityToUsenet;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,13 +22,19 @@ public class ThreadModule {
 
     @ThreadScope
     @Provides
-    ThreadMapper provideThreadMapper(ThreadResponseToPosts threadResponseToPosts) {
-        return new ThreadMapper(threadResponseToPosts);
+    ThreadMapper provideThreadMapper(ThreadResponseToPosts threadResponseToPosts, UsenetEntityToUsenet usenetEntityToUsenet) {
+        return new ThreadMapper(threadResponseToPosts, usenetEntityToUsenet);
     }
 
     @ThreadScope
     @Provides
     ThreadResponseToPosts provideThreadResponseToPosts() {
         return new ThreadResponseToPosts();
+    }
+
+    @ThreadScope
+    @Provides
+    UsenetEntityToUsenet provideUsenetEntityToUsenet() {
+        return new UsenetEntityToUsenet();
     }
 }

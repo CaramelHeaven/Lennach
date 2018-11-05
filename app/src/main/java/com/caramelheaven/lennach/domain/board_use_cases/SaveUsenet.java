@@ -12,7 +12,7 @@ public class SaveUsenet {
         this.boardLocalRepository = boardLocalRepository;
     }
 
-    public Completable createUseCase(Usenet usenet) {
-        return boardLocalRepository.saveThread(usenet);
+    public Completable saveThread(Usenet usenet, boolean isFavourite) {
+        return boardLocalRepository.saveThread(usenet, isFavourite);
     }
 }

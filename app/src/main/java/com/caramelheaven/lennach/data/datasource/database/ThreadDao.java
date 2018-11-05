@@ -17,6 +17,6 @@ public interface ThreadDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertThread(UsenetEntity entity);
 
-    @Query("SELECT * FROM UsenetTable")
-    Single<List<UsenetEntity>> getSavedUsenets();
+    @Query("SELECT * FROM UsenetTable WHERE favourite = :favourite")
+    Single<List<UsenetEntity>> getFavouriteThreads(int favourite);
 }

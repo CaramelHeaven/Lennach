@@ -22,19 +22,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-    public void setAllowToHide(boolean allowToHide) {
-        this.allowToHide = allowToHide;
-    }
-
-    public boolean isAllowToHide() {
-        return allowToHide;
     }
 }

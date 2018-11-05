@@ -27,7 +27,7 @@ public class BoardMapper {
         return boardEntityToBoard.map(board);
     }
 
-    public UsenetEntity map(Usenet usenet) {
-        return usenetToUsenetEntity.map(usenet);
+    public UsenetEntity map(Usenet usenet, boolean isFavourite) {
+        return usenetToUsenetEntity.map(usenet, isFavourite);
     }
 }

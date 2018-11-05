@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -66,7 +67,7 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
         progressBar = view.findViewById(R.id.progressBar);
         initRecyclerAndAdapter();
     }
-    
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -103,7 +104,8 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
                         .beginTransaction()
                         .addToBackStack(null)
                         .replace(R.id.fragment_container,
-                                ThreadFragment.newInstance(getArguments().getString("BOARD_NAME"), threadId))
+                                ThreadFragment.newInstance(getArguments().getString("BOARD_NAME"), threadId),
+                                "THREAD")
                         .commit();
             }
         });
@@ -157,6 +159,11 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
 
     }
 
+    @Override
+    public void cannotSaveCurrentThread() {
+        Toast.makeText(getActivity(), "Can not save thread", Toast.LENGTH_SHORT).show();
+    }
+
     private void startViewerImages(int position, ImageView image) {
         ImageViewerFragment currentGallery = ImageViewerFragment.newInstance(position, boardAdapter.getUsenetList());
 
@@ -165,5 +172,9 @@ public class BoardFragment extends ParentFragment implements BoardView<Usenet> {
                 .addToBackStack(null)
                 .add(R.id.fragment_container, currentGallery)
                 .commit();
+    }
+
+    public void saveCurrentFavouriteThread() {
+        presenter.saveFavouriteThread();
     }
 }

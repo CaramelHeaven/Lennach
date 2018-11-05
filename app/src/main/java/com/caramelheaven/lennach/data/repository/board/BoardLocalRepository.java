@@ -16,7 +16,7 @@ public class BoardLocalRepository {
         this.threadDao = threadDao;
     }
 
-    public Completable saveThread(Usenet usenet) {
-        return Completable.fromAction(() -> threadDao.insertThread(boardMapper.map(usenet)));
+    public Completable saveThread(Usenet usenet, boolean isFavourite) {
+        return Completable.fromAction(() -> threadDao.insertThread(boardMapper.map(usenet, isFavourite)));
     }
 }

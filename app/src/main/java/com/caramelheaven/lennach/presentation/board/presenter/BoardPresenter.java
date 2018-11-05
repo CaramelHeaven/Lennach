@@ -1,7 +1,5 @@
 package com.caramelheaven.lennach.presentation.board.presenter;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
@@ -10,7 +8,6 @@ import com.caramelheaven.lennach.domain.board_use_cases.GetBoard;
 import com.caramelheaven.lennach.domain.board_use_cases.SaveUsenet;
 import com.caramelheaven.lennach.models.model.board_viewer.Board;
 import com.caramelheaven.lennach.models.model.board_viewer.Usenet;
-import com.caramelheaven.lennach.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -35,6 +32,7 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     private String boardName;
     private CompositeDisposable disposable;
     private Set<Usenet> cacheUsenets;
+    private Usenet lastUsenetEntered;
 
     @Inject
     GetBoard getBoard;
@@ -118,7 +116,8 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
     }
 
     public void saveThreadInNavigation(Usenet usenet) {
-        saveUsenet.createUseCase(usenet)
+        handlerLastUsenet(usenet);
+        saveUsenet.saveThread(usenet, false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -138,5 +137,41 @@ public class BoardPresenter extends MvpPresenter<BoardView<Usenet>> {
                         Timber.d("onError: " + e.getMessage());
                     }
                 });
+    }
+
+    private void handlerLastUsenet(Usenet usenet) {
+        lastUsenetEntered = new Usenet();
+        lastUsenetEntered.setThreadNum(usenet.getThreadNum());
+        lastUsenetEntered.setFilesCount(usenet.getFilesCount());
+        lastUsenetEntered.setPostsCount(usenet.getPostsCount());
+        lastUsenetEntered.setDate(usenet.getDate());
+        lastUsenetEntered.setComment(usenet.getComment());
+    }
+
+    public void saveFavouriteThread() {
+        if (lastUsenetEntered != null) {
+            saveUsenet.saveThread(lastUsenetEntered, true)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Timber.d("onCompleted");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.d("onError: " + e.getCause());
+                            Timber.d("onError: " + e.getMessage());
+                        }
+                    });
+        } else {
+
+        }
     }
 }

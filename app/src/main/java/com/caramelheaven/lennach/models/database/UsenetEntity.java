@@ -24,6 +24,10 @@ public class UsenetEntity {
     @ColumnInfo(name = "date")
     private String date;
 
+    //favourite
+    @ColumnInfo(name = "favourite")
+    private Boolean favourite;
+
     public UsenetEntity() {
 
     }
@@ -36,6 +40,7 @@ public class UsenetEntity {
                 ", postsCount=" + postsCount +
                 ", comment='" + comment + '\'' +
                 ", date='" + date + '\'' +
+                ", favourite=" + favourite +
                 '}';
     }
 
@@ -78,5 +83,13 @@ public class UsenetEntity {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public Boolean isFavourite() {
+        return favourite;
     }
 }

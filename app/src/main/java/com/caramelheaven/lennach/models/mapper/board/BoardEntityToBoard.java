@@ -13,12 +13,6 @@ public class BoardEntityToBoard extends Mapper<Board, BoardEntity> {
         return boardEntity;
     }
 
-    public Board reverseMap(BoardEntity value) {
-        final Board board = new Board();
-        fillBoard(board, value);
-        return board;
-    }
-
     private void fillBoardEntity(BoardEntity boardEntity, Board board) {
         boardEntity.setBoard(board.getBoard());
         boardEntity.setBoardName(board.getBoardName());
