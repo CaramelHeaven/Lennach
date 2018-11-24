@@ -44,4 +44,12 @@ public class ComponentsManager {
         }
         return boardComponent;
     }
+
+    public void clearMainComponent() {
+        mainComponent = null;
+    }
+
+    public void clearBoardComponent() {
+        boardComponent = null;
+    }
 }

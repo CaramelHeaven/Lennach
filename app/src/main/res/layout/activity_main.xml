@@ -9,25 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_gravity="bottom"
-        android:minHeight="?actionBarSize"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabAlignmentMode="center" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_create_thread"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        app:layout_anchor="@+id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_apps" />
-
     <include
         android:id="@+id/bottom_sheet"
         layout="@layout/activity_main_bottom_navigation"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </android.support.design.widget.CoordinatorLayout>

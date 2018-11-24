@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.presentation.board;
+package com.caramelheaven.lennach.presentation.navigation;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,21 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
-import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 
-public class BoardFragment extends MvpAppCompatFragment implements BoardView {
+public class NavigationFragment extends MvpAppCompatFragment {
 
-    @InjectPresenter
-    BoardPresenter presenter;
-
-    public static BoardFragment newInstance() {
+    public static NavigationFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        BoardFragment fragment = new BoardFragment();
+        NavigationFragment fragment = new NavigationFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -30,7 +24,7 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_board, container, false);
+        return inflater.inflate(R.layout.fragment_navigation, container, false);
     }
 
     @Override
@@ -41,15 +35,5 @@ public class BoardFragment extends MvpAppCompatFragment implements BoardView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
     }
 }
