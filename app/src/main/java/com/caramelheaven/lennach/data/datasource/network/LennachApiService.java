@@ -1,6 +1,6 @@
 package com.caramelheaven.lennach.data.datasource.network;
 
-import com.caramelheaven.lennach.models.model.thread_viewer.Post;
+import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.models.network.BoardResponse;
 import com.caramelheaven.lennach.models.network.CaptchaResponse;
 import com.caramelheaven.lennach.models.network.MessagePostResponse;
@@ -18,7 +18,6 @@ import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 public interface LennachApiService {
     @GET("{boardName}/{page}.json")
@@ -42,5 +41,5 @@ public interface LennachApiService {
     @Multipart
     @POST("makaba/posting.fcgi?json=1&task=post")
     Single<MessagePostResponse> sendMessageWithImage(@PartMap Map<String, RequestBody> options,
-                                              @Part MultipartBody.Part file);
+                                                     @Part MultipartBody.Part file);
 }

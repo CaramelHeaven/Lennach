@@ -24,7 +24,7 @@ public class NetworkModule {
     public Retrofit provideRetrofit(OkHttpClient.Builder builder) {
         OkHttpClient client = builder.build();
         return new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(Constants.INSTANCE.getBASE_URL())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
@@ -42,7 +42,7 @@ public class NetworkModule {
     public OkHttpClient.Builder provideOkHttpBuilder() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(10, TimeUnit.SECONDS);
-        builder.connectTimeout(5, TimeUnit.SECONDS);
+        builder.connectTimeout(10, TimeUnit.SECONDS);
         builder.addInterceptor(chain -> {
             Request request = chain.request();
             return chain.proceed(request);

@@ -1,14 +1,6 @@
 package com.caramelheaven.lennach.presentation.main.presenter;
 
-import com.arellomobile.mvp.MvpView;
-import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.caramelheaven.lennach.presentation.base.BaseView;
 
-@StateStrategyType(value = AddToEndSingleStrategy.class)
-public interface MainView extends MvpView {
-    void menuBehavior(boolean flag);
-
-    void menuTransform(boolean flag);
-
-    void menuBehaviorScroll(int state);
+public interface MainView extends BaseView {
 }

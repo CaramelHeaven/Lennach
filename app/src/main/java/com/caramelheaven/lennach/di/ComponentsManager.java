@@ -7,16 +7,15 @@ import com.caramelheaven.lennach.di.application.AppModule;
 import com.caramelheaven.lennach.di.application.DaggerAppComponent;
 import com.caramelheaven.lennach.di.board.BoardComponent;
 import com.caramelheaven.lennach.di.board.BoardModule;
-import com.caramelheaven.lennach.di.captcha.CaptchaComponent;
-import com.caramelheaven.lennach.di.captcha.CaptchaModule;
-import com.caramelheaven.lennach.di.thread.ThreadComponent;
-import com.caramelheaven.lennach.di.thread.ThreadModule;
+import com.caramelheaven.lennach.di.main.MainComponent;
+import com.caramelheaven.lennach.di.main.MainModule;
 
 public class ComponentsManager {
+
     private AppComponent appComponent;
+    private MainComponent mainComponent;
     private BoardComponent boardComponent;
-    private ThreadComponent threadComponent;
-    private CaptchaComponent captchaComponent;
+
     private Context context;
 
     public ComponentsManager(Context context) {
@@ -32,36 +31,17 @@ public class ComponentsManager {
         return appComponent;
     }
 
+    public MainComponent plusMainComponent() {
+        if (mainComponent == null) {
+            mainComponent = appComponent.plusMainComponent(new MainModule());
+        }
+        return mainComponent;
+    }
+
     public BoardComponent plusBoardComponent() {
         if (boardComponent == null) {
-            boardComponent = appComponent.plusBoardComponent(new BoardModule());
+            boardComponent = mainComponent.plusBoardComponent(new BoardModule());
         }
         return boardComponent;
-    }
-
-    public ThreadComponent plusThreadComponent() {
-        if (threadComponent == null) {
-            threadComponent = appComponent.plusThreadComponent(new ThreadModule());
-        }
-        return threadComponent;
-    }
-
-    public CaptchaComponent plusCaptchaComponent() {
-        if (captchaComponent == null) {
-            captchaComponent = appComponent.plusCaptchaComponent(new CaptchaModule());
-        }
-        return captchaComponent;
-    }
-
-    public void clearBoardComponent() {
-        boardComponent = null;
-    }
-
-    public void clearThreadComponent() {
-        threadComponent = null;
-    }
-
-    public void clearCaptchaComponent() {
-        captchaComponent = null;
     }
 }
