@@ -13,10 +13,10 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.presentation.board.BoardFragment;
 import com.caramelheaven.lennach.presentation.main.fragment.presenter.MainFrgmPresenter;
 import com.caramelheaven.lennach.presentation.main.fragment.presenter.MainFrgmView;
+import com.caramelheaven.lennach.presentation.menu.MenuFragment;
+import com.caramelheaven.lennach.presentation.notification.NotificationFragment;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.view.BottomNavigationViewEx;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class MainFragment extends MvpAppCompatFragment implements MainFrgmView {
     private BottomNavigationViewEx btnNavigation;
@@ -90,10 +90,16 @@ public class MainFragment extends MvpAppCompatFragment implements MainFrgmView {
     }
 
     private void provideItemNotification() {
-
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_main, NotificationFragment.newInstance())
+                .commit();
     }
 
     private void provideItemMenu() {
-
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_main, MenuFragment.newInstance())
+                .commit();
     }
 }

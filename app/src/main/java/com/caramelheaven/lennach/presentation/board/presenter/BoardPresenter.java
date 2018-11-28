@@ -47,6 +47,7 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView> {
 
     @SuppressLint("CheckResult")
     private void getData() {
+        getViewState().showProgress();
         getBoard.subscribeToData("b")
                 .subscribeOn(Schedulers.io())
                 .map(Board::getUsenetList)
@@ -61,6 +62,7 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView> {
 
     @Override
     protected void successfulResult(List<Usenet> result) {
-        //Timber.d("result: " + result);
+        getViewState().hideProgress();
+        getViewState().showItems(result);
     }
 }

@@ -1,6 +1,12 @@
 package com.caramelheaven.lennach.presentation.board.presenter;
 
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.caramelheaven.lennach.presentation.base.BaseView;
 
-public interface BoardView extends BaseView {
+import java.util.List;
+
+public interface BoardView<T> extends BaseView {
+    @StateStrategyType(value = AddToEndSingleStrategy.class)
+    void showItems(List<T> items);
 }
