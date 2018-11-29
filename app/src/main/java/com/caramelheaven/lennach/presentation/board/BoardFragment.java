@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.transition.TransitionSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
@@ -115,7 +114,7 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
                 .beginTransaction()
                 .setReorderingAllowed(true)
                 .addSharedElement(ivPhoto, getResources().getString(R.string.image_transition))
-                .replace(R.id.fragment_container_main,
+                .replace(R.id.fragment_container,
                         ImageGalleryFragment.newInstance(boardAdapter.getItemByPosition(pos).getImage()),
                         ImageGalleryFragment.class.getSimpleName())
                 .addToBackStack(null)
