@@ -20,7 +20,7 @@ import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
-import com.caramelheaven.lennach.presentation.image_gallery.ImageGalleryFragment;
+import com.caramelheaven.lennach.presentation.main.BoardAdapter;
 import com.caramelheaven.lennach.utils.OnBoardItemClickListener;
 
 import java.util.ArrayList;
@@ -110,15 +110,15 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
 
         //((TransitionSet) this.getExitTransition()).excludeTarget(ivPhoto, true);
 
-        this.getFragmentManager()
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .addSharedElement(ivPhoto, getResources().getString(R.string.image_transition))
-                .replace(R.id.fragment_container,
-                        ImageGalleryFragment.newInstance(boardAdapter.getItemByPosition(pos).getImage()),
-                        ImageGalleryFragment.class.getSimpleName())
-                .addToBackStack(null)
-                .commit();
+//        this.getFragmentManager()
+//                .beginTransaction()
+//                .setReorderingAllowed(true)
+//                .addSharedElement(ivPhoto, getResources().getString(R.string.image_transition))
+//                .replace(R.id.fragment_container,
+//                        ImageGalleryFragment.newInstance(boardAdapter.getItemByPosition(pos).getImage()),
+//                        ImageGalleryFragment.class.getSimpleName())
+//                .addToBackStack(null)
+//                .commit();
     }
 
     private void runLayoutAnimation() {

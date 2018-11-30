@@ -27,5 +27,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".presentation.image_gallery.ImageGalleryActivity"
+            android:theme="@style/AppTheme.Transparent" />
     </application>
+
 </manifest>

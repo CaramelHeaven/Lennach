@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.presentation.board;
+package com.caramelheaven.lennach.presentation.main;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -15,8 +15,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board.Usenet;
+import com.caramelheaven.lennach.models.model.common.DataImage;
 import com.caramelheaven.lennach.utils.OnBoardItemClickListener;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,12 +50,10 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         usenetVH.tvDate.setText("Anon - " + usenetList.get(i).getDate());
 
         if (usenetList.get(i).getImage().getThumbnail() != null) {
-            Glide.with(usenetVH.ivThread.getContext())
-                    .load("https://2ch.hk" + usenetList.get(i).getImage().getThumbnail())
+            Glide.with(usenetVH.ivThread)
+                    .load("https://2ch.hk" + usenetList.get(i).getImage().getPath())
                     .apply(new RequestOptions()
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .signature(new RequestOptions().getSignature()))
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .into(usenetVH.ivThread);
         } else {
             Glide.with(usenetVH.itemView.getContext()).clear(usenetVH.ivThread);
@@ -68,6 +68,25 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public Usenet getItemByPosition(int position) {
         return usenetList.get(position);
+    }
+
+    public int getPositionByItem(Usenet usenet) {
+        for (int i = 0; i < usenetList.size(); i++) {
+            if (usenetList.get(i).equals(usenet)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public ArrayList<DataImage> getImages() {
+        ArrayList<DataImage> dataImages = new ArrayList<>();
+
+        for (Usenet usenet : usenetList) {
+            dataImages.add(usenet.getImage());
+        }
+
+        return dataImages;
     }
 
     @Override

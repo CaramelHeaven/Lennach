@@ -7,4 +7,6 @@ public abstract class BasePresenter<T, S extends BaseView> extends MvpPresenter<
     protected abstract void handlerError(Throwable throwable);
 
     protected abstract void successfulResult(T result);
+
+    protected abstract void getData();
 }

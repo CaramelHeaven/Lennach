@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.caramelheaven.lennach.Lennach;
-import com.caramelheaven.lennach.di.board.BoardModule;
 import com.caramelheaven.lennach.domain.board_use_case.GetBoard;
 import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.models.model.board.Usenet;
@@ -28,10 +27,7 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView> {
     GetBoard getBoard;
 
     public BoardPresenter() {
-        Lennach.getComponentsManager()
-                .plusMainComponent()
-                .plusBoardComponent(new BoardModule())
-                .inject(this);
+
     }
 
     @Override
@@ -45,15 +41,6 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView> {
         super.onDestroy();
     }
 
-    @SuppressLint("CheckResult")
-    private void getData() {
-        getViewState().showProgress();
-        getBoard.subscribeToData("b")
-                .subscribeOn(Schedulers.io())
-                .map(Board::getUsenetList)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerError);
-    }
 
     @Override
     protected void handlerError(Throwable throwable) {
@@ -64,5 +51,10 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView> {
     protected void successfulResult(List<Usenet> result) {
         getViewState().hideProgress();
         getViewState().showItems(result);
+    }
+
+    @Override
+    protected void getData() {
+
     }
 }

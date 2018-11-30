@@ -15,4 +15,6 @@
 
     <color name="colorTextDark">#442C2E</color>
     <color name="colorTextGray">#ccc6c4</color>
+
+    <color name="colofDarkFrameLayout">#000000</color>
 </resources>

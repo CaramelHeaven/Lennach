@@ -30,4 +30,9 @@ public class MenuPresenter extends BasePresenter<Board, MenuView> {
     protected void successfulResult(Board result) {
 
     }
+
+    @Override
+    protected void getData() {
+
+    }
 }
