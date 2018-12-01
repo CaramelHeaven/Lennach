@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 @InjectViewState
-public class MainPresenter extends BasePresenter<List<Usenet>, MainView<Usenet>> {
+public class MainPresenter extends MvpPresenter<MainView> {
 
     private CompositeDisposable disposable;
 
@@ -28,9 +28,6 @@ public class MainPresenter extends BasePresenter<List<Usenet>, MainView<Usenet>>
      */
     private int enterImageClickPosition;
     private int exitImageSwipePosition;
-
-    @Inject
-    GetBoard getBoard;
 
     public MainPresenter() {
         Timber.d("inject view state");
@@ -44,7 +41,6 @@ public class MainPresenter extends BasePresenter<List<Usenet>, MainView<Usenet>>
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        getData();
     }
 
 
@@ -56,26 +52,6 @@ public class MainPresenter extends BasePresenter<List<Usenet>, MainView<Usenet>>
         super.onDestroy();
     }
 
-    @Override
-    protected void getData() {
-        getViewState().showProgress();
-        disposable.add(getBoard.subscribeToData("b")
-                .subscribeOn(Schedulers.io())
-                .map(Board::getUsenetList)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerError));
-    }
-
-    @Override
-    protected void handlerError(Throwable throwable) {
-
-    }
-
-    @Override
-    protected void successfulResult(List<Usenet> result) {
-        getViewState().hideProgress();
-        getViewState().showItems(result);
-    }
 
     public int getEnterImageClickPosition() {
         return enterImageClickPosition;

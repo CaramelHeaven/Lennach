@@ -11,6 +11,11 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -18,7 +23,7 @@
         android:paddingStart="1dp" />
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/frame_bottom_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -26,14 +31,12 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="@color/colorPrimary"
             android:elevation="1dp"
             app:itemIconSize="26dp"
-            app:itemIconTint="#000"
+            app:itemIconTint="#D80027"
             app:menu="@menu/bottom_menu_primary" />
-
     </FrameLayout>
 
     <include

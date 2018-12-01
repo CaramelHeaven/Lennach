@@ -6,7 +6,7 @@ import com.caramelheaven.lennach.presentation.base.BaseView;
 
 import java.util.List;
 
-public interface BoardView<T> extends BaseView {
+public interface BoardView<S> extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)
-    void showItems(List<T> items);
+    void showItems(List<S> items);
 }

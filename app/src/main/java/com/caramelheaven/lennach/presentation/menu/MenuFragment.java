@@ -40,12 +40,22 @@ public class MenuFragment extends BaseFragment implements MenuView {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    protected void provideRecyclerAndAdapter() {
+
     }
 
     @Override
-    protected void provideRecyclerAndAdapter() {
+    protected void provideClickListeners() {
+
+    }
+
+    @Override
+    protected void initViews(View view) {
+
+    }
+
+    @Override
+    protected void deInitViews() {
 
     }
 

@@ -3,16 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="this is board fragment" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layoutAnimation="@anim/layout_animation_slide_from_bottom" />
+        android:layoutAnimation="@anim/layout_animation_slide_from_bottom"
+        android:paddingStart="1dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"

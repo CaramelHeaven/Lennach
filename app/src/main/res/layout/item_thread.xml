@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="110dp"
     android:foreground="?attr/selectableItemBackground">
 
     <RelativeLayout
@@ -12,12 +12,12 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cv_container_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerVertical="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:foreground="?attr/selectableItemBackground"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
             <ImageView
@@ -31,24 +31,23 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/cv_container_image"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:maxLines="4"
             android:text="@string/test_text"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTitle"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/cv_container_image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="28 Jun, 2018"
@@ -58,6 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorTextGray" />
+            android:background="@color/colorBackground" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.presentation.main;
+package com.caramelheaven.lennach.presentation.board;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -47,7 +47,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         UsenetVH usenetVH = (UsenetVH) viewHolder;
         usenetVH.tvTitle.setText(Html.fromHtml(usenetList.get(i).getComment()));
-        usenetVH.tvDate.setText("Anon - " + usenetList.get(i).getDate());
+        usenetVH.tvDate.setText(usenetList.get(i).getDate());
 
         if (usenetList.get(i).getImage().getThumbnail() != null) {
             Glide.with(usenetVH.ivThread)
