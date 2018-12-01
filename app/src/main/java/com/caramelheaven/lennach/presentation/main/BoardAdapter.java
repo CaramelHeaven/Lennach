@@ -51,7 +51,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         if (usenetList.get(i).getImage().getThumbnail() != null) {
             Glide.with(usenetVH.ivThread)
-                    .load("https://2ch.hk" + usenetList.get(i).getImage().getPath())
+                    .load("https://2ch.hk" + usenetList.get(i).getImage().getThumbnail())
                     .apply(new RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .into(usenetVH.ivThread);

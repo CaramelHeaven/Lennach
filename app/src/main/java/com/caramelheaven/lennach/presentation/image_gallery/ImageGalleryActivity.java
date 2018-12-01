@@ -102,18 +102,6 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
         }
     };
 
-    private void setStartPostTransition(final View sharedView) {
-        sharedView.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        sharedView.getViewTreeObserver().removeOnPreDrawListener(this);
-                        supportStartPostponedEnterTransition();
-                        return true;
-                    }
-                });
-    }
-
     public class PhotoAdapter extends PagerAdapter {
 
         private List<DataImage> dataImages;
@@ -143,10 +131,16 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             ivImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
+            //what???
+            String name = container.getContext()
+                    .getString(R.string.transition_name, presenter.getCurrentClickedUserPosition(),
+                            position);
+
+            ivImage.setTransitionName(name);
+
             Glide.with(ivImage)
                     .load("https://2ch.hk" + dataImages.get(position).getPath())
                     .apply(new RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .dontAnimate())
                     .listener(new RequestListener<Drawable>() {
                         @Override
@@ -162,27 +156,15 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
                         }
                     })
                     .thumbnail(Glide.with(ivImage)
-                            .load("https://2ch.hk" + dataImages.get(position).getThumbnail())
-                            .apply(new RequestOptions()
-                                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)))
+                            .load("https://2ch.hk" + dataImages.get(position).getThumbnail()))
                     .into(ivImage);
+
 
             DismissFrameLayout layout = new DismissFrameLayout(container.getContext());
 
             layout.setDismissListener(onDismissListener);
             layout.setLayoutParams(new ViewPager.LayoutParams());
             layout.addView(ivImage);
-
-            //what???
-            String name = container.getContext()
-                    .getString(R.string.transition_name, presenter.getCurrentClickedUserPosition(),
-                            position);
-
-            ivImage.setTransitionName(name);
-
-            if (position == presenter.getListPosition()) {
-                //setStartPostTransition(ivImage);
-            }
 
             container.addView(layout);
             return layout;

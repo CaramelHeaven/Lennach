@@ -6,6 +6,8 @@ import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
+import timber.log.Timber;
+
 public class SwipeGestureDetector {
     public static final int DIRECTION_TOP_BOTTOM = 1;
     public static final int DIRECTION_LEFT_RIGHT = 4;
@@ -49,6 +51,7 @@ public class SwipeGestureDetector {
             case MotionEvent.ACTION_MOVE:
                 final float xDiff = Math.abs(x - initialMotionX);
                 final float yDiff = Math.abs(y - initialMotionY);
+
                 if (xDiff > touchSlop && xDiff > yDiff) {
                     isBeingDragged = true;
                     //direction horizon
@@ -76,8 +79,10 @@ public class SwipeGestureDetector {
             case MotionEvent.ACTION_MOVE:
                 final float deltaX = x - lastMotionX;
                 final float deltaY = y - lastMotionY;
+
                 lastMotionX = x;
                 lastMotionY = y;
+
                 if (isBeingDragged) {
                     if (direction == DIRECTION_LEFT_RIGHT) {
                         listener.onSwipeLeftRight(deltaX, deltaY);
@@ -87,6 +92,7 @@ public class SwipeGestureDetector {
                 } else {
                     final float xDiff = Math.abs(x - initialMotionX);
                     final float yDiff = Math.abs(y - initialMotionY);
+
                     if (xDiff > touchSlop && xDiff > yDiff) {
                         isBeingDragged = true;
                         //direction horizon
