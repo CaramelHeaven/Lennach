@@ -16,18 +16,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <!--Main handler-->
         <activity
             android:name=".presentation.main.MainActivity"
             android:windowSoftInputMode="adjustPan">
+
+        </activity>
+
+        <!--Image Gallery-->
+        <activity
+            android:name=".presentation.image_gallery.ImageGalleryActivity"
+            android:theme="@style/AppTheme.Transparent" />
+
+        <!--splash screen-->
+        <activity android:name=".presentation.splash_welcome.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentation.image_gallery.ImageGalleryActivity"
-            android:theme="@style/AppTheme.Transparent" />
 
     </application>
 

@@ -19,7 +19,7 @@ import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.bus.Kek;
-import com.caramelheaven.lennach.utils.view.BottomNavigationViewEx;
+import com.caramelheaven.lennach.utils.views.bottom_navigation.BottomNavigationViewEx;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

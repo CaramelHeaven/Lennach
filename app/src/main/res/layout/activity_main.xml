@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.caramelheaven.lennach.utils.view.BottomNavigationViewEx
+        <com.caramelheaven.lennach.utils.views.bottom_navigation.BottomNavigationViewEx
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="48dp"

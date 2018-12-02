@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.utils.view;
+package com.caramelheaven.lennach.utils.views.bottom_navigation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
