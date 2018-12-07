@@ -9,12 +9,15 @@ import com.caramelheaven.lennach.di.board.BoardComponent;
 import com.caramelheaven.lennach.di.board.BoardModule;
 import com.caramelheaven.lennach.di.main.MainComponent;
 import com.caramelheaven.lennach.di.main.MainModule;
+import com.caramelheaven.lennach.di.thread.ThreadComponent;
+import com.caramelheaven.lennach.di.thread.ThreadModule;
 
 public class ComponentsManager {
 
     private AppComponent appComponent;
     private MainComponent mainComponent;
     private BoardComponent boardComponent;
+    private ThreadComponent threadComponent;
 
     private Context context;
 
@@ -45,11 +48,22 @@ public class ComponentsManager {
         return boardComponent;
     }
 
+    public ThreadComponent plusThreadComponent() {
+        if (threadComponent == null) {
+            threadComponent = mainComponent.plusThreadComponent(new ThreadModule());
+        }
+        return threadComponent;
+    }
+
     public void clearMainComponent() {
         mainComponent = null;
     }
 
     public void clearBoardComponent() {
         boardComponent = null;
+    }
+
+    public void clearThreadComponent() {
+        threadComponent = null;
     }
 }

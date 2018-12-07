@@ -11,24 +11,15 @@ import java.util.List;
 
 public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Post opPost;
     private List<Post> postList;
 
-    private int mainPost = 0;
-
-    public ThreadAdapter(Post opPost, List<Post> postList) {
-        this.opPost = opPost;
+    public ThreadAdapter(List<Post> postList) {
         this.postList = postList;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        if (viewType == mainPost) {
-
-        } else {
-
-        }
         return null;
     }
 
@@ -43,24 +34,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public int getItemViewType(int position) {
-        if (mainPost == position) {
-            return mainPost;
-        } else {
-            return position;
-        }
-    }
-
-    @Override
     public int getItemCount() {
-        return postList.size() + 1;
-    }
-
-    public class MainPostVH extends RecyclerView.ViewHolder {
-
-        public MainPostVH(@NonNull View itemView) {
-            super(itemView);
-        }
+        return postList.size();
     }
 
     public class PostVH extends RecyclerView.ViewHolder {

@@ -1,15 +1,11 @@
 package com.caramelheaven.lennach.presentation.board;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.ChangeBounds;
-import android.support.transition.Slide;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +20,10 @@ import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
-import com.caramelheaven.lennach.presentation.thread.ThreadFragment;
 import com.caramelheaven.lennach.utils.OnBoardItemClickListener;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
-import com.caramelheaven.lennach.utils.bus.Kek;
+import com.caramelheaven.lennach.utils.bus.models.HandlerViewPagerData;
+import com.caramelheaven.lennach.utils.bus.models.Kek;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +40,14 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
 
     @ProvidePresenter
     BoardPresenter provideBoardPresenter() {
-        return new BoardPresenter();
+        return new BoardPresenter(getArguments().getString("BOARD"));
     }
 
-    public static BoardFragment newInstance() {
+    public static BoardFragment newInstance(String board, int position) {
 
         Bundle args = new Bundle();
+        args.putString("BOARD", board);
+        args.putInt("POS", position);
 
         BoardFragment fragment = new BoardFragment();
         fragment.setArguments(args);
@@ -59,7 +57,10 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_board, container, false);
+        View view = inflater.inflate(R.layout.fragment_board, container, false);
+        view.setTag(getArguments().getInt("POS", 0));
+
+        return view;
     }
 
     @Override
@@ -116,28 +117,7 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
 
             @Override
             public void onThreadClick(int pos) {
-//                Intent intent = new Intent(getActivity(), ThreadActivity.class);
-//                intent.putExtra("THREAD", adapter.getItemByPosition(pos).getThreadNum());
-//
-//                startActivity(intent);
-
-                ThreadFragment fragment = ThreadFragment.newInstance();
-
-                Slide slideTransition = new Slide(Gravity.RIGHT);
-                slideTransition.setDuration(200);
-
-                ChangeBounds changeBoundsTransition = new ChangeBounds();
-                changeBoundsTransition.setDuration(200);
-
-                fragment.setEnterTransition(slideTransition);
-                fragment.setAllowReturnTransitionOverlap(true);
-                fragment.setAllowEnterTransitionOverlap(true);
-                fragment.setSharedElementEnterTransition(changeBoundsTransition);
-
-                getFragmentManager().beginTransaction()
-                        .add(R.id.fragmentContainer, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                GlobalBus.getEventBus().post(presenter.mappingUsenet(adapter.getItemByPosition(pos)));
             }
         });
     }

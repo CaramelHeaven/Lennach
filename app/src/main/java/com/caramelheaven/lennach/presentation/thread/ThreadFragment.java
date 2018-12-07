@@ -18,6 +18,12 @@ import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
+import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.bus.models.ActionThread;
+import com.caramelheaven.lennach.utils.bus.GlobalBus;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +43,15 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     ThreadPresenter provideThreadPresenter() {
         return new ThreadPresenter(
                 getArguments().getString("BOARD"),
-                getArguments().getParcelable("FIRST_POST"));
+                getArguments().getString("THREAD_NUM"));
     }
 
-    public static ThreadFragment newInstance() {
+    public static ThreadFragment newInstance(String board, String threadNumber, int position) {
 
         Bundle args = new Bundle();
+        args.putString("BOARD", board);
+        args.putString("THREAD_NUM", threadNumber);
+        args.putInt("POS", position);
 
         ThreadFragment fragment = new ThreadFragment();
         fragment.setArguments(args);
@@ -52,7 +61,12 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_thread, container, false);
+        View view = inflater.inflate(R.layout.fragment_thread, container, false);
+        view.setTag(getArguments().getInt("POS"));
+
+        view.setTranslationX(Constants.INSTANCE.getMANAGE_X_THREAD());
+
+        return view;
     }
 
     @Override
@@ -61,11 +75,29 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        GlobalBus.getEventBus().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        GlobalBus.getEventBus().unregister(this);
+        super.onPause();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void openThread(ActionThread thread) {
+        presenter.setBoardAndThread(thread.getBoard(), thread.getThreadNumber());
+        presenter.getData();
+    }
+
+    @Override
     protected void provideRecyclerAndAdapter() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new ThreadAdapter(presenter.getMainPost(), new ArrayList<>());
+        adapter = new ThreadAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
     }
 

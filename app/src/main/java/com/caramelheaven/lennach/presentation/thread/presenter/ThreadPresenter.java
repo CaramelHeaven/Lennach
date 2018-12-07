@@ -1,20 +1,29 @@
 package com.caramelheaven.lennach.presentation.thread.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
 
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 @InjectViewState
 public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView> {
 
     private String boardName;
-    private Post mainPost;
+    private String threadNum;
+    private CompositeDisposable disposable;
 
-    public ThreadPresenter(String boardName, Post mainPost) {
+    public ThreadPresenter(String boardName, String threadNum) {
         this.boardName = boardName;
-        this.mainPost = mainPost;
+        this.threadNum = threadNum;
+        disposable = new CompositeDisposable();
+
+        Lennach.getComponentsManager()
+                .plusThreadComponent()
+                .inject(this);
     }
 
     @Override
@@ -38,15 +47,12 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView> {
     }
 
     @Override
-    protected void getData() {
+    public void getData() {
 
     }
 
-    private String getThreadNumber() {
-        return mainPost.getNum();
-    }
-
-    public Post getMainPost() {
-        return mainPost;
+    public void setBoardAndThread(String boardName, String threadNum) {
+        this.boardName = boardName;
+        this.threadNum = threadNum;
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -13,13 +14,14 @@ import android.widget.RelativeLayout;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.presentation.board.BoardFragment;
 import com.caramelheaven.lennach.presentation.image_gallery.ImageGalleryActivity;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
-import com.caramelheaven.lennach.utils.bus.Kek;
-import com.caramelheaven.lennach.utils.views.bottom_navigation.BottomNavigationViewEx;
+import com.caramelheaven.lennach.utils.bus.models.HandlerViewPagerData;
+import com.caramelheaven.lennach.utils.bus.models.Kek;
+import com.caramelheaven.lennach.utils.views.BottomNavigationViewEx;
+import com.caramelheaven.lennach.utils.views.SlidePageTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -32,11 +34,14 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
      * All data passing to gallery
      * */
     private View[] imageViews;
+    private MainPagerAdapter adapter;
+    private SlidePageTransformer slidePageTransformer;
 
     private BottomSheetBehavior bottomSheetBehavior;
     private RelativeLayout relativeLayout;
     private BottomNavigationViewEx btnNavigation;
     private ProgressBar progressBar;
+    private ViewPager viewPager;
 
     @InjectPresenter
     MainPresenter presenter;
@@ -50,13 +55,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         btnNavigation = findViewById(R.id.bottom_navigation);
         progressBar = findViewById(R.id.progressBar);
+        viewPager = findViewById(R.id.viewPager);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, BoardFragment.newInstance())
-                    .commit();
-        }
+        adapter = new MainPagerAdapter(getSupportFragmentManager());
+        slidePageTransformer = new SlidePageTransformer();
+
+        viewPager.setPageTransformer(false, slidePageTransformer);
+        viewPager.setAdapter(adapter);
 
         provideBottomNavigation();
 
@@ -77,7 +82,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void authUpdate(Kek kek) {
+    public void increasePhotoPicker(Kek kek) {
         View view = kek.getView();
         Intent intent = new Intent(MainActivity.this, ImageGalleryActivity.class);
 
@@ -94,6 +99,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 MainActivity.this, view, ViewCompat.getTransitionName(view));
 
         startActivityForResult(intent, 0, activityOptions.toBundle());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handlerPager(HandlerViewPagerData data) {
+        viewPager.setCurrentItem(1);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.caramelheaven.lennach.di.main;
 
 import com.caramelheaven.lennach.di.board.BoardComponent;
 import com.caramelheaven.lennach.di.board.BoardModule;
+import com.caramelheaven.lennach.di.thread.ThreadComponent;
+import com.caramelheaven.lennach.di.thread.ThreadModule;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 
 import dagger.Subcomponent;
@@ -11,6 +13,8 @@ import dagger.Subcomponent;
 public interface MainComponent {
 
     BoardComponent plusBoardComponent(BoardModule module);
+
+    ThreadComponent plusThreadComponent(ThreadModule module);
 
     void inject(MainPresenter mainPresenter);
 }

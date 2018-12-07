@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.utils.bus;
+package com.caramelheaven.lennach.utils.bus.models;
 
 import android.view.View;
 
