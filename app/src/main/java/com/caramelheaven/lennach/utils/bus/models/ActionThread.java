@@ -5,12 +5,12 @@ package com.caramelheaven.lennach.utils.bus.models;
  * Pass data to open thread from view pager
  */
 public class ActionThread {
-    private String threadNumber;
     private String board;
+    private String threadNumber;
 
-    public ActionThread(String threadNumber, String board) {
-        this.threadNumber = threadNumber;
+    public ActionThread(String board, String threadNumber) {
         this.board = board;
+        this.threadNumber = threadNumber;
     }
 
     public String getThreadNumber() {

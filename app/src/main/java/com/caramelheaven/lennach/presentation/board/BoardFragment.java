@@ -22,7 +22,6 @@ import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 import com.caramelheaven.lennach.utils.OnBoardItemClickListener;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
-import com.caramelheaven.lennach.utils.bus.models.HandlerViewPagerData;
 import com.caramelheaven.lennach.utils.bus.models.Kek;
 
 import java.util.ArrayList;

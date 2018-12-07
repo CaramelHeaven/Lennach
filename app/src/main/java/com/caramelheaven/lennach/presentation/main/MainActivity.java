@@ -103,6 +103,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handlerPager(HandlerViewPagerData data) {
+        GlobalBus.getEventBus().post(data.getActionThread());
         viewPager.setCurrentItem(1);
     }
 

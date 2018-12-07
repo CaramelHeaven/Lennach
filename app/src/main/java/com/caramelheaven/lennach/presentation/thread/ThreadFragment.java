@@ -120,6 +120,9 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
     @Override
     public void showProgress() {
+        if (adapter.getItemCount() != 0) {
+            adapter.clear();
+        }
         progressBar.setVisibility(View.VISIBLE);
     }
 

@@ -112,11 +112,13 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         @Override
         public void onClick(View v) {
+            int position = getAdapterPosition();
+
             if (v instanceof CardView) {
                 if (v == cvImage) {
-                    onBoardItemClickListener.onImageClick(getAdapterPosition(), ivThread);
+                    onBoardItemClickListener.onImageClick(position, ivThread);
                 } else {
-                    onBoardItemClickListener.onThreadClick(getAdapterPosition());
+                    onBoardItemClickListener.onThreadClick(position);
                 }
             }
         }

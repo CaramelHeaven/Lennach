@@ -17,4 +17,7 @@
     <color name="colorTextGray">#ccc6c4</color>
 
     <color name="colofDarkFrameLayout">#000000</color>
+
+    <color name="colorItemBackground">#FEEAE6</color>
+    <color name="colorItemBackgroundSelected">#F2D8D3</color>
 </resources>

@@ -36,6 +36,8 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView<Usenet
         Lennach.getComponentsManager()
                 .plusBoardComponent()
                 .inject(this);
+
+        getBoard.setBoardName("b");
     }
 
     @Override
@@ -64,7 +66,7 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView<Usenet
     @Override
     protected void getData() {
         getViewState().showProgress();
-        disposable.add(getBoard.subscribeToData(board)
+        disposable.add(getBoard.subscribeToData()
                 .subscribeOn(Schedulers.io())
                 .map(Board::getUsenetList)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,7 +74,8 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView<Usenet
     }
 
     public HandlerViewPagerData mappingUsenet(Usenet usenet) {
-        ActionThread thread = new ActionThread(board, usenet.getThreadNum());
+        Timber.d("getBoard:");
+        ActionThread thread = new ActionThread(getBoard.getBoardName(), usenet.getNum());
         HandlerViewPagerData data = new HandlerViewPagerData(thread);
 
         return data;

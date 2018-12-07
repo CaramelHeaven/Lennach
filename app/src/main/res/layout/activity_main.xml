@@ -14,12 +14,14 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp" />
 
     <FrameLayout
         android:id="@+id/frame_bottom_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="48dp"
+        android:layout_gravity="bottom">
 
         <com.caramelheaven.lennach.utils.views.BottomNavigationViewEx
             android:id="@+id/bottom_navigation"
@@ -27,7 +29,6 @@
             android:layout_height="48dp"
             android:layout_gravity="bottom"
             android:background="@color/colorPrimary"
-            android:elevation="1dp"
             app:itemIconSize="26dp"
             app:itemIconTint="#D80027"
             app:menu="@menu/bottom_menu_primary" />
