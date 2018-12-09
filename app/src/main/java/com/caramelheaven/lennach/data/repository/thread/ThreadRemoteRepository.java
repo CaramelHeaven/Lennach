@@ -2,6 +2,7 @@ package com.caramelheaven.lennach.data.repository.thread;
 
 import com.caramelheaven.lennach.data.datasource.network.LennachApiService;
 import com.caramelheaven.lennach.domain.ThreadRepository;
+import com.caramelheaven.lennach.models.mapper.thread.ThreadMapper;
 import com.caramelheaven.lennach.models.model.thread.Post;
 
 import java.util.ArrayList;
@@ -16,15 +17,17 @@ import timber.log.Timber;
 public class ThreadRemoteRepository implements ThreadRepository {
 
     private LennachApiService apiService;
+    private ThreadMapper threadMapper;
 
-    public ThreadRemoteRepository(LennachApiService apiService) {
+    public ThreadRemoteRepository(LennachApiService apiService, ThreadMapper threadMapper) {
         this.apiService = apiService;
+        this.threadMapper = threadMapper;
     }
-
 
     @Override
     public Single<List<Post>> getThread(String boardName, String threadId, String numPost) {
         return apiService
-                .getPostsByThread(boardName, threadId, numPost);
+                .getPostsByThread(boardName, threadId, numPost)
+                .map(threadMapper::map);
     }
 }

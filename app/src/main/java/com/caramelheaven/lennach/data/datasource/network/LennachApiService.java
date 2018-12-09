@@ -1,9 +1,10 @@
 package com.caramelheaven.lennach.data.datasource.network;
 
-import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.models.network.BoardResponse;
 import com.caramelheaven.lennach.models.network.CaptchaResponse;
 import com.caramelheaven.lennach.models.network.MessagePostResponse;
+import com.caramelheaven.lennach.models.network.PostResponse;
+import com.caramelheaven.lennach.models.network.ThreadResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,9 @@ public interface LennachApiService {
                                    @Path("page") int page);
 
     @GET("makaba/mobile.fcgi?task=get_thread")
-    Single<List<Post>> getPostsByThread(@Query("board") String boardName,
-                                        @Query("thread") String threadId,
-                                        @Query("post") String numId);
+    Single<List<PostResponse>> getPostsByThread(@Query("board") String boardName,
+                                                @Query("thread") String threadId,
+                                                @Query("post") String numId);
 
     @GET("api/captcha/{type}/id")
     Single<CaptchaResponse> getCaptcha(@Path("type") String captchaType,

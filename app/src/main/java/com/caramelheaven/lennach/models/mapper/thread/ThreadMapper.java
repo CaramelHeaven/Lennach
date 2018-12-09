@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.models.mapper.thread;
 
 import com.caramelheaven.lennach.models.model.thread.Post;
+import com.caramelheaven.lennach.models.network.PostResponse;
 import com.caramelheaven.lennach.models.network.ThreadResponse;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class ThreadMapper {
         this.threadResponseToPosts = threadResponseToPosts;
     }
 
-    public List<Post> map(ThreadResponse response) {
+    public List<Post> map(List<PostResponse> response) {
         return threadResponseToPosts.map(response);
     }
 }

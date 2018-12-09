@@ -2,6 +2,7 @@ package com.caramelheaven.lennach.models.model.thread;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.style.ClickableSpan;
 
 import com.caramelheaven.lennach.models.model.common.DataImage;
 
@@ -22,6 +23,42 @@ public class Post implements Parcelable {
     private String tags;
 
     private List<DataImage> files;
+
+    private List<ClickableSpan> clickableSpanList;
+    private List<CutIndexWord> cutIndexWordList;
+
+    public List<CutIndexWord> getCutIndexWordList() {
+        return cutIndexWordList;
+    }
+
+    public void setCutIndexWordList(List<CutIndexWord> cutIndexWordList) {
+        this.cutIndexWordList = cutIndexWordList;
+    }
+
+    public void setClickableSpanList(List<ClickableSpan> clickableSpanList) {
+        this.clickableSpanList = clickableSpanList;
+    }
+
+    public List<ClickableSpan> getClickableSpanList() {
+        return clickableSpanList;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "comment='" + comment + '\'' +
+                ", date='" + date + '\'' +
+                ", name='" + name + '\'' +
+                ", num='" + num + '\'' +
+                ", bannned=" + bannned +
+                ", lasthit=" + lasthit +
+                ", op=" + op +
+                ", email='" + email + '\'' +
+                ", filesCount=" + filesCount +
+                ", tags='" + tags + '\'' +
+                ", files=" + files +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -124,7 +161,6 @@ public class Post implements Parcelable {
         this.files = files;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -162,7 +198,7 @@ public class Post implements Parcelable {
         this.files = in.createTypedArrayList(DataImage.CREATOR);
     }
 
-    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+    public static final Creator<Post> CREATOR = new Creator<Post>() {
         @Override
         public Post createFromParcel(Parcel source) {
             return new Post(source);
