@@ -3,6 +3,7 @@ package com.caramelheaven.lennach.models.model.thread;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.style.ClickableSpan;
+import android.view.View;
 
 import com.caramelheaven.lennach.models.model.common.DataImage;
 

@@ -91,7 +91,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         intent.putExtra("LIST_POSITION", kek.getCurrentPos());
 
         //set transition name
-        view.setTransitionName(getBaseContext().getResources()
+        ViewCompat.setTransitionName(view, getBaseContext().getResources()
                 .getString(R.string.transition_name, kek.getPos(),
                         kek.getCurrentPos()));
 

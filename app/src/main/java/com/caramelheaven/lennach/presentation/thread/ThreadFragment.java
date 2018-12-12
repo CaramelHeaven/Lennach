@@ -1,5 +1,9 @@
 package com.caramelheaven.lennach.presentation.thread;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +23,7 @@ import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.OnTextViewLinkClickListener;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 
@@ -27,6 +32,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
@@ -69,20 +76,32 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         return view;
     }
 
+    private BroadcastReceiver broadcastReceiver;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Timber.d("intent: clicked");
+            }
+        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
         GlobalBus.getEventBus().register(this);
+        Intent myIntent = new Intent(android.content.Intent.ACTION_VIEW);
+
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_VIEW), null, null);
     }
 
     @Override
     public void onPause() {
         GlobalBus.getEventBus().unregister(this);
+        getActivity().unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
@@ -99,6 +118,13 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
         adapter = new ThreadAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnTextViewLinkClickListener(new OnTextViewLinkClickListener() {
+            @Override
+            public void onLinkClink(String linkText) {
+                Timber.d("ClickL: " + linkText);
+            }
+        });
     }
 
     @Override

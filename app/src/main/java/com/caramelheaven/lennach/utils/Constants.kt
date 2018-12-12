@@ -10,4 +10,6 @@ object Constants {
     val LOAD_CAPTCHA_IMAGE = "https://2ch.hk/api/captcha/2chaptcha/image/"
 
     val MANAGE_X_THREAD = -70;
+
+    val REPLY = ">>";
 }

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -136,7 +137,7 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
                     .getString(R.string.transition_name, presenter.getCurrentClickedUserPosition(),
                             position);
 
-            ivImage.setTransitionName(name);
+            ViewCompat.setTransitionName(ivImage, name);
 
             Glide.with(ivImage)
                     .load("https://2ch.hk" + dataImages.get(position).getPath())
