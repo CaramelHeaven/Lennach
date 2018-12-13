@@ -101,26 +101,14 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //act=android.intent.action.VIEW dat=/b/res/187955383.html
         //comment.setSpan(span, 0, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        String response = "<a href=\"/b/res/187963680.html#187963680\" class=\"post-reply-link\" data-thread" +
-                "=\"187963680\" data-num=\"187963680\">>>187963680 (OP)</a> (OP)<br><a href=\"/b/res/1879636" +
-                "80.html#187963680\" class=\"post-reply-link\" data-thread=\"187963680\" data-num=\"18796368" +
-                "0\">>>187963680 (OP)</a> (OP)<br><a href=\"/b/res/187963680.html#187963680\" class=\"post-r" +
-                "eply-link\" data-thread=\"187963680\" data-num=\"187963680\">>>187963680 (OP)</a> (OP)<br>Р" +
-                "аз два <span class=\"s\">ответил</span><br><br><a href=\"/b/res/187963680.html#187963709\" c" +
-                "lass=\"post-reply-link\" data-thread=\"187963680\" data-num=\"187963709\">>>187963709</a><br" +
-                ">Четыре пять<br><br><a href=\"/b/res/187963680.html#187963767\" class=\"post-reply-link\" da" +
-                "ta-thread=\"187963680\" data-num=\"187963767\">>>187963767</a> восемь семь хуем<br><a href=\"" +
-                "/b/res/187963680.html#187963767\" class=\"post-reply-link\" data-thread=\"187963680\" data-n" +
-                "um=\"187963767\">>>187963767</a><br>а еще сделаем <span class=\"spoiler\">так</span><br>а по" +
-                "том так<br>а <span class=\"u\">потом так</span><br>а <span class=\"o\">потом так</span><br>а" +
-                " потом <em>так</em><br><a href=\"/b/res/187963680.html#187963767\" class=\"post-reply-link\"" +
-                " data-thread=\"187963680\" data-num=\"187963767\">>>187963767</a> и вот так<br><br><a href=\"" +
-                "/b/res/187963680.html#187963772\" class=\"post-reply-link\" data-thread=\"187963680\" data-n" +
-                "um=\"187963772\">>>187963772</a><br><strong>и еще вот так<br>ыфафаыа<br>фыаы</strong><br><br" +
-                "><br><span class=\"unkfunc\">&gt;лфыдаалыдала</span><br>ffk<br><br><br><a href=\"/b/res/1879" +
-                "63680.html#187963798\" class=\"post-reply-link\" data-thread=\"187963680\" data-num=\"187963" +
-                "798\">>>187963798</a><br>адфалфдлд";
-        ;
+        String response = "<a href=\"/s/res/2419411.html#2438501\" class=\"post-reply-link\" " +
+                "data-thread=\"2419411\" data-num=\"2438501\">>>2438501</a><br><span class=\"u" +
+                "nkfunc\">&gt;А ты серийник диска сравнивал </span><br>Они мне сами сказали: <" +
+                "em>Мы провели диагностику диска и все нормально.</em><br><br>Я сам его в авгу" +
+                "сте покупал. Так что подумал ничего и страшного.<br><br><a href=\"/s/res/24194" +
+                "11.html#2438529\" class=\"post-reply-link\" data-thread=\"2419411\" data-num=\"" +
+                "2438529\">>>2438529</a><br>6 часов. Если бы действительно меняли, то 1-2 дня б" +
+                "ы заняло.";
 
         String[] massive = String.valueOf(Html.fromHtml(response)).split("\n");
 
@@ -132,6 +120,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         StringBuilder userComment = new StringBuilder();
 
         //Parse html to simple SubComment list.
+        //TODO refactoring this
         for (String data : massive) {
             Timber.d("dat: " + data);
             if (!data.isEmpty()) {
@@ -201,10 +190,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             bigText.append(comment.getComment());
 
             bigText.append("\n");
+            bigText.append("\n");
         }
 
 
-        SpannableString spannable = new SpannableString(bigText.toString().trim());
+        SpannableString spannable = new SpannableString(bigText.toString());
 
         Set<String> arara = new LinkedHashSet<>();
 
@@ -214,8 +204,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         Timber.d("check big text: " + bigText);
 
-        String[] split = bigText.toString().split("\n");
-
         Set<String> repls = new LinkedHashSet<>();
 
         for (SubComment comment : subComments) {
@@ -223,29 +211,39 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         for (String reply : repls) {
-            Pattern word = Pattern.compile(reply);
-            Timber.d("find: " + reply);
+            Pattern word = null;
+            int missingCharactersIndex = 0;
+            if (reply.contains("(OP)")) {
+                int mainIndex = reply.indexOf("(");
+                String modifiedReply = reply.substring(0, mainIndex).trim();
+
+                Timber.d("reply (OP): " + modifiedReply);
+
+                missingCharactersIndex = reply.length() - modifiedReply.length();
+
+                word = Pattern.compile(modifiedReply + "\\s+");
+            } else {
+                word = Pattern.compile(reply);
+            }
+            Timber.d("reply: " + reply);
             Matcher matcher = word.matcher(bigText);
 
             while (matcher.find()) {
-                Timber.d("find again: " + matcher.start() + " end: " + matcher.end());
+                int endIndex = matcher.end();
+
+                if (missingCharactersIndex != 0) {
+                    endIndex += missingCharactersIndex;
+                }
+
+                Timber.d("find again: " + matcher.start() + " end: " + matcher.end() + " modified end: " + endIndex);
+                spannable.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NotNull View widget) {
+                        Timber.d("setOnItemClickListener: " + reply);
+                    }
+                }, matcher.start(), endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-
-        spannable.setSpan(new ClickableSpan() {
-            @Override
-            public void onClick(@NotNull View widget) {
-                Timber.d("onClick");
-            }
-        }, 0, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        spannable.setSpan(new ClickableSpan() {
-            @Override
-            public void onClick(@NotNull View widget) {
-                Timber.d("onClick 2");
-            }
-        }, 30, 50, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
 
         //string.setSpan(span, 0, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
