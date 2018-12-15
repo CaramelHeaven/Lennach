@@ -5,6 +5,7 @@ import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.domain.thread_use_case.GetThread;
 import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
+import com.caramelheaven.lennach.utils.singletons.ThreadContainer;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
     private String boardName;
     private String threadNum;
     private CompositeDisposable disposable;
+    private ThreadContainer threadContainer;
 
     @Inject
     GetThread getThread;
@@ -29,6 +31,7 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
         this.boardName = boardName;
         this.threadNum = threadNum;
         disposable = new CompositeDisposable();
+        threadContainer = ThreadContainer.getInstance();
 
         Lennach.getComponentsManager()
                 .plusThreadComponent()
@@ -43,6 +46,7 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
     @Override
     public void onDestroy() {
         Lennach.getComponentsManager().clearThreadComponent();
+        threadContainer.clearPosts();
         super.onDestroy();
     }
 
@@ -53,6 +57,8 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
 
     @Override
     protected void successfulResult(List<Post> result) {
+        threadContainer.initPostsFromThread(result);
+
         getViewState().hideProgress();
         getViewState().showItems(result);
     }

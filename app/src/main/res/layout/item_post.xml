@@ -14,21 +14,14 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_count_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:text="1" />
+            android:layout_marginTop="8dp"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_number_and_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_toRightOf="@id/iv_picture_thread"
@@ -40,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_number_and_date"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="12dp"
             android:layout_toRightOf="@id/iv_picture_thread"
             android:text="91x194_301[1].jpg JPG 25.1 Kib 425x500"
             android:textSize="12sp" />
@@ -50,11 +43,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_number_and_date"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginBottom="4dp"
             android:layout_toEndOf="@id/iv_picture_thread"
             android:text="@string/test_text" />
+
+        <Button
+            android:id="@+id/btn_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/tv_description"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:text="3 replies"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/btn_reply"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="6dp"
+            android:background="@color/colorAccent" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

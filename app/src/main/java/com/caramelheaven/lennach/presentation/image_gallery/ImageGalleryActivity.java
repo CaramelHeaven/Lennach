@@ -140,7 +140,7 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
             ViewCompat.setTransitionName(ivImage, name);
 
             Glide.with(ivImage)
-                    .load("https://2ch.hk" + dataImages.get(position).getPath())
+                    .load("https://2ch.hk" + dataImages.get(position).getThumbnail())
                     .apply(new RequestOptions()
                             .dontAnimate())
                     .listener(new RequestListener<Drawable>() {
@@ -157,8 +157,6 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
                             return false;
                         }
                     })
-                    .thumbnail(Glide.with(ivImage)
-                            .load("https://2ch.hk" + dataImages.get(position).getThumbnail()))
                     .into(ivImage);
 
 

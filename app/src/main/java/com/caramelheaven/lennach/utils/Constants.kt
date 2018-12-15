@@ -9,7 +9,15 @@ object Constants {
     val TOO_FAST_PUBLICATION = -8
     val LOAD_CAPTCHA_IMAGE = "https://2ch.hk/api/captcha/2chaptcha/image/"
 
+    /* Controlling second [Thread] fragment padding.
+    * */
     val MANAGE_X_THREAD = -70;
 
+    /* Passing values
+    * */
+    val REFERENCE_ITEM = "REFERENCE";
+
+    /* Helper symbols
+    * */
     val REPLY = ">>";
 }

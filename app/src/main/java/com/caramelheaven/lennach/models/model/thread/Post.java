@@ -2,10 +2,12 @@ package com.caramelheaven.lennach.models.model.thread;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.SpannableString;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
 import com.caramelheaven.lennach.models.model.common.DataImage;
+import com.caramelheaven.lennach.utils.OnAnswerItemClickListener;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,26 +25,15 @@ public class Post implements Parcelable {
     private Integer filesCount;
     private String tags;
 
+    private SpannableString modernComment;
+
+    /* Click listener where we install it on thread fragment.
+     * */
+    public OnAnswerItemClickListener onAnswerItemClickListener;
+
+    /* Images
+     * */
     private List<DataImage> files;
-
-    private List<ClickableSpan> clickableSpanList;
-    private List<CutIndexWord> cutIndexWordList;
-
-    public List<CutIndexWord> getCutIndexWordList() {
-        return cutIndexWordList;
-    }
-
-    public void setCutIndexWordList(List<CutIndexWord> cutIndexWordList) {
-        this.cutIndexWordList = cutIndexWordList;
-    }
-
-    public void setClickableSpanList(List<ClickableSpan> clickableSpanList) {
-        this.clickableSpanList = clickableSpanList;
-    }
-
-    public List<ClickableSpan> getClickableSpanList() {
-        return clickableSpanList;
-    }
 
     @Override
     public String toString() {
@@ -72,6 +63,19 @@ public class Post implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(num);
+    }
+
+
+    public void setOnAnswerItemClickListener(OnAnswerItemClickListener onAnswerItemClickListener) {
+        this.onAnswerItemClickListener = onAnswerItemClickListener;
+    }
+
+    public SpannableString getModernComment() {
+        return modernComment;
+    }
+
+    public void setModernComment(SpannableString modernComment) {
+        this.modernComment = modernComment;
     }
 
     public String getComment() {

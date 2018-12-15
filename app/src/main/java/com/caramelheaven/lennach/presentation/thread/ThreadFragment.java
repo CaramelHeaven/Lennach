@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,9 +21,11 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
+import com.caramelheaven.lennach.presentation.comment_viewer.CommentViewerDialogFragment;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.OnAnswerItemClickListener;
 import com.caramelheaven.lennach.utils.OnTextViewLinkClickListener;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
@@ -160,6 +163,21 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     @Override
     public void showItems(List<Post> items) {
         if (items.size() != 0) {
+            for (Post item : items) {
+                item.setOnAnswerItemClickListener(new OnAnswerItemClickListener() {
+                    @Override
+                    public void onAnswerClick(String reference) {
+                        FragmentTransaction fragmentTransaction = getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction();
+
+                        CommentViewerDialogFragment fragment = CommentViewerDialogFragment.newInstance(reference);
+
+                        fragment.show(fragmentTransaction, null);
+                    }
+                });
+            }
+
             adapter.updateAdapter(items);
         }
     }
