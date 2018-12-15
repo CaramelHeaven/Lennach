@@ -104,7 +104,7 @@ public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment impl
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dismiss();
             }
         });
 

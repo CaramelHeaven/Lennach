@@ -21,6 +21,7 @@ import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
 import com.caramelheaven.lennach.utils.OnBoardItemClickListener;
+import com.caramelheaven.lennach.utils.PaginationScrollListener;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.bus.models.Kek;
 
@@ -33,6 +34,7 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private LinearLayoutManager linearLayoutManager;
 
     @InjectPresenter
     BoardPresenter presenter;
@@ -68,9 +70,14 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
     }
 
     @Override
-    public void showItems(List<Usenet> items) {
+    public void showItems(List<Usenet> items, boolean withAnimation) {
         adapter.updateAdapter(items);
-        runLayoutAnimation();
+
+        if (withAnimation) {
+            runLayoutAnimation();
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -98,11 +105,29 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
     @Override
     protected void provideRecyclerAndAdapter() {
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         adapter = new BoardAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                presenter.loadNextPage();
+            }
+
+            @Override
+            protected boolean isLoading() {
+                return presenter.isLoading();
+            }
+
+            @Override
+            protected boolean isLastPage() {
+                return presenter.isLastPage();
+            }
+        });
     }
 
     @Override

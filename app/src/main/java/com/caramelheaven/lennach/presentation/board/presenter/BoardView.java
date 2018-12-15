@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface BoardView<S> extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)
-    void showItems(List<S> items);
+    void showItems(List<S> items, boolean withAnimation);
 }
