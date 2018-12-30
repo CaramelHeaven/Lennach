@@ -15,7 +15,8 @@ object Constants {
 
     /* Passing values
     * */
-    val REFERENCE_ITEM = "REFERENCE";
+    val STRING = "STRING";
+    val ARRAY = "ARRAY";
     val BOARD = "BOARD";
 
     /* Helper symbols

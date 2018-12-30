@@ -24,7 +24,7 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
     private CompositeDisposable disposable;
 
     //we set new posts for each click of user
-    private ThreadFilterPosts threadContainer;
+    private ThreadFilterPosts<Post> threadContainer;
 
     @Inject
     GetThread getThread;

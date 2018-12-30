@@ -42,7 +42,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         postVH.tvDescription.setText(postList.get(position).getModernComment());
         postVH.tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        postVH.tvNumberAndDate.setText("No " + postList.get(position).getNum());
+        postVH.tvNumberAndDate.setText("No " + postList.get(position).getNum() + " " + postList.get(position).getDate());
 
         if (postList.get(position).getRepliesPostList() != null) {
             postVH.btnReply.setText(String.valueOf(postList.get(position).getRepliesPostList().size()) + " replies");

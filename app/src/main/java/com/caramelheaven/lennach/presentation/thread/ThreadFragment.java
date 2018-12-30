@@ -110,9 +110,9 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         recyclerView.setAdapter(adapter);
 
         adapter.setOnPostItemClickListener(position -> {
-            Timber.d("click");
-            Timber.d("check reply: " + adapter.getItemByPosition(position).getRepliesPostList());
-            Timber.d("and it size: " + adapter.getItemByPosition(position).getRepliesPostList().size());
+            CommentViewerDialogFragment fragment = CommentViewerDialogFragment
+                    .newInstance(new ArrayList<>(adapter.getItemByPosition(position).getRepliesPostList()));
+            fragment.show(getActivity().getSupportFragmentManager(), null);
         });
     }
 
@@ -151,13 +151,8 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         if (items.size() != 0) {
             for (Post item : items) {
                 item.setOnAnswerItemClickListener(reference -> {
-                    FragmentTransaction fragmentTransaction = getActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction();
-
                     CommentViewerDialogFragment fragment = CommentViewerDialogFragment.newInstance(reference);
-
-                    fragment.show(fragmentTransaction, null);
+                    fragment.show(getActivity().getSupportFragmentManager(), null);
                 });
             }
 

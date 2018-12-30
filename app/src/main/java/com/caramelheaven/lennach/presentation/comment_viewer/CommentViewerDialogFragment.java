@@ -43,13 +43,32 @@ public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment impl
 
     @ProvidePresenter
     CommentViewerPresenter provideCommentViewerPresenter() {
-        return new CommentViewerPresenter(getArguments().getString(Constants.INSTANCE.getREFERENCE_ITEM()));
+        if (getArguments() != null) {
+            if (getArguments().getString(Constants.INSTANCE.getSTRING()) != null) {
+                return new CommentViewerPresenter(getArguments()
+                        .getString(Constants.INSTANCE.getSTRING()), new ArrayList<>());
+            } else if (getArguments().getParcelableArrayList(Constants.INSTANCE.getARRAY()) != null) {
+                return new CommentViewerPresenter("", getArguments()
+                        .getStringArrayList(Constants.INSTANCE.getARRAY()));
+            }
+        }
+        return null;
     }
 
     public static CommentViewerDialogFragment newInstance(String reference) {
 
         Bundle args = new Bundle();
-        args.putString(Constants.INSTANCE.getREFERENCE_ITEM(), reference);
+        args.putString(Constants.INSTANCE.getSTRING(), reference);
+
+        CommentViewerDialogFragment fragment = new CommentViewerDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CommentViewerDialogFragment newInstance(ArrayList<String> references) {
+
+        Bundle args = new Bundle();
+        args.putStringArrayList(Constants.INSTANCE.getARRAY(), references);
 
         CommentViewerDialogFragment fragment = new CommentViewerDialogFragment();
         fragment.setArguments(args);

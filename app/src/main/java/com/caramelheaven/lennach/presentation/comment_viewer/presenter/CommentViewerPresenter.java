@@ -5,6 +5,7 @@ import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
 import com.caramelheaven.lennach.utils.singletons.ThreadFilterPosts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,19 +20,28 @@ import timber.log.Timber;
 public class CommentViewerPresenter extends BasePresenter<List<Post>, CommentViewerView<Post>> {
 
     private String reference;
-    private ThreadFilterPosts threadContainer;
+    List<String> listReference;
+    private ThreadFilterPosts<Post> threadContainer;
     private CompositeDisposable disposable;
 
-    public CommentViewerPresenter(String reference) {
+    private String handleData;
+
+    public CommentViewerPresenter(String reference, ArrayList<String> listReference) {
         this.reference = reference;
+        this.listReference = listReference;
         disposable = new CompositeDisposable();
         threadContainer = ThreadFilterPosts.getInstance();
+
+        if (reference.equals("")) {
+            handleData = "ARRAY";
+        } else {
+            handleData = "STRING";
+        }
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-
     }
 
     @Override
@@ -49,10 +59,22 @@ public class CommentViewerPresenter extends BasePresenter<List<Post>, CommentVie
     @Override
     protected void getData() {
         getViewState().showProgress();
-        disposable.add(threadContainer.filteringDataByReference(reference)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::successfulResult, this::handlerError));
+        switch (handleData) {
+            case "STRING":
+                disposable.add(threadContainer.filterDateByTextLink(reference)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::successfulResult, this::handlerError));
+                break;
+            case "ARRAY":
+                disposable.add(threadContainer.filterDataByBtnReply(listReference)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::successfulResult, this::handlerError));
+                break;
+            default:
+                //nothing
+        }
     }
 
     @Override
