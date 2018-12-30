@@ -1,10 +1,9 @@
 package com.caramelheaven.lennach.presentation.comment_viewer.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
-import com.caramelheaven.lennach.utils.singletons.ThreadContainer;
+import com.caramelheaven.lennach.utils.singletons.ThreadFilterPosts;
 
 import java.util.List;
 
@@ -20,13 +19,13 @@ import timber.log.Timber;
 public class CommentViewerPresenter extends BasePresenter<List<Post>, CommentViewerView<Post>> {
 
     private String reference;
-    private ThreadContainer threadContainer;
+    private ThreadFilterPosts threadContainer;
     private CompositeDisposable disposable;
 
     public CommentViewerPresenter(String reference) {
         this.reference = reference;
         disposable = new CompositeDisposable();
-        threadContainer = ThreadContainer.getInstance();
+        threadContainer = ThreadFilterPosts.getInstance();
     }
 
     @Override

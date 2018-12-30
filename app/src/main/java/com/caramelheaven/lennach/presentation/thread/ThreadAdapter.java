@@ -2,11 +2,7 @@ package com.caramelheaven.lennach.presentation.thread;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +12,9 @@ import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread.Post;
-import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.OnAnswerItemClickListener;
-import com.caramelheaven.lennach.utils.OnTextViewLinkClickListener;
-
-import org.jetbrains.annotations.NotNull;
+import com.caramelheaven.lennach.utils.OnPostItemClickListener;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
@@ -32,7 +22,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<Post> postList;
 
-    private OnTextViewLinkClickListener onTextViewLinkClickListener;
+    private OnPostItemClickListener onPostItemClickListener;
 
     public ThreadAdapter(List<Post> postList) {
         this.postList = postList;
@@ -43,8 +33,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_post, viewGroup, false);
 
-        Timber.d("view: " + view.getMeasuredHeight() + " vi: " + view.getMeasuredWidth());
-
         return new PostVH(view);
     }
 
@@ -54,6 +42,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         postVH.tvDescription.setText(postList.get(position).getModernComment());
         postVH.tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        postVH.tvNumberAndDate.setText("No " + postList.get(position).getNum());
+
+        if (postList.get(position).getRepliesPostList() != null) {
+            postVH.btnReply.setText(String.valueOf(postList.get(position).getRepliesPostList().size()) + " replies");
+        } else {
+            postVH.btnReply.setText("0 replies");
+        }
 
         if (postList.get(position).getFiles().size() == 0) {
             postVH.ivPicture.setVisibility(View.GONE);
@@ -81,9 +76,13 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public Post getItemByPosition(int pos) {
+        return postList.get(pos);
+    }
+
     public class PostVH extends RecyclerView.ViewHolder {
 
-        TextView tvDescription, tvDate, tvPictureName;
+        TextView tvDescription, tvNumberAndDate, tvPictureName;
         ImageView ivPicture;
         Button btnReply;
 
@@ -91,16 +90,18 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvPictureName = itemView.findViewById(R.id.tv_picture_description);
-            tvDate = itemView.findViewById(R.id.tv_number_and_date);
+            tvNumberAndDate = itemView.findViewById(R.id.tv_number_and_date);
             ivPicture = itemView.findViewById(R.id.iv_picture_thread);
             btnReply = itemView.findViewById(R.id.btn_reply);
+
+            btnReply.setOnClickListener(v -> {
+                Timber.d("btn was clicked");
+                onPostItemClickListener.onBtnReplyClick(getAdapterPosition());
+            });
         }
-
-
     }
 
-    public void setOnTextViewLinkClickListener(OnTextViewLinkClickListener
-                                                       onTextViewLinkClickListener) {
-        this.onTextViewLinkClickListener = onTextViewLinkClickListener;
+    public void setOnPostItemClickListener(OnPostItemClickListener onPostItemClickListener) {
+        this.onPostItemClickListener = onPostItemClickListener;
     }
 }

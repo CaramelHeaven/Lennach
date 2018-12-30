@@ -4,26 +4,22 @@ import com.caramelheaven.lennach.models.model.thread.Post;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
-import io.reactivex.MaybeSource;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 
 /**
  * Created by CaramelHeaven on 17:38, 15/12/2018.
- * This is container for filtering data, when user click on answered text or reply.
+ * This is class for filtering data, when user click on answered text or reply.
  */
-public class ThreadContainer {
-    private static ThreadContainer INSTANCE;
+public class ThreadFilterPosts {
+    private static ThreadFilterPosts INSTANCE;
     private List<Post> postList;
 
-    public static ThreadContainer getInstance() {
+    public static ThreadFilterPosts getInstance() {
         if (INSTANCE == null) {
-            synchronized (ThreadContainer.class) {
+            synchronized (ThreadFilterPosts.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new ThreadContainer();
+                    INSTANCE = new ThreadFilterPosts();
                 }
             }
         }
@@ -40,9 +36,11 @@ public class ThreadContainer {
     }
 
     public Single<List<Post>> filteringDataByReference(String reference) {
+        String ref = reference.replaceAll("[^0-9]", "");
+
         return Single.just(postList)
                 .flattenAsObservable((Function<List<Post>, Iterable<Post>>) posts -> posts)
-                .filter(post -> String.valueOf(post.getModernComment()).contains(reference))
+                .filter(post -> post.getNum().equals(ref))
                 .toList();
     }
 }

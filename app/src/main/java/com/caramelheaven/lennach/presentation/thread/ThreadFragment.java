@@ -1,9 +1,6 @@
 package com.caramelheaven.lennach.presentation.thread;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,8 +22,7 @@ import com.caramelheaven.lennach.presentation.comment_viewer.CommentViewerDialog
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.OnAnswerItemClickListener;
-import com.caramelheaven.lennach.utils.OnTextViewLinkClickListener;
+import com.caramelheaven.lennach.utils.OnPostItemClickListener;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 
@@ -113,11 +109,10 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         adapter = new ThreadAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnTextViewLinkClickListener(new OnTextViewLinkClickListener() {
-            @Override
-            public void onLinkClink(String linkText) {
-                Timber.d("ClickL: " + linkText);
-            }
+        adapter.setOnPostItemClickListener(position -> {
+            Timber.d("click");
+            Timber.d("check reply: " + adapter.getItemByPosition(position).getRepliesPostList());
+            Timber.d("and it size: " + adapter.getItemByPosition(position).getRepliesPostList().size());
         });
     }
 

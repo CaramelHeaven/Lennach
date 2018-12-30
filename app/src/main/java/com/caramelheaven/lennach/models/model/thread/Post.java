@@ -25,7 +25,11 @@ public class Post implements Parcelable {
     private Integer filesCount;
     private String tags;
 
+    //Set this string to tv viewHolder
     private SpannableString modernComment;
+
+    //This list contains all replies num to this post
+    private List<String> repliesPostList;
 
     /* Click listener where we install it on thread fragment.
      * */
@@ -48,6 +52,9 @@ public class Post implements Parcelable {
                 ", email='" + email + '\'' +
                 ", filesCount=" + filesCount +
                 ", tags='" + tags + '\'' +
+                ", modernComment=" + modernComment +
+                ", repliesPostList=" + repliesPostList +
+                ", onAnswerItemClickListener=" + onAnswerItemClickListener +
                 ", files=" + files +
                 '}';
     }
@@ -166,6 +173,15 @@ public class Post implements Parcelable {
         this.files = files;
     }
 
+    public List<String> getRepliesPostList() {
+        return repliesPostList;
+    }
+
+    public void setRepliesPostList(List<String> repliesPostList) {
+        this.repliesPostList = repliesPostList;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -183,6 +199,7 @@ public class Post implements Parcelable {
         dest.writeString(this.email);
         dest.writeValue(this.filesCount);
         dest.writeString(this.tags);
+        dest.writeStringList(this.repliesPostList);
         dest.writeTypedList(this.files);
     }
 
@@ -200,6 +217,7 @@ public class Post implements Parcelable {
         this.email = in.readString();
         this.filesCount = (Integer) in.readValue(Integer.class.getClassLoader());
         this.tags = in.readString();
+        this.repliesPostList = in.createStringArrayList();
         this.files = in.createTypedArrayList(DataImage.CREATOR);
     }
 
