@@ -10,11 +10,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -28,17 +26,14 @@ import com.caramelheaven.lennach.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Created by CaramelHeaven on 16:52, 15/12/2018.
  */
 public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment implements CommentViewerView<Post> {
 
-    private ProgressBar progressBar;
     private RecyclerView recyclerView;
-    private RelativeLayout rlContainer;
-    //  private Button btnClose, btnBack;
+    private Button btnClose, btnBack;
+    private LinearLayout llContainer;
 
     private CommentAdapter adapter;
     private DisplayMetrics displayMetrics;
@@ -70,16 +65,15 @@ public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment impl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
-        rlContainer = view.findViewById(R.id.rl_container);
-        //  btnClose = view.findViewById(R.id.btn_close);
-        //  btnBack = view.findViewById(R.id.btn_back);
+        llContainer = view.findViewById(R.id.ll_container);
+        btnBack = view.findViewById(R.id.btn_back);
+        btnClose = view.findViewById(R.id.btn_close);
 
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         initRecyclerAndAdapter();
-        //  initClickListeners();
+        initClickListeners();
     }
 
     @Override
@@ -101,18 +95,18 @@ public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment impl
         if (posts.size() > 0) {
             adapter.updateAdapter(posts);
 
-            initButtons();
+            llContainer.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
     }
 
     private void initRecyclerAndAdapter() {
@@ -123,27 +117,19 @@ public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment impl
         recyclerView.setAdapter(adapter);
     }
 
-    private void initButtons() {
-        Button btnClose = new Button(getActivity());
-        Button btnBack = new Button(getActivity());
+    private void initClickListeners() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // dismiss();
+            }
+        });
 
-        btnBack.setText("close");
-        rlContainer.addView(btnBack);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
-
-//    private void initClickListeners() {
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dismiss();
-//            }
-//        });
-//
-//        btnClose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//    }
 }
