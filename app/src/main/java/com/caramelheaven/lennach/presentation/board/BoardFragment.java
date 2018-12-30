@@ -20,6 +20,7 @@ import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardPresenter;
 import com.caramelheaven.lennach.presentation.board.presenter.BoardView;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.OnBoardItemClickListener;
 import com.caramelheaven.lennach.utils.PaginationScrollListener;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
@@ -41,13 +42,13 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
 
     @ProvidePresenter
     BoardPresenter provideBoardPresenter() {
-        return new BoardPresenter(getArguments().getString("BOARD"));
+        return new BoardPresenter(getArguments().getString(Constants.INSTANCE.getBOARD()));
     }
 
     public static BoardFragment newInstance(String board, int position) {
 
         Bundle args = new Bundle();
-        args.putString("BOARD", board);
+        args.putString(Constants.INSTANCE.getBOARD(), board);
         args.putInt("POS", position);
 
         BoardFragment fragment = new BoardFragment();

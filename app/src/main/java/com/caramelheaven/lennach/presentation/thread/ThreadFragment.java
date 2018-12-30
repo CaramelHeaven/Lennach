@@ -84,27 +84,18 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Timber.d("intent: clicked");
-            }
-        };
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         GlobalBus.getEventBus().register(this);
-        Intent myIntent = new Intent(android.content.Intent.ACTION_VIEW);
-
-        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_VIEW), null, null);
     }
 
     @Override
     public void onPause() {
         GlobalBus.getEventBus().unregister(this);
-        getActivity().unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
@@ -164,17 +155,14 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     public void showItems(List<Post> items) {
         if (items.size() != 0) {
             for (Post item : items) {
-                item.setOnAnswerItemClickListener(new OnAnswerItemClickListener() {
-                    @Override
-                    public void onAnswerClick(String reference) {
-                        FragmentTransaction fragmentTransaction = getActivity()
-                                .getSupportFragmentManager()
-                                .beginTransaction();
+                item.setOnAnswerItemClickListener(reference -> {
+                    FragmentTransaction fragmentTransaction = getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction();
 
-                        CommentViewerDialogFragment fragment = CommentViewerDialogFragment.newInstance(reference);
+                    CommentViewerDialogFragment fragment = CommentViewerDialogFragment.newInstance(reference);
 
-                        fragment.show(fragmentTransaction, null);
-                    }
+                    fragment.show(fragmentTransaction, null);
                 });
             }
 

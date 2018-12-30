@@ -2,7 +2,11 @@ package com.caramelheaven.lennach.presentation.thread;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +16,15 @@ import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread.Post;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.OnAnswerItemClickListener;
 import com.caramelheaven.lennach.utils.OnTextViewLinkClickListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
@@ -33,6 +42,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_post, viewGroup, false);
+
+        Timber.d("view: " + view.getMeasuredHeight() + " vi: " + view.getMeasuredWidth());
 
         return new PostVH(view);
     }

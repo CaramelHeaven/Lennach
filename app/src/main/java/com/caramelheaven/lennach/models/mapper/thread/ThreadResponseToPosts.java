@@ -16,6 +16,7 @@ import com.caramelheaven.lennach.utils.OnAnswerItemClickListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +33,6 @@ public class ThreadResponseToPosts {
         fillPosts(posts, value);
         return posts;
     }
-
 
     private void fillPosts(List<Post> posts, List<PostResponse> value) {
         for (PostResponse response : value) {
@@ -76,7 +76,21 @@ public class ThreadResponseToPosts {
         String[] lines = comment.split("\n");
 
         for (String line : lines) {
-            if (line.contains(Constants.INSTANCE.getREPLY())) {
+            //op reply
+            if (line.contains(Constants.INSTANCE.getREPLY()) && line.contains("(OP)")) {
+                Pattern word = Pattern.compile(line.substring(0, line.length() - 5));
+                Matcher matcher = word.matcher(spannableString);
+
+                while (matcher.find()) {
+                    spannableString.setSpan(new ClickableSpan() {
+                        @Override
+                        public void onClick(@NotNull View widget) {
+                            post.onAnswerItemClickListener.onAnswerClick(line);
+                        }
+                    }, matcher.start(), matcher.end() + 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+            } else if (line.contains(Constants.INSTANCE.getREPLY())) {
+                //simple reply
                 Pattern word = Pattern.compile(line);
                 Matcher matcher = word.matcher(spannableString);
 
