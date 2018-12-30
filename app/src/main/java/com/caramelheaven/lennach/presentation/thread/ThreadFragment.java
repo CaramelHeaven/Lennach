@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -25,6 +26,7 @@ import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.OnPostItemClickListener;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
+import com.caramelheaven.lennach.utils.views.TopSheetBehavior;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -39,6 +41,8 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     private FrameLayout rootView;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TopSheetBehavior topSheetBehavior;
+    private RelativeLayout rlContainerTopSheet;
 
     private ThreadAdapter adapter;
 
@@ -81,6 +85,7 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -126,6 +131,8 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         rootView = view.findViewById(R.id.fragment_thread);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        rlContainerTopSheet = view.findViewById(R.id.rl_container_top_sheet);
+        topSheetBehavior = TopSheetBehavior.from(rlContainerTopSheet);
     }
 
     @Override

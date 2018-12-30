@@ -22,5 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone" />
+
+        <include layout="@layout/sheet_top_post_reply" />
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>

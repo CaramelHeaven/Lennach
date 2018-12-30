@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.utils.OnPostItemClickListener;
@@ -46,8 +49,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         if (postList.get(position).getRepliesPostList() != null) {
             postVH.btnReply.setText(String.valueOf(postList.get(position).getRepliesPostList().size()) + " replies");
+            postVH.btnReply.setVisibility(View.VISIBLE);
         } else {
-            postVH.btnReply.setText("0 replies");
+            postVH.btnReply.setVisibility(View.GONE);
         }
 
         if (postList.get(position).getFiles().size() == 0) {
@@ -56,6 +60,16 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else {
             postVH.ivPicture.setVisibility(View.VISIBLE);
             postVH.tvPictureName.setVisibility(View.VISIBLE);
+        }
+
+        if (postList.get(position).getFiles().size() > 0) {
+            Glide.with(postVH.ivPicture)
+                    .load("https://2ch.hk" + postList.get(position).getFiles().get(0).getThumbnail())
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                    .into(postVH.ivPicture);
+        } else {
+            Glide.with(postVH.ivPicture.getContext()).clear(postVH.ivPicture);
         }
     }
 

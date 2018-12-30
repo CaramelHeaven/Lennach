@@ -22,6 +22,7 @@ import com.caramelheaven.lennach.models.model.thread.Post;
 import com.caramelheaven.lennach.presentation.comment_viewer.presenter.CommentViewerPresenter;
 import com.caramelheaven.lennach.presentation.comment_viewer.presenter.CommentViewerView;
 import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.OnPostItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +135,15 @@ public class CommentViewerDialogFragment extends MvpAppCompatDialogFragment impl
 
         adapter = new CommentAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnPostItemClickListener(new OnPostItemClickListener() {
+            @Override
+            public void onBtnReplyClick(int position) {
+                CommentViewerDialogFragment fragment = CommentViewerDialogFragment
+                        .newInstance(new ArrayList<>(adapter.getItemByPosition(position).getRepliesPostList()));
+                fragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
     }
 
     private void initClickListeners() {
