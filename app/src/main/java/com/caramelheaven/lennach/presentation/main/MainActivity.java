@@ -155,6 +155,18 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private void provideItemNavigation() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
     }
     //                .commit();
     //                .replace(R.id.fragment_container_main, MenuFragment.newInstance())

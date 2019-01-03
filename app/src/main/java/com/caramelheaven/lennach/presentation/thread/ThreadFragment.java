@@ -1,16 +1,19 @@
 package com.caramelheaven.lennach.presentation.thread;
 
-import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -23,9 +26,8 @@ import com.caramelheaven.lennach.presentation.comment_viewer.CommentViewerDialog
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.OnPostItemClickListener;
-import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
+import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.views.TopSheetBehavior;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -38,11 +40,12 @@ import timber.log.Timber;
 
 public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
-    private FrameLayout rootView;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TopSheetBehavior topSheetBehavior;
     private RelativeLayout rlContainerTopSheet;
+    private ImageButton btnSend, btnMore, btnCatalog;
+    private EditText etMessage, etName, etOptions;
 
     private ThreadAdapter adapter;
 
@@ -79,14 +82,52 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         return view;
     }
 
-    private BroadcastReceiver broadcastReceiver;
+    boolean kek = false;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        Button btn = view.findViewById(R.id.button1);
         topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
+
+        btnMore.setOnClickListener(v -> {
+            Timber.d("kek");
+            if (etOptions.getVisibility() == View.VISIBLE || etName.getVisibility() == View.VISIBLE) {
+                etOptions.setVisibility(View.GONE);
+                etName.setVisibility(View.GONE);
+
+                //testing this later
+                topSheetBehavior.setPeekHeight(dpToPx(180, getActivity()));
+
+                topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
+            } else {
+                etName.setVisibility(View.VISIBLE);
+                etOptions.setVisibility(View.VISIBLE);
+                topSheetBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
+            }
+        });
+
+
+        topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == TopSheetBehavior.STATE_COLLAPSED) {
+
+                } else if (newState == TopSheetBehavior.STATE_EXPANDED) {
+
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
+
+            }
+        });
     }
+
+    float lastMove = 0;
 
     @Override
     public void onResume() {
@@ -113,7 +154,10 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
         adapter = new ThreadAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
+    }
 
+    @Override
+    protected void provideClickListeners() {
         adapter.setOnPostItemClickListener(position -> {
             CommentViewerDialogFragment fragment = CommentViewerDialogFragment
                     .newInstance(new ArrayList<>(adapter.getItemByPosition(position).getRepliesPostList()));
@@ -122,17 +166,17 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     }
 
     @Override
-    protected void provideClickListeners() {
-
-    }
-
-    @Override
     protected void initViews(View view) {
-        rootView = view.findViewById(R.id.fragment_thread);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-        rlContainerTopSheet = view.findViewById(R.id.rl_container_top_sheet);
+        rlContainerTopSheet = view.findViewById(R.id.cl_container_top_sheet);
         topSheetBehavior = TopSheetBehavior.from(rlContainerTopSheet);
+        btnSend = rlContainerTopSheet.findViewById(R.id.btn_send);
+        btnCatalog = rlContainerTopSheet.findViewById(R.id.btn_catalog);
+        btnMore = rlContainerTopSheet.findViewById(R.id.btn_more);
+        etMessage = rlContainerTopSheet.findViewById(R.id.et_message);
+        etName = rlContainerTopSheet.findViewById(R.id.et_name);
+        etOptions = rlContainerTopSheet.findViewById(R.id.et_options);
     }
 
     @Override
@@ -165,5 +209,13 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
             adapter.updateAdapter(items);
         }
+    }
+
+    public int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        int kek = Math.round((float) dp * density);
+        Timber.d("kek: " + kek);
+
+        return kek;
     }
 }
