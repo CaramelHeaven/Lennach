@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -25,7 +28,6 @@ import com.caramelheaven.lennach.presentation.comment_viewer.CommentViewerDialog
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
-import com.caramelheaven.lennach.utils.OnItemTouchCallback;
 import com.caramelheaven.lennach.utils.UtilsView;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
@@ -45,9 +47,11 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     private ProgressBar progressBar;
     private ImageButton btnSend, btnCatalogImages, btnMore;
     private EditText etMessage;
+    private TextView tvCounter;
     private FrameLayout fmContainerMessanger;
 
     private ThreadAdapter adapter;
+    private OnItemTouchHelperThread<ThreadAdapter> onItemTouchHelperThread;
     private DisplayMetrics displayMetrics;
 
     @InjectPresenter
@@ -89,6 +93,7 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        provideAnothersViews();
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -103,7 +108,7 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
             public void onClick(View v) {
                 if (kek == 0) {
                     kek = 1;
-                    utilsView.expand(fmContainerMessanger, 300, utilsView.dpToPx(140, getActivity()));
+
                 } else if (kek == 1) {
                     kek = 2;
 
@@ -152,11 +157,14 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         });
 
         //Set callback from swipe to left
-        OnItemTouchHelperThread<ThreadAdapter> onItemTouchHelperThread = new OnItemTouchHelperThread(adapter);
+        onItemTouchHelperThread = new OnItemTouchHelperThread(adapter, getActivity());
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onItemTouchHelperThread);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         adapter.setOnItemTouchCallback(item -> {
+            UtilsView.getInstance().expand(fmContainerMessanger, 300,
+                    UtilsView.getInstance().dpToPx(140, getActivity()));
+
             Timber.d("kek");
             Timber.d("get item: " + item.toString());
         });
@@ -193,11 +201,12 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         btnMore = view.findViewById(R.id.btn_more);
         etMessage = view.findViewById(R.id.et_message);
         fmContainerMessanger = view.findViewById(R.id.fm_container_messanger);
+        tvCounter = view.findViewById(R.id.tv_counter);
     }
 
     @Override
     protected void deInitViews() {
-
+        onItemTouchHelperThread.clear();
     }
 
     @Override
@@ -225,6 +234,25 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
             adapter.updateAdapter(items);
         }
+    }
+
+    private void provideAnothersViews() {
+        etMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvCounter.setText(String.valueOf(s.length()) + "/2000");
+            }
+        });
     }
 
 
