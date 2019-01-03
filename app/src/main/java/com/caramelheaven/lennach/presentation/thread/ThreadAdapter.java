@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.thread.Post;
+import com.caramelheaven.lennach.utils.OnItemTouchCallback;
 import com.caramelheaven.lennach.utils.OnPostItemClickListener;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<Post> postList;
 
     private OnPostItemClickListener onPostItemClickListener;
+    private OnItemTouchCallback<Post> onItemTouchCallback;
 
     public ThreadAdapter(List<Post> postList) {
         this.postList = postList;
@@ -115,7 +117,15 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public void itemTouchCallback(int pos) {
+        onItemTouchCallback.onTouchItem(postList.get(pos));
+    }
+
     public void setOnPostItemClickListener(OnPostItemClickListener onPostItemClickListener) {
         this.onPostItemClickListener = onPostItemClickListener;
+    }
+
+    public void setOnItemTouchCallback(OnItemTouchCallback<Post> onItemTouchCallback) {
+        this.onItemTouchCallback = onItemTouchCallback;
     }
 }

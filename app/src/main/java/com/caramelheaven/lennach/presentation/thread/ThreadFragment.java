@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,15 +25,19 @@ import com.caramelheaven.lennach.presentation.comment_viewer.CommentViewerDialog
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.OnItemTouchCallback;
 import com.caramelheaven.lennach.utils.UtilsView;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
+import com.caramelheaven.lennach.utils.views.item_touch_thread.OnItemTouchHelperThread;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
@@ -144,6 +149,16 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
             CommentViewerDialogFragment fragment = CommentViewerDialogFragment
                     .newInstance(new ArrayList<>(adapter.getItemByPosition(position).getRepliesPostList()));
             fragment.show(getActivity().getSupportFragmentManager(), null);
+        });
+
+        //Set callback from swipe to left
+        OnItemTouchHelperThread<ThreadAdapter> onItemTouchHelperThread = new OnItemTouchHelperThread(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onItemTouchHelperThread);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemTouchCallback(item -> {
+            Timber.d("kek");
+            Timber.d("get item: " + item.toString());
         });
 
         btnMore.setOnClickListener(v -> {
