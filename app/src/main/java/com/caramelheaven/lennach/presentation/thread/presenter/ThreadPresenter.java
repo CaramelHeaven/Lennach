@@ -26,6 +26,11 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
     //we set new posts for each click of user
     private ThreadFilterPosts<Post> threadContainer;
 
+    /*
+     * Button helper for check is more was open.
+     */
+    private boolean moreOpened = false;
+
     @Inject
     GetThread getThread;
 
@@ -80,5 +85,13 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
 
         Timber.d("setBoardAndThread: " + boardName + " threNum: " + threadNum);
         getThread.setBaseData(boardName, threadNum, "0");
+    }
+
+    public boolean isMoreOpened() {
+        return moreOpened;
+    }
+
+    public void setMoreOpened(boolean moreOpened) {
+        this.moreOpened = moreOpened;
     }
 }

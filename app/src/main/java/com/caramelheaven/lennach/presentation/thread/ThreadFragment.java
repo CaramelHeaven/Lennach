@@ -1,21 +1,19 @@
 package com.caramelheaven.lennach.presentation.thread;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -26,9 +24,9 @@ import com.caramelheaven.lennach.presentation.comment_viewer.CommentViewerDialog
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadPresenter;
 import com.caramelheaven.lennach.presentation.thread.presenter.ThreadView;
 import com.caramelheaven.lennach.utils.Constants;
+import com.caramelheaven.lennach.utils.UtilsView;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
-import com.caramelheaven.lennach.utils.views.TopSheetBehavior;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,18 +34,16 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private TopSheetBehavior topSheetBehavior;
-    private RelativeLayout rlContainerTopSheet;
-    private ImageButton btnSend, btnMore, btnCatalog;
-    private EditText etMessage, etName, etOptions;
+    private ImageButton btnSend, btnCatalogImages, btnMore;
+    private EditText etMessage;
+    private FrameLayout fmContainerMessanger;
 
     private ThreadAdapter adapter;
+    private DisplayMetrics displayMetrics;
 
     @InjectPresenter
     ThreadPresenter presenter;
@@ -82,52 +78,38 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         return view;
     }
 
-    boolean kek = false;
+    int kek = 0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        Button btn = view.findViewById(R.id.button1);
-        topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
-
-        btnMore.setOnClickListener(v -> {
-            Timber.d("kek");
-            if (etOptions.getVisibility() == View.VISIBLE || etName.getVisibility() == View.VISIBLE) {
-                etOptions.setVisibility(View.GONE);
-                etName.setVisibility(View.GONE);
-
-                //testing this later
-                topSheetBehavior.setPeekHeight(dpToPx(180, getActivity()));
-
-                topSheetBehavior.setState(TopSheetBehavior.STATE_COLLAPSED);
-            } else {
-                etName.setVisibility(View.VISIBLE);
-                etOptions.setVisibility(View.VISIBLE);
-                topSheetBehavior.setState(TopSheetBehavior.STATE_EXPANDED);
-            }
-        });
+        displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
 
-        topSheetBehavior.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
+        Button btn = view.findViewById(R.id.btn_test);
+
+        UtilsView utilsView = UtilsView.getInstance();
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == TopSheetBehavior.STATE_COLLAPSED) {
+            public void onClick(View v) {
+                if (kek == 0) {
+                    kek = 1;
+                    utilsView.expand(fmContainerMessanger, 300, utilsView.dpToPx(140, getActivity()));
+                } else if (kek == 1) {
+                    kek = 2;
 
-                } else if (newState == TopSheetBehavior.STATE_EXPANDED) {
-
+                } else if (kek == 2) {
+                    kek = 0;
+                    //UtilsView.getInstance().collapse(fm, 300, 0);
                 }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening) {
-
             }
         });
     }
 
-    float lastMove = 0;
 
     @Override
     public void onResume() {
@@ -163,20 +145,39 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
                     .newInstance(new ArrayList<>(adapter.getItemByPosition(position).getRepliesPostList()));
             fragment.show(getActivity().getSupportFragmentManager(), null);
         });
+
+        btnMore.setOnClickListener(v -> {
+            btnMore.animate().cancel();
+
+            if (!presenter.isMoreOpened()) {
+                btnMore.animate()
+                        .rotation(180)
+                        .start();
+
+                presenter.setMoreOpened(true);
+                UtilsView.getInstance().expand(fmContainerMessanger, 300,
+                        UtilsView.getInstance().dpToPx(displayMetrics.heightPixels, getActivity()));
+            } else {
+                btnMore.animate()
+                        .rotation(0)
+                        .start();
+
+                presenter.setMoreOpened(false);
+                UtilsView.getInstance().collapse(fmContainerMessanger, 300,
+                        UtilsView.getInstance().dpToPx(130, getActivity()));
+            }
+        });
     }
 
     @Override
     protected void initViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-        rlContainerTopSheet = view.findViewById(R.id.cl_container_top_sheet);
-        topSheetBehavior = TopSheetBehavior.from(rlContainerTopSheet);
-        btnSend = rlContainerTopSheet.findViewById(R.id.btn_send);
-        btnCatalog = rlContainerTopSheet.findViewById(R.id.btn_catalog);
-        btnMore = rlContainerTopSheet.findViewById(R.id.btn_more);
-        etMessage = rlContainerTopSheet.findViewById(R.id.et_message);
-        etName = rlContainerTopSheet.findViewById(R.id.et_name);
-        etOptions = rlContainerTopSheet.findViewById(R.id.et_options);
+        btnSend = view.findViewById(R.id.btn_send);
+        btnCatalogImages = view.findViewById(R.id.btn_catalog);
+        btnMore = view.findViewById(R.id.btn_more);
+        etMessage = view.findViewById(R.id.et_message);
+        fmContainerMessanger = view.findViewById(R.id.fm_container_messanger);
     }
 
     @Override
@@ -211,11 +212,5 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         }
     }
 
-    public int dpToPx(int dp, Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        int kek = Math.round((float) dp * density);
-        Timber.d("kek: " + kek);
 
-        return kek;
-    }
 }
