@@ -52,10 +52,9 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         postponeEnterTransition();
-
         setContentView(R.layout.activity_image_gallery);
+
         viewPager = findViewById(R.id.viewPager);
 
         //coloring background
@@ -140,7 +139,7 @@ public class ImageGalleryActivity extends MvpAppCompatActivity implements ImageG
             ViewCompat.setTransitionName(ivImage, name);
 
             Glide.with(ivImage)
-                    .load("https://2ch.hk" + dataImages.get(position).getThumbnail())
+                    .load("https://2ch.hk" + dataImages.get(position).getPath())
                     .apply(new RequestOptions()
                             .dontAnimate())
                     .listener(new RequestListener<Drawable>() {

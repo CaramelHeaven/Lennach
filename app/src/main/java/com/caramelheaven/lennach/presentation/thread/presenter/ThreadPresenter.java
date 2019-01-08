@@ -23,6 +23,9 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
     private String threadNum;
     private CompositeDisposable disposable;
 
+    //set reply and save it if user want's to some manipulate with screen rotate etc.
+    private String replyInTheThread;
+
     //we set new posts for each click of user
     private ThreadFilterPosts<Post> threadContainer;
 
@@ -93,5 +96,13 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
 
     public void setMoreOpened(boolean moreOpened) {
         this.moreOpened = moreOpened;
+    }
+
+    public String getReplyInTheThread() {
+        return replyInTheThread;
+    }
+
+    public void setReplyInTheThread(String replyInTheThread) {
+        this.replyInTheThread = replyInTheThread;
     }
 }

@@ -86,6 +86,12 @@ public class ThreadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return postList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+
+        return super.getItemViewType(position);
+    }
+
     public void clear() {
         postList.clear();
 

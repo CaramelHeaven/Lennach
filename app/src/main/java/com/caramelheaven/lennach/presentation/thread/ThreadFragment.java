@@ -120,7 +120,6 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         });
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -162,11 +161,15 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         adapter.setOnItemTouchCallback(item -> {
-            UtilsView.getInstance().expand(fmContainerMessanger, 300,
-                    UtilsView.getInstance().dpToPx(140, getActivity()));
+            UtilsView.getInstance().expandFromNullToReply(fmContainerMessanger, getActivity());
+            //showKeyboard();
 
-            Timber.d("kek");
-            Timber.d("get item: " + item.toString());
+            String reply = ">>" + item.getNum() + "\n";
+            etMessage.setText(reply);
+
+            etMessage.requestFocus();
+            showKeyboard();
+            etMessage.setSelection(reply.length());
         });
 
         btnMore.setOnClickListener(v -> {
@@ -178,16 +181,15 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
                         .start();
 
                 presenter.setMoreOpened(true);
-                UtilsView.getInstance().expand(fmContainerMessanger, 300,
-                        UtilsView.getInstance().dpToPx(displayMetrics.heightPixels, getActivity()));
+                UtilsView.getInstance().expandFromReplyToAll(fmContainerMessanger,
+                        displayMetrics.heightPixels, getActivity());
             } else {
                 btnMore.animate()
                         .rotation(0)
                         .start();
 
                 presenter.setMoreOpened(false);
-                UtilsView.getInstance().collapse(fmContainerMessanger, 300,
-                        UtilsView.getInstance().dpToPx(130, getActivity()));
+                UtilsView.getInstance().collapseFromAllToReply(fmContainerMessanger, getActivity());
             }
         });
     }

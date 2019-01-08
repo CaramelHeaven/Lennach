@@ -7,6 +7,8 @@ import com.caramelheaven.lennach.di.application.AppModule;
 import com.caramelheaven.lennach.di.application.DaggerAppComponent;
 import com.caramelheaven.lennach.di.board.BoardComponent;
 import com.caramelheaven.lennach.di.board.BoardModule;
+import com.caramelheaven.lennach.di.captcha.CaptchaComponent;
+import com.caramelheaven.lennach.di.captcha.CaptchaModule;
 import com.caramelheaven.lennach.di.main.MainComponent;
 import com.caramelheaven.lennach.di.main.MainModule;
 import com.caramelheaven.lennach.di.thread.ThreadComponent;
@@ -18,6 +20,7 @@ public class ComponentsManager {
     private MainComponent mainComponent;
     private BoardComponent boardComponent;
     private ThreadComponent threadComponent;
+    private CaptchaComponent captchaComponent;
 
     private Context context;
 
@@ -55,6 +58,13 @@ public class ComponentsManager {
         return threadComponent;
     }
 
+    public CaptchaComponent plusCaptchaComponent() {
+        if (captchaComponent == null) {
+            captchaComponent = mainComponent.plusCaptchaComponent(new CaptchaModule());
+        }
+        return captchaComponent;
+    }
+
     public void clearMainComponent() {
         mainComponent = null;
     }
@@ -65,5 +75,9 @@ public class ComponentsManager {
 
     public void clearThreadComponent() {
         threadComponent = null;
+    }
+
+    public void clearCaptchaComponent() {
+        captchaComponent = null;
     }
 }

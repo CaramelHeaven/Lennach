@@ -18,6 +18,8 @@ public class Lennach extends Application {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
 
+        Timber.d("Application started Lennach");
+
         componentsManager = new ComponentsManager(this);
         componentsManager.getAppComponent();
     }

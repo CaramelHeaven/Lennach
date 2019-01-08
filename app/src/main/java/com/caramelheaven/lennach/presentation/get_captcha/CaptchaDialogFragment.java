@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
+import com.caramelheaven.lennach.presentation.get_captcha.presenter.CaptchaView;
 
 /**
  * Created by CaramelHeaven on 02:42, 04/01/2019.
  */
-public class CaptchaDialogFragment extends MvpAppCompatDialogFragment {
+public class CaptchaDialogFragment extends MvpAppCompatDialogFragment implements CaptchaView {
 
     public static CaptchaDialogFragment newInstance() {
 
@@ -37,5 +38,15 @@ public class CaptchaDialogFragment extends MvpAppCompatDialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
     }
 }

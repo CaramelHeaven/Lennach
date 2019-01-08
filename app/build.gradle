@@ -71,4 +71,7 @@ dependencies {
 
     //pass data between layout
     implementation 'org.greenrobot:eventbus:3.0.0'
+
+    //photo
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 }
