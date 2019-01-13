@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.DisplayMetrics;
 
 /**
  * Created by CaramelHeaven on 02:24, 04/01/2019.
@@ -24,6 +25,9 @@ public class UtilsApplication {
         return INSTANCE;
     }
 
+    /**
+     * Make vibrate phone with 80 ms
+     */
     public static void makeVibration(Context context) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -33,4 +37,21 @@ public class UtilsApplication {
             v.vibrate(80);
         }
     }
+
+    /**
+     * Calculate size of grid layout for fill data in the BoardContainerAdapterDelegate,
+     *
+     * @param context    - base god object
+     * @param widthChild - width size of the child view which placed inside recycler view
+     * @return number of columns in the GridLayoutManager
+     */
+    public static int calculateNumOfColumns(Context context, int widthChild) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int numOfColumns = (int) (dpWidth / widthChild);
+
+        return numOfColumns;
+    }
+
 }

@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cv_base"
+    android:id="@+id/cv_add_board"
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:layout_marginStart="16dp"
     android:layout_marginTop="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardElevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_view_dashed_body">
 
-        <TextView
-            android:id="@+id/tv_name_board"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="/pa"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_20sp" />
+            android:scaleType="center"
+            android:src="@drawable/ic_add" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

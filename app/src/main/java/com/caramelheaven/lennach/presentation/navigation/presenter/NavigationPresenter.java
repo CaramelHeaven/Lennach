@@ -10,6 +10,8 @@ import com.caramelheaven.lennach.models.model.common.Delegatable;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 @InjectViewState
 public class NavigationPresenter extends MvpPresenter<NavigationView> {
 
@@ -42,15 +44,26 @@ public class NavigationPresenter extends MvpPresenter<NavigationView> {
         List<Delegatable> usenets = new ArrayList();
         List<Board> boardList = new ArrayList<>();
         Board board = new Board();
+        Board board1 = new Board();
+        Board board2 = new Board();
+        Board board3 = new Board();
+        Board board4 = new Board();
+        Board board5 = new Board();
         BoardContainer boardContainer = new BoardContainer();
-
         board.setBoardName("pa");
         boardList.add(board);
-        board.setBoardName("b");
-        boardList.add(board);
-        board.setBoardName("pr");
-        boardList.add(board);
+        board1.setBoardName("b");
+        boardList.add(board1);
+        board2.setBoardName("pr");
+        boardList.add(board2);
+        board3.setBoardName("f");
+        boardList.add(board3);
+        board4.setBoardName("q");
+        boardList.add(board4);
+        board5.setBoardName("faq");
+        boardList.add(board5);
 
+        Timber.d("boardList init: " + boardList.toString());
         boardContainer.setBoardList(boardList);
         usenets.add(boardContainer);
 

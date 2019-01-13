@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
+import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.presentation.image_gallery.ImageGalleryActivity;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
@@ -102,10 +103,36 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         startActivityForResult(intent, 0, activityOptions.toBundle());
     }
 
+    /**
+     * When user click on thread item, we pass it here and pass again to the ThreadFragment GlobalBus
+     * listener, after that, we set view pager to 1
+     *
+     * @param data - HandlerViewPagerData container which contains number of thread and current board
+     *             where user located
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handlerPager(HandlerViewPagerData data) {
         GlobalBus.getEventBus().post(data.getActionThread());
         viewPager.setCurrentItem(1);
+    }
+
+    /**
+     * Handler callback from BoardItemAdapter. Set the BoardFragment a new board
+     *
+     * @param board - board data where we should reflect in the BoardFragment
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handlerCallbackFromFavouriteScreenOpenBoard(Board board) {
+
+    }
+
+    /**
+     * Handler callback when user want to add new board. Show a new DialogFragment where contains
+     * all boards name from server
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handlerCallbackFromFavouriteScreenAddNewBoard(String addNewBoard) {
+
     }
 
     @Override

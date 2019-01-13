@@ -11,6 +11,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.transfer_data.BoardContainer;
 import com.caramelheaven.lennach.models.model.common.Delegatable;
 import com.caramelheaven.lennach.presentation.navigation.BoardItemAdapter;
+import com.caramelheaven.lennach.utils.UtilsApplication;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class BoardContainerAdapterDelegate extends AdapterDelegate<List<Delegata
 
         Timber.d("check: " + items.toString());
         if (items.get(0) instanceof BoardContainer) {
+            Timber.d("boardList in container: " + items.get(0).toString());
             boardContainerVH.adapter.updateAdapter(((BoardContainer) items.get(0)).getBoardList());
         }
     }
@@ -65,7 +67,8 @@ public class BoardContainerAdapterDelegate extends AdapterDelegate<List<Delegata
 
         private void provideRecyclerAndAdapter() {
             recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new GridLayoutManager(recyclerView.getContext(), 3));
+            recyclerView.setLayoutManager(new GridLayoutManager(recyclerView.getContext(),
+                    UtilsApplication.calculateNumOfColumns(recyclerView.getContext(), 75)));
             recyclerView.setNestedScrollingEnabled(false);
 
             adapter = new BoardItemAdapter(new ArrayList<>());
