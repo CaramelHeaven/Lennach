@@ -1,9 +1,11 @@
 package com.caramelheaven.lennach.models.model.board;
 
+import com.caramelheaven.lennach.models.model.common.Delegatable;
+
 import java.util.List;
 import java.util.Objects;
 
-public class Board {
+public class Board implements Delegatable {
     private String board;
     private String boardName;
     private Integer boardSpeed;

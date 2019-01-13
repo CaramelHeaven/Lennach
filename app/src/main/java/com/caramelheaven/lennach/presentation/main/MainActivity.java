@@ -17,6 +17,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.presentation.image_gallery.ImageGalleryActivity;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
+import com.caramelheaven.lennach.presentation.navigation.NavigationFragment;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 import com.caramelheaven.lennach.utils.bus.models.HandlerViewPagerData;
 import com.caramelheaven.lennach.utils.bus.models.Kek;
@@ -154,6 +155,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     private void provideItemNavigation() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_navigation, NavigationFragment.newInstance())
+                .commit();
+
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -191,7 +197,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 //    }
 
     private void provideClickListeners() {
-
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {

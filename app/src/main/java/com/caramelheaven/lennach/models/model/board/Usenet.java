@@ -4,10 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.caramelheaven.lennach.models.model.common.DataImage;
+import com.caramelheaven.lennach.models.model.common.Delegatable;
 
 import java.util.Objects;
 
-public class Usenet implements Parcelable {
+public class Usenet implements Parcelable, Delegatable {
     //info
     private Integer filesCount;
     private Integer postsCount;

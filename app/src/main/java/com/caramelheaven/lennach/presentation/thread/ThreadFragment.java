@@ -97,7 +97,6 @@ public class ThreadFragment extends BaseFragment implements ThreadView<Post> {
         displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-
         Button btn = view.findViewById(R.id.btn_test);
 
         UtilsView utilsView = UtilsView.getInstance();
