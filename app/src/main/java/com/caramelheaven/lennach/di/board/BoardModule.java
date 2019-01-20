@@ -18,29 +18,4 @@ public class BoardModule {
     GetBoard provideGetBoard(BoardRepository boardRepository) {
         return new GetBoard(boardRepository);
     }
-
-    @BoardScope
-    @Provides
-    BoardRepository boardRepository(LennachApiService apiService,
-                                    BoardMapper boardMapper) {
-        return new BoardRemoteRepository(apiService, boardMapper);
-    }
-
-    @BoardScope
-    @Provides
-    BoardLocalRepository provideBoardLocalRepository() {
-        return new BoardLocalRepository();
-    }
-
-    @BoardScope
-    @Provides
-    BoardMapper provideBoardMapper(BoardResponseToBoard boardResponseToBoard) {
-        return new BoardMapper(boardResponseToBoard);
-    }
-
-    @BoardScope
-    @Provides
-    BoardResponseToBoard provideBoardResponseToBoard() {
-        return new BoardResponseToBoard();
-    }
 }

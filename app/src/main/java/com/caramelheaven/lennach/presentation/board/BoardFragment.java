@@ -104,6 +104,11 @@ public class BoardFragment extends BaseFragment implements BoardView<Usenet> {
     }
 
     @Override
+    protected Boolean enableEventBus() {
+        return false;
+    }
+
+    @Override
     protected void provideRecyclerAndAdapter() {
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

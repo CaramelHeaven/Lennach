@@ -50,4 +50,9 @@ public class ChooseBoardFragment extends BaseFragment {
     protected void deInitViews() {
 
     }
+
+    @Override
+    protected Boolean enableEventBus() {
+        return false;
+    }
 }

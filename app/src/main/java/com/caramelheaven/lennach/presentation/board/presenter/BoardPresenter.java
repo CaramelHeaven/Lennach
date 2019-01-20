@@ -95,6 +95,11 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView<Usenet
                 .subscribe(this::successfulResult, this::handlerError));
     }
 
+    @Override
+    protected void clearData() {
+
+    }
+
     public HandlerViewPagerData mappingUsenet(Usenet usenet) {
         Timber.d("getBoard:");
         ActionThread thread = new ActionThread(getBoard.getBoardName(), usenet.getNum());

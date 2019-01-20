@@ -42,4 +42,9 @@ public class CaptchaPresenter extends BasePresenter<Captcha, CaptchaView> {
     protected void getData() {
 
     }
+
+    @Override
+    protected void clearData() {
+
+    }
 }

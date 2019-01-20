@@ -69,6 +69,7 @@ public class BoardContainerAdapterDelegate extends AdapterDelegate<List<Delegata
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(recyclerView.getContext(),
                     UtilsApplication.calculateNumOfColumns(recyclerView.getContext(), 75)));
+
             recyclerView.setNestedScrollingEnabled(false);
 
             adapter = new BoardItemAdapter(new ArrayList<>());

@@ -2,6 +2,7 @@ package com.caramelheaven.lennach.presentation.navigation.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.models.model.transfer_data.BoardContainer;
@@ -16,6 +17,9 @@ import timber.log.Timber;
 public class NavigationPresenter extends MvpPresenter<NavigationView> {
 
     public NavigationPresenter() {
+        Lennach.getComponentsManager()
+                .plusNavigationComponent()
+                .inject(this);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.caramelheaven.lennach.data.datasource.network;
 
+import com.caramelheaven.lennach.models.network.BoardAllResponse;
 import com.caramelheaven.lennach.models.network.BoardResponse;
 import com.caramelheaven.lennach.models.network.CaptchaResponse;
 import com.caramelheaven.lennach.models.network.MessagePostResponse;
 import com.caramelheaven.lennach.models.network.PostResponse;
-import com.caramelheaven.lennach.models.network.ThreadResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -43,4 +43,7 @@ public interface LennachApiService {
     @POST("makaba/posting.fcgi?json=1&task=post")
     Single<MessagePostResponse> sendMessageWithImage(@PartMap Map<String, RequestBody> options,
                                                      @Part MultipartBody.Part file);
+
+    @GET("makaba/mobile.fcgi?task=get_boards")
+    Single<BoardAllResponse> getAllBoards();
 }

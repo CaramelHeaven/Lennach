@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.caramelheaven.lennach.utils.bus.GlobalBus;
 
 public abstract class BaseFragment extends MvpAppCompatFragment {
 
@@ -18,6 +19,8 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
 
     protected abstract void deInitViews();
 
+    protected abstract Boolean enableEventBus();
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -25,6 +28,22 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
 
         provideRecyclerAndAdapter();
         provideClickListeners();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (enableEventBus()) {
+            GlobalBus.getEventBus().register(this);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (enableEventBus()) {
+            GlobalBus.getEventBus().unregister(this);
+        }
+        super.onPause();
     }
 
     @Override

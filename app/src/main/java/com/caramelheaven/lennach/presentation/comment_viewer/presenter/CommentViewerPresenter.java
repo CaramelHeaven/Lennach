@@ -78,6 +78,11 @@ public class CommentViewerPresenter extends BasePresenter<List<Post>, CommentVie
     }
 
     @Override
+    protected void clearData() {
+
+    }
+
+    @Override
     public void onDestroy() {
         disposable.clear();
         super.onDestroy();

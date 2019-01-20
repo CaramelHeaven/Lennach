@@ -1,5 +1,7 @@
 package com.caramelheaven.lennach.di.board_choose;
 
+import com.caramelheaven.lennach.presentation.board_choose.presenter.BoardChoosePresenter;
+
 import dagger.Subcomponent;
 
 /**
@@ -8,4 +10,5 @@ import dagger.Subcomponent;
 @BoardChooseScope
 @Subcomponent(modules = BoardChooseModule.class)
 public interface BoardChooseComponent {
+    void inject(BoardChoosePresenter boardChoosePresenter);
 }

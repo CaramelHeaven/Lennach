@@ -21,7 +21,6 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
 
     private String boardName;
     private String threadNum;
-    private CompositeDisposable disposable;
 
     //set reply and save it if user want's to some manipulate with screen rotate etc.
     private String replyInTheThread;
@@ -40,24 +39,11 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
     public ThreadPresenter(String boardName, String threadNum) {
         this.boardName = boardName;
         this.threadNum = threadNum;
-        disposable = new CompositeDisposable();
         threadContainer = ThreadFilterPosts.getInstance();
 
         Lennach.getComponentsManager()
                 .plusThreadComponent()
                 .inject(this);
-    }
-
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-    }
-
-    @Override
-    public void onDestroy() {
-        Lennach.getComponentsManager().clearThreadComponent();
-        threadContainer.clearPosts();
-        super.onDestroy();
     }
 
     @Override
@@ -80,6 +66,14 @@ public class ThreadPresenter extends BasePresenter<List<Post>, ThreadView<Post>>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::successfulResult, this::handlerError));
+    }
+
+    @Override
+    protected void clearData() {
+        Lennach.getComponentsManager()
+                .clearThreadComponent();
+
+        threadContainer.clearPosts();
     }
 
     public void setBoardAndThread(String boardName, String threadNum) {

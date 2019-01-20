@@ -35,4 +35,9 @@ public class MenuPresenter extends BasePresenter<Board, MenuView> {
     protected void getData() {
 
     }
+
+    @Override
+    protected void clearData() {
+
+    }
 }

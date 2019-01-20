@@ -60,6 +60,11 @@ public class MenuFragment extends BaseFragment implements MenuView {
     }
 
     @Override
+    protected Boolean enableEventBus() {
+        return false;
+    }
+
+    @Override
     public void showProgress() {
 
     }

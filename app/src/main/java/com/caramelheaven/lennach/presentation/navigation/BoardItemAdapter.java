@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board.Board;
+import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
 
 import java.util.List;
@@ -102,11 +103,9 @@ public class BoardItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             cvAddBoard = itemView.findViewById(R.id.cv_add_board);
 
-            cvAddBoard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GlobalBus.getEventBus().post(getItemByPosition(getAdapterPosition()));
-                }
+            cvAddBoard.setOnClickListener(v -> {
+                Timber.d("click");
+                GlobalBus.getEventBus().post(Constants.INSTANCE.getADD_NEW_BOARD());
             });
         }
     }

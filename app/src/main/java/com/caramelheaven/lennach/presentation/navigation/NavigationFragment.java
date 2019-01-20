@@ -3,6 +3,7 @@ package com.caramelheaven.lennach.presentation.navigation;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,8 +16,13 @@ import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.models.model.common.Delegatable;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
+import com.caramelheaven.lennach.presentation.board_choose.BoardChooseDialogFragment;
 import com.caramelheaven.lennach.presentation.navigation.presenter.NavigationPresenter;
 import com.caramelheaven.lennach.presentation.navigation.presenter.NavigationView;
+import com.caramelheaven.lennach.utils.Constants;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +78,11 @@ public class NavigationFragment extends BaseFragment implements NavigationView {
     }
 
     @Override
+    protected Boolean enableEventBus() {
+        return true;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
@@ -79,6 +90,19 @@ public class NavigationFragment extends BaseFragment implements NavigationView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    /**
+     * When user click on add button, show dialog fragment which contains of boards from server
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void addNewBoard(String action) {
+        if (action.equals(Constants.INSTANCE.getADD_NEW_BOARD())) {
+            BoardChooseDialogFragment fragment = BoardChooseDialogFragment.newInstance();
+            fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
+
+            fragment.show(getActivity().getSupportFragmentManager(), null);
+        }
     }
 
     @Override

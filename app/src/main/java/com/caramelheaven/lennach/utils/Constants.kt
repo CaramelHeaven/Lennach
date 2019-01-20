@@ -11,13 +11,14 @@ object Constants {
 
     /* Controlling second [Thread] fragment padding.
     * */
-    val MANAGE_X_THREAD = -70;
+    val MANAGE_X_THREAD = -70
 
     /* Passing values
     * */
-    val STRING = "STRING";
-    val ARRAY = "ARRAY";
-    val BOARD = "BOARD";
+    val STRING = "STRING"
+    val ARRAY = "ARRAY"
+    val BOARD = "BOARD"
+    val ADD_NEW_BOARD = "ADD_NEW_BOARD"
 
     /* Helper symbols
     * */
