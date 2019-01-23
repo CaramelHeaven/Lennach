@@ -99,7 +99,7 @@ public class NavigationFragment extends BaseFragment implements NavigationView {
     public void addNewBoard(String action) {
         if (action.equals(Constants.INSTANCE.getADD_NEW_BOARD())) {
             BoardChooseDialogFragment fragment = BoardChooseDialogFragment.newInstance();
-            fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
+            //fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
 
             fragment.show(getActivity().getSupportFragmentManager(), null);
         }

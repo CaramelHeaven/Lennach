@@ -8,18 +8,23 @@ import com.caramelheaven.lennach.models.model.board.BoardAll;
 import com.caramelheaven.lennach.models.network.BoardAllResponse;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 19:25, 13/01/2019.
  */
 @InjectViewState
 public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardChooseView<BoardAll>> {
+
+    private boolean allSelected = false;
+    private List<BoardAll> searchList;
 
     @Inject
     GetAllBoard getAllBoard;
@@ -29,6 +34,8 @@ public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardCho
         Lennach.getComponentsManager()
                 .plusBoardChooseComponent()
                 .inject(this);
+
+        searchList = new ArrayList<>();
     }
 
     @Override
@@ -38,7 +45,13 @@ public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardCho
 
     @Override
     protected void successfulResult(List<BoardAll> result) {
+        getViewState().hideProgress();
 
+        if (searchList.isEmpty()) {
+            searchList.addAll(result);
+        }
+
+        getViewState().updateValues(searchList);
     }
 
     @Override
@@ -55,5 +68,17 @@ public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardCho
     protected void clearData() {
         Lennach.getComponentsManager()
                 .clearBoardChooseComponent();
+    }
+
+    public boolean isAllSelected() {
+        return allSelected;
+    }
+
+    public void setAllSelected(boolean allSelected) {
+        this.allSelected = allSelected;
+    }
+
+    public List<BoardAll> getSearchList() {
+        return searchList;
     }
 }

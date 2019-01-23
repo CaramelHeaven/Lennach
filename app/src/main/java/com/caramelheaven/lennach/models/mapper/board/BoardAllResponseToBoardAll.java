@@ -7,8 +7,6 @@ import com.caramelheaven.lennach.models.network.all_board_models.BoardAllNetwork
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Created by CaramelHeaven on 21:22, 20/01/2019.
  */
@@ -22,10 +20,11 @@ public class BoardAllResponseToBoardAll {
     }
 
     private void fillData(List<BoardAll> boardAll, BoardAllResponse response) {
-        Timber.d("check: " + response.getAdults());
-
         for (BoardAllNetwork network : response.sumAllData()) {
-            Timber.d("lalalal: " + network.toString());
+            BoardAll board = new BoardAll(network.getId(), network.getName(),
+                    network.getCategory());
+
+            boardAll.add(board);
         }
     }
 }

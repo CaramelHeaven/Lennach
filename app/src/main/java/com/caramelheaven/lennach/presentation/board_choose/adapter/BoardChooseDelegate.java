@@ -5,9 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board.BoardAll;
+import com.caramelheaven.lennach.utils.OnCheckItemListener;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.List;
 public class BoardChooseDelegate extends AdapterDelegate<List<BoardAll>> {
 
     private LayoutInflater inflater;
+    private OnCheckItemListener onCheckItemListener;
 
     public BoardChooseDelegate(LayoutInflater inflater) {
         this.inflater = inflater;
@@ -37,13 +42,31 @@ public class BoardChooseDelegate extends AdapterDelegate<List<BoardAll>> {
     @Override
     protected void onBindViewHolder(@NonNull List<BoardAll> items, int position, @NonNull RecyclerView.ViewHolder holder,
                                     @NonNull List<Object> payloads) {
+        BoardAllVH boardAllVH = (BoardAllVH) holder;
 
+        boardAllVH.tvTitle.setText("/" + items.get(position).getId() + "/ - " +
+                items.get(position).getName());
+        boardAllVH.tvDescription.setText("Category: " + items.get(position).getCategory());
+
+        boardAllVH.checkBox.setChecked(items.get(position).isSelected());
     }
 
-    static class BoardAllVH extends RecyclerView.ViewHolder {
+    class BoardAllVH extends RecyclerView.ViewHolder {
+        private TextView tvTitle, tvDescription;
+        private CheckBox checkBox;
 
         public BoardAllVH(@NonNull View itemView) {
             super(itemView);
+            checkBox = itemView.findViewById(R.id.checkbox);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvDescription = itemView.findViewById(R.id.tv_description);
+
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                    onCheckItemListener.isChecked(getAdapterPosition(), isChecked));
         }
+    }
+
+    public void setOnCheckItemListener(OnCheckItemListener onCheckItemListener) {
+        this.onCheckItemListener = onCheckItemListener;
     }
 }

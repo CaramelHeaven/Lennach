@@ -13,6 +13,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSelected">#FFE9E9E9</color>
 
+    <color name="colorTextTheme">#7C6B6C</color>
+
     <color name="colorTextDark">#442C2E</color>
     <color name="colorTextGray">#ccc6c4</color>
 

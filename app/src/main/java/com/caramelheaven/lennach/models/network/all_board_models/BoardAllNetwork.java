@@ -48,4 +48,88 @@ public class BoardAllNetwork {
     private int sage;
     @SerializedName("tripcodes")
     private int tripcodes;
+
+    public int getBumpLimit() {
+        return bumpLimit;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getDefaultName() {
+        return defaultName;
+    }
+
+    public int getEnableDices() {
+        return enableDices;
+    }
+
+    public int getEnableFlags() {
+        return enableFlags;
+    }
+
+    public int getEnableIcons() {
+        return enableIcons;
+    }
+
+    public int getEnableLikes() {
+        return enableLikes;
+    }
+
+    public int getEnableNames() {
+        return enableNames;
+    }
+
+    public int getEnableOekaki() {
+        return enableOekaki;
+    }
+
+    public int getEnablePosting() {
+        return enablePosting;
+    }
+
+    public int getEnableSage() {
+        return enableSage;
+    }
+
+    public int getEnableShield() {
+        return enableShield;
+    }
+
+    public int getEnableSubject() {
+        return enableSubject;
+    }
+
+    public int getEnableThreadTags() {
+        return enableThreadTags;
+    }
+
+    public int getEnableTrips() {
+        return enableTrips;
+    }
+
+    public Object[] getIcons() {
+        return icons;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public int getSage() {
+        return sage;
+    }
+
+    public int getTripcodes() {
+        return tripcodes;
+    }
 }
