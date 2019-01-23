@@ -1,6 +1,6 @@
 package com.caramelheaven.lennach.models.mapper.board;
 
-import com.caramelheaven.lennach.models.model.board.BoardAll;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 import com.caramelheaven.lennach.models.network.BoardAllResponse;
 import com.caramelheaven.lennach.models.network.all_board_models.BoardAllNetwork;
 
@@ -12,16 +12,16 @@ import java.util.List;
  */
 public class BoardAllResponseToBoardAll {
 
-    public List<BoardAll> map(BoardAllResponse response) {
-        List<BoardAll> boardAll = new ArrayList<>();
+    public List<BoardFavourite> map(BoardAllResponse response) {
+        List<BoardFavourite> boardAll = new ArrayList<>();
         fillData(boardAll, response);
 
         return boardAll;
     }
 
-    private void fillData(List<BoardAll> boardAll, BoardAllResponse response) {
+    private void fillData(List<BoardFavourite> boardAll, BoardAllResponse response) {
         for (BoardAllNetwork network : response.sumAllData()) {
-            BoardAll board = new BoardAll(network.getId(), network.getName(),
+            BoardFavourite board = new BoardFavourite(network.getId(), network.getName(),
                     network.getCategory());
 
             boardAll.add(board);

@@ -2,7 +2,7 @@ package com.caramelheaven.lennach.domain.board_use_case;
 
 import com.caramelheaven.lennach.domain.BoardRepository;
 import com.caramelheaven.lennach.domain.base.BaseUseCase;
-import com.caramelheaven.lennach.models.model.board.BoardAll;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import io.reactivex.Single;
  * Created by CaramelHeaven on 19:56, 13/01/2019.
  * Class GetAllBoard provide all board for user confirm to add favorite
  */
-public class GetAllBoard extends BaseUseCase<List<BoardAll>> {
+public class GetAllBoard extends BaseUseCase<Single<List<BoardFavourite>>> {
 
     private final BoardRepository boardRepository;
 
@@ -21,7 +21,7 @@ public class GetAllBoard extends BaseUseCase<List<BoardAll>> {
     }
 
     @Override
-    public Single<List<BoardAll>> subscribeToData() {
+    public Single<List<BoardFavourite>> subscribeToData() {
         return boardRepository.getAllBoards();
     }
 }

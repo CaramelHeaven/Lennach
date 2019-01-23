@@ -5,14 +5,14 @@ import java.util.Objects;
 /**
  * Created by CaramelHeaven on 21:20, 20/01/2019.
  */
-public class BoardAll {
+public class BoardFavourite {
     private String id;
     private String name;
     private String category;
 
     private boolean selected;
 
-    public BoardAll(String id, String name, String category) {
+    public BoardFavourite(String id, String name, String category) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -52,7 +52,7 @@ public class BoardAll {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BoardAll boardAll = (BoardAll) o;
+        BoardFavourite boardAll = (BoardFavourite) o;
         return selected == boardAll.selected &&
                 Objects.equals(id, boardAll.id) &&
                 Objects.equals(name, boardAll.name) &&

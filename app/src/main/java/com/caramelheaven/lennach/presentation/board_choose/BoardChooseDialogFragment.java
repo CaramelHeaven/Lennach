@@ -16,24 +16,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.models.model.board.BoardAll;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 import com.caramelheaven.lennach.presentation.board_choose.adapter.BoardChooseAdapter;
 import com.caramelheaven.lennach.presentation.board_choose.presenter.BoardChoosePresenter;
 import com.caramelheaven.lennach.presentation.board_choose.presenter.BoardChooseView;
+import com.caramelheaven.lennach.presentation.navigation.callbacks.OnSavedCloseDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Created by CaramelHeaven on 19:24, 13/01/2019.
  */
-public class BoardChooseDialogFragment extends MvpAppCompatDialogFragment implements BoardChooseView<BoardAll> {
+public class BoardChooseDialogFragment extends MvpAppCompatDialogFragment implements BoardChooseView<BoardFavourite> {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -42,6 +42,7 @@ public class BoardChooseDialogFragment extends MvpAppCompatDialogFragment implem
 
     private DisplayMetrics displayMetrics;
     protected BoardChooseAdapter adapter;
+    private OnSavedCloseDialogFragment onCloseDialogFragment;
 
     @InjectPresenter
     BoardChoosePresenter presenter;
@@ -76,19 +77,16 @@ public class BoardChooseDialogFragment extends MvpAppCompatDialogFragment implem
         adapter = new BoardChooseAdapter(getActivity().getLayoutInflater(), new ArrayList());
         recyclerView.setAdapter(adapter);
 
-        btnAdd.setOnClickListener(v -> {
-            Timber.d("lek");
-            Timber.d("ada: " + adapter.filterItems());
-        });
+        btnAdd.setOnClickListener(v -> presenter.saveBoards(adapter.filterItems()));
 
         btnSelectAll.setOnClickListener(v -> {
             if (presenter.isAllSelected()) {
-                for (BoardAll board : adapter.getItems()) {
+                for (BoardFavourite board : adapter.getItems()) {
                     board.setSelected(false);
                 }
                 presenter.setAllSelected(false);
             } else {
-                for (BoardAll board : adapter.getItems()) {
+                for (BoardFavourite board : adapter.getItems()) {
                     board.setSelected(true);
                 }
                 presenter.setAllSelected(true);
@@ -131,10 +129,23 @@ public class BoardChooseDialogFragment extends MvpAppCompatDialogFragment implem
     }
 
     @Override
-    public void updateValues(List<BoardAll> values) {
+    public void updateValues(List<BoardFavourite> values) {
         if (values.size() > 0) {
             adapter.setData(values);
         }
+    }
+
+    public void setOnCloseDialogFragment(OnSavedCloseDialogFragment onCloseDialogFragment) {
+        this.onCloseDialogFragment = onCloseDialogFragment;
+    }
+
+    @Override
+    public void savedData() {
+        Toast.makeText(getActivity(), "Saved boards", Toast.LENGTH_SHORT).show();
+        onCloseDialogFragment.closeDialog();
+
+        onCloseDialogFragment = null;
+        dismiss();
     }
 
     private void provideSearch() {
@@ -151,10 +162,10 @@ public class BoardChooseDialogFragment extends MvpAppCompatDialogFragment implem
 
             @Override
             public void afterTextChanged(Editable s) {
-                List<BoardAll> fitlerList = new ArrayList<>();
+                List<BoardFavourite> fitlerList = new ArrayList<>();
                 String text = s.toString().toLowerCase();
 
-                for (BoardAll boardAll : presenter.getSearchList()) {
+                for (BoardFavourite boardAll : presenter.getSearchList()) {
                     if (boardAll.getName().toLowerCase().contains(text) ||
                             boardAll.getCategory().toLowerCase().contains(text) ||
                             boardAll.getId().toLowerCase().contains(text)) {

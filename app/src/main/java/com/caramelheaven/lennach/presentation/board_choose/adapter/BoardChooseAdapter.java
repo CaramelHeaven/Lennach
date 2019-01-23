@@ -5,28 +5,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.caramelheaven.lennach.models.model.board.BoardAll;
-import com.caramelheaven.lennach.presentation.board_choose.BoardChooseDialogFragment;
-import com.caramelheaven.lennach.utils.OnCheckItemListener;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Single;
-import io.reactivex.functions.Predicate;
-import timber.log.Timber;
 
 /**
  * Created by CaramelHeaven on 21:51, 20/01/2019.
  */
 public class BoardChooseAdapter extends RecyclerView.Adapter {
 
-    private AdapterDelegatesManager<List<BoardAll>> adapterDelegatesManager;
+    private AdapterDelegatesManager<List<BoardFavourite>> adapterDelegatesManager;
 
-    private List<BoardAll> items;
+    private List<BoardFavourite> items;
 
-    public BoardChooseAdapter(LayoutInflater inflater, List<BoardAll> items) {
+    public BoardChooseAdapter(LayoutInflater inflater, List<BoardFavourite> items) {
         this.items = items;
 
         adapterDelegatesManager = new AdapterDelegatesManager<>();
@@ -55,14 +49,14 @@ public class BoardChooseAdapter extends RecyclerView.Adapter {
         return items.size();
     }
 
-    public List<BoardAll> getItems() {
+    public List<BoardFavourite> getItems() {
         return items;
     }
 
-    public List<BoardAll> filterItems() {
-        List<BoardAll> filterList = new ArrayList<>();
+    public List<BoardFavourite> filterItems() {
+        List<BoardFavourite> filterList = new ArrayList<>();
 
-        for (BoardAll boardAll : items) {
+        for (BoardFavourite boardAll : items) {
             if (boardAll.isSelected()) {
                 filterList.add(boardAll);
             }
@@ -71,7 +65,7 @@ public class BoardChooseAdapter extends RecyclerView.Adapter {
         return filterList;
     }
 
-    public void setData(List<BoardAll> newItems) {
+    public void setData(List<BoardFavourite> newItems) {
         items.clear();
         items.addAll(newItems);
 

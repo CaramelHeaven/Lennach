@@ -6,12 +6,13 @@ import com.caramelheaven.lennach.models.model.thread.Post;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
  * Created by CaramelHeaven on 00:37, 08/12/2018.
  */
-public class GetThread extends BaseUseCase<List<Post>> {
+public class GetThread extends BaseUseCase<Single<List<Post>>> {
     private final ThreadRepository threadRepository;
 
     private String boardName, threadNum, numPost;

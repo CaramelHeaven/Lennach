@@ -3,7 +3,6 @@ package com.caramelheaven.lennach.presentation.navigation;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +11,10 @@ import android.view.ViewGroup;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.models.model.board.Board;
-import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.models.model.common.Delegatable;
 import com.caramelheaven.lennach.presentation.base.BaseFragment;
 import com.caramelheaven.lennach.presentation.board_choose.BoardChooseDialogFragment;
+import com.caramelheaven.lennach.presentation.navigation.callbacks.OnSavedCloseDialogFragment;
 import com.caramelheaven.lennach.presentation.navigation.presenter.NavigationPresenter;
 import com.caramelheaven.lennach.presentation.navigation.presenter.NavigationView;
 import com.caramelheaven.lennach.utils.Constants;
@@ -29,7 +27,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class NavigationFragment extends BaseFragment implements NavigationView {
+public class NavigationFragment extends BaseFragment implements NavigationView, OnSavedCloseDialogFragment {
 
     private RecyclerView recyclerView;
 
@@ -74,7 +72,7 @@ public class NavigationFragment extends BaseFragment implements NavigationView {
 
     @Override
     protected void deInitViews() {
-
+        recyclerView = null;
     }
 
     @Override
@@ -99,6 +97,7 @@ public class NavigationFragment extends BaseFragment implements NavigationView {
     public void addNewBoard(String action) {
         if (action.equals(Constants.INSTANCE.getADD_NEW_BOARD())) {
             BoardChooseDialogFragment fragment = BoardChooseDialogFragment.newInstance();
+            fragment.setOnCloseDialogFragment(this::closeDialog);
             //fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
 
             fragment.show(getActivity().getSupportFragmentManager(), null);
@@ -119,5 +118,10 @@ public class NavigationFragment extends BaseFragment implements NavigationView {
     public void showFavouriteData(List<Delegatable> items) {
         Timber.d("showFavouriteData");
         adapter.setData(items);
+    }
+
+    @Override
+    public void closeDialog() {
+        Timber.d("CLOSED");
     }
 }

@@ -6,11 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.caramelheaven.lennach.R;
-import com.caramelheaven.lennach.models.model.board.BoardAll;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 import com.caramelheaven.lennach.utils.OnCheckItemListener;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
@@ -19,7 +18,7 @@ import java.util.List;
 /**
  * Created by CaramelHeaven on 21:52, 20/01/2019.
  */
-public class BoardChooseDelegate extends AdapterDelegate<List<BoardAll>> {
+public class BoardChooseDelegate extends AdapterDelegate<List<BoardFavourite>> {
 
     private LayoutInflater inflater;
     private OnCheckItemListener onCheckItemListener;
@@ -29,7 +28,7 @@ public class BoardChooseDelegate extends AdapterDelegate<List<BoardAll>> {
     }
 
     @Override
-    protected boolean isForViewType(@NonNull List<BoardAll> items, int position) {
+    protected boolean isForViewType(@NonNull List<BoardFavourite> items, int position) {
         return items.get(position) != null;
     }
 
@@ -40,7 +39,7 @@ public class BoardChooseDelegate extends AdapterDelegate<List<BoardAll>> {
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull List<BoardAll> items, int position, @NonNull RecyclerView.ViewHolder holder,
+    protected void onBindViewHolder(@NonNull List<BoardFavourite> items, int position, @NonNull RecyclerView.ViewHolder holder,
                                     @NonNull List<Object> payloads) {
         BoardAllVH boardAllVH = (BoardAllVH) holder;
 

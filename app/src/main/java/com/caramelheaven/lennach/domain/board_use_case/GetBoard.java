@@ -4,9 +4,10 @@ import com.caramelheaven.lennach.domain.BoardRepository;
 import com.caramelheaven.lennach.domain.base.BaseUseCase;
 import com.caramelheaven.lennach.models.model.board.Board;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
-public class GetBoard extends BaseUseCase<Board> {
+public class GetBoard extends BaseUseCase<Single<Board>> {
     private final BoardRepository repository;
     private int pageIndex = 1;
     private String boardName;

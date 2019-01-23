@@ -1,6 +1,7 @@
 package com.caramelheaven.lennach.presentation.board_choose.presenter;
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.caramelheaven.lennach.presentation.base.BaseView;
 
@@ -12,4 +13,7 @@ import java.util.List;
 public interface BoardChooseView<T> extends BaseView {
     @StateStrategyType(value = AddToEndSingleStrategy.class)
     void updateValues(List<T> values);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void savedData();
 }

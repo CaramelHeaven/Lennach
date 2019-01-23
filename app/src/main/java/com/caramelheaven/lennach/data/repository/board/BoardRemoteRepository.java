@@ -4,7 +4,7 @@ import com.caramelheaven.lennach.data.datasource.network.LennachApiService;
 import com.caramelheaven.lennach.domain.BoardRepository;
 import com.caramelheaven.lennach.models.mapper.board.BoardMapper;
 import com.caramelheaven.lennach.models.model.board.Board;
-import com.caramelheaven.lennach.models.model.board.BoardAll;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class BoardRemoteRepository implements BoardRepository {
     }
 
     @Override
-    public Single<List<BoardAll>> getAllBoards() {
+    public Single<List<BoardFavourite>> getAllBoards() {
         return apiService.getAllBoards()
                 .map(boardMapper::map);
     }

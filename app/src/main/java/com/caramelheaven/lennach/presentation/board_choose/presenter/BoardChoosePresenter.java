@@ -1,11 +1,10 @@
 package com.caramelheaven.lennach.presentation.board_choose.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 import com.caramelheaven.lennach.Lennach;
 import com.caramelheaven.lennach.domain.board_use_case.GetAllBoard;
-import com.caramelheaven.lennach.models.model.board.BoardAll;
-import com.caramelheaven.lennach.models.network.BoardAllResponse;
+import com.caramelheaven.lennach.domain.board_use_case.SaveFavouriteBoards;
+import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
 
 import java.util.ArrayList;
@@ -21,13 +20,16 @@ import timber.log.Timber;
  * Created by CaramelHeaven on 19:25, 13/01/2019.
  */
 @InjectViewState
-public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardChooseView<BoardAll>> {
+public class BoardChoosePresenter extends BasePresenter<List<BoardFavourite>, BoardChooseView<BoardFavourite>> {
 
     private boolean allSelected = false;
-    private List<BoardAll> searchList;
+    private List<BoardFavourite> searchList;
 
     @Inject
     GetAllBoard getAllBoard;
+
+    @Inject
+    SaveFavouriteBoards saveFavouriteBoards;
 
     public BoardChoosePresenter() {
         super();
@@ -44,7 +46,7 @@ public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardCho
     }
 
     @Override
-    protected void successfulResult(List<BoardAll> result) {
+    protected void successfulResult(List<BoardFavourite> result) {
         getViewState().hideProgress();
 
         if (searchList.isEmpty()) {
@@ -70,6 +72,17 @@ public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardCho
                 .clearBoardChooseComponent();
     }
 
+    public void saveBoards(List<BoardFavourite> chosenBoards) {
+        saveFavouriteBoards.setData(chosenBoards);
+
+        disposable.add(saveFavouriteBoards.subscribeToData()
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> getViewState().savedData(), throwable -> {
+                    Timber.d("th: " + throwable.getMessage());
+                }));
+    }
+
     public boolean isAllSelected() {
         return allSelected;
     }
@@ -78,7 +91,7 @@ public class BoardChoosePresenter extends BasePresenter<List<BoardAll>, BoardCho
         this.allSelected = allSelected;
     }
 
-    public List<BoardAll> getSearchList() {
+    public List<BoardFavourite> getSearchList() {
         return searchList;
     }
 }
