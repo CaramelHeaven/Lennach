@@ -17,29 +17,34 @@ public class SlidePageTransformer implements ViewPager.PageTransformer {
         int pageWidth = page.getWidth();
 
         //Get thread page and it position
-        if ((int) page.getTag() == 1 && position < .70f && position > .001f) {
-            // get real numbers, because right fragment has number 1, left -1, middle 0
-            float current = 1f - position;
-            current *= 100;
+        if (page.getTag() != null) {
+            if ((int) page.getTag() == 1 && position < .70f && position > .001f) {
+                // get real numbers, because right fragment has number 1, left -1, middle 0
+                float current = 1f - position;
+                current *= 100;
 
-            //Set real number from user touch
-            float tranX = 100 - current;
-            tranX *= -1;
+                //Set real number from user touch
+                float tranX = 100 - current;
+                tranX *= -1;
 
-            page.setTranslationX(tranX);
-        } else if ((int) page.getTag() == 1 && position > .70f) {
-            //if user faster scroll, we should put some limiter
-            page.setTranslationX(-70);
-        }
+                page.setTranslationX(tranX);
+            } else if ((int) page.getTag() == 1 && position > .70f) {
+                //if user faster scroll, we should put some limiter
+                page.setTranslationX(-70);
+            }
 
-        if ((int) page.getTag() == 0) {
-            RelativeLayout relativeLayout = page.findViewById(R.id.relativeLayout);
-            relativeLayout.setTranslationX(-position * (pageWidth / 2));
-        } else if ((int) page.getTag() == 1) {
+            if ((int) page.getTag() == 0) {
+                RelativeLayout relativeLayout = page.findViewById(R.id.relativeLayout);
+
+                if (relativeLayout != null) {
+                    relativeLayout.setTranslationX(-position * (pageWidth / 2));
+                }
+            } else if ((int) page.getTag() == 1) {
 //            ImageView imageView = page.findViewById(R.id.image1);
 //            imageView.setTranslationX(-position * (pageWidht / 2));
-            //page.setTranslationX(-100);
+                //page.setTranslationX(-100);
 
+            }
         }
     }
 }

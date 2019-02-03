@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.presentation.base.fragment.BaseFragment;
+import com.caramelheaven.lennach.utils.Constants;
 
 /**
  * Created by CaramelHeaven on 18:07, 03/02/2019.
@@ -27,7 +28,12 @@ public class ThreadFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_thread, container, false);
+        View view = inflater.inflate(R.layout.fragment_thread, container, false);
+        //init slider in view pager
+        view.setTag(getArguments().getInt("POS"));
+        view.setTranslationX(Constants.INSTANCE.getManageXPosition());
+
+        return view;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.caramelheaven.lennach.presentation.main;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.caramelheaven.lennach.R;
@@ -9,6 +10,7 @@ import com.caramelheaven.lennach.presentation.base.BaseActivity;
 import com.caramelheaven.lennach.presentation.main.adapter.MainPagerAdapter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainPresenter;
 import com.caramelheaven.lennach.presentation.main.presenter.MainView;
+import com.caramelheaven.lennach.utils.animations.UtilsAnimationView;
 import com.caramelheaven.lennach.utils.views.BottomNavigationViewEx;
 import com.caramelheaven.lennach.utils.views.SlidePageTransformer;
 
@@ -19,6 +21,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private MainPagerAdapter mainPagerAdapter;
     private SlidePageTransformer slidePageTransformer;
+    private FrameLayout fmContainerFolder;
 
     @InjectPresenter
     MainPresenter presenter;
@@ -33,6 +36,7 @@ public class MainActivity extends BaseActivity implements MainView {
     protected void initViews() {
         bottomNavigation = findViewById(R.id.bottom_navigation);
         viewPager = findViewById(R.id.viewPager);
+        fmContainerFolder = findViewById(R.id.fm_container_folder);
 
         bottomNavigation.setTextVisibility(false);
         bottomNavigation.enableItemShiftingMode(false);
@@ -53,11 +57,15 @@ public class MainActivity extends BaseActivity implements MainView {
     protected void initListeners() {
         bottomNavigation.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
-                case R.id.item_database:
+                case R.id.item_folder:
+                    UtilsAnimationView.getInstance()
+                            .expandFromZeroToHalfOfPartScreen(fmContainerFolder, getApplicationContext());
                     return true;
                 case R.id.item_start_page:
+
                     return true;
                 case R.id.item_notification:
+
                     return true;
                 case R.id.item_menu:
                     return true;

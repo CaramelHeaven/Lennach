@@ -16,7 +16,7 @@ public class Lennach extends Application {
         super.onCreate();
 
         componentsManager = new ComponentsManager(this);
-        //componentsManager.getAppComponent();
+        componentsManager.getAppComponent();
     }
 
     public static ComponentsManager getComponentsManager() {

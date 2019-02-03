@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.presentation.base.fragment.BaseFragment;
@@ -14,6 +15,8 @@ import com.caramelheaven.lennach.presentation.base.fragment.BaseFragment;
  * Created by CaramelHeaven on 18:07, 03/02/2019.
  */
 public class BoardFragment extends BaseFragment {
+
+    private RelativeLayout relativeLayout;
 
     public static BoardFragment newInstance() {
 
@@ -42,11 +45,11 @@ public class BoardFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
-
+        relativeLayout = view.findViewById(R.id.relativeLayout);
     }
 
     @Override
     protected void deInitViews() {
-
+        relativeLayout = null;
     }
 }

@@ -26,4 +26,12 @@
         app:itemIconSize="26dp"
         app:itemIconTint="@color/colorBottomIcons"
         app:menu="@menu/bottom_menu_primary" />
+
+    <FrameLayout
+        android:id="@+id/fm_container_folder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:elevation="14dp" />
 </RelativeLayout>

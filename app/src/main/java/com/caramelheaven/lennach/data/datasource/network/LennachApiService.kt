@@ -2,6 +2,7 @@ package com.caramelheaven.lennach.data.datasource.network
 
 import com.caramelheaven.lennach.models.network.base.BoardResponse
 import com.caramelheaven.lennach.models.network.base.PostResponse
+import com.caramelheaven.lennach.models.network.list_of_boards.BoardAllResponse
 
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -22,20 +23,22 @@ interface LennachApiService {
                          @Query("thread") threadId: String,
                          @Query("post") numId: String): Single<List<PostResponse>>
 
-    //    @GET("api/captcha/{type}/id")
-    //    Single<CaptchaResponse> getCaptcha(@Path("type") String captchaType,
-    //                                       @Query("board") String board,
-    //                                       @Query("thread") String thread);
-    //
-    //    @Multipart
-    //    @POST("makaba/posting.fcgi?json=1&task=post")
-    //    Single<MessagePostResponse> sendMessage(@PartMap Map<String, RequestBody> options);
-    //
-    //    @Multipart
-    //    @POST("makaba/posting.fcgi?json=1&task=post")
-    //    Single<MessagePostResponse> sendMessageWithImage(@PartMap Map<String, RequestBody> options,
-    //                                                     @Part MultipartBody.Part file);
-    //
-        @GET("makaba/mobile.fcgi?task=get_boards")
-        Single<BoardAllResponse> getAllBoards();
+    @GET("makaba/mobile.fcgi?task=get_boards")
+    fun getAllBoards(): Single<BoardAllResponse>
 }
+
+//    @GET("api/captcha/{type}/id")
+//    Single<CaptchaResponse> getCaptcha(@Path("type") String captchaType,
+//                                       @Query("board") String board,
+//                                       @Query("thread") String thread);
+//
+//    @Multipart
+//    @POST("makaba/posting.fcgi?json=1&task=post")
+//    Single<MessagePostResponse> sendMessage(@PartMap Map<String, RequestBody> options);
+//
+//    @Multipart
+//    @POST("makaba/posting.fcgi?json=1&task=post")
+//    Single<MessagePostResponse> sendMessageWithImage(@PartMap Map<String, RequestBody> options,
+//                                                     @Part MultipartBody.Part file);
+//
+
