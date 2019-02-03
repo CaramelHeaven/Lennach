@@ -36,6 +36,6 @@ interface LennachApiService {
     //    Single<MessagePostResponse> sendMessageWithImage(@PartMap Map<String, RequestBody> options,
     //                                                     @Part MultipartBody.Part file);
     //
-    //    @GET("makaba/mobile.fcgi?task=get_boards")
-    //    Single<BoardAllResponse> getAllBoards();
+        @GET("makaba/mobile.fcgi?task=get_boards")
+        Single<BoardAllResponse> getAllBoards();
 }

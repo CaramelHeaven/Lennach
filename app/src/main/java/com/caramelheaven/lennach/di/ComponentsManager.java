@@ -4,12 +4,23 @@ import android.content.Context;
 
 import com.caramelheaven.lennach.di.application.AppComponent;
 import com.caramelheaven.lennach.di.application.AppModule;
+import com.caramelheaven.lennach.di.application.DaggerAppComponent;
+import com.caramelheaven.lennach.di.board.BoardComponent;
+import com.caramelheaven.lennach.di.board.BoardModule;
+import com.caramelheaven.lennach.di.folder.FolderComponent;
+import com.caramelheaven.lennach.di.folder.FolderModule;
+import com.caramelheaven.lennach.di.main.MainComponent;
+import com.caramelheaven.lennach.di.main.MainModule;
+
 
 /**
  * Created by CaramelHeaven on 16:41, 03/02/2019.
  */
 public class ComponentsManager {
     private AppComponent appComponent;
+    private MainComponent mainComponent;
+    private BoardComponent boardComponent;
+    private FolderComponent folderComponent;
 
     private final Context context;
 
@@ -19,11 +30,42 @@ public class ComponentsManager {
 
     public AppComponent getAppComponent() {
         if (appComponent == null) {
-
             appComponent = DaggerAppComponent.builder()
                     .appModule(new AppModule(context))
                     .build();
         }
         return appComponent;
+    }
+
+    public MainComponent plusMainComponent() {
+        if (mainComponent == null) {
+            mainComponent = appComponent.plusMainComponent(new MainModule());
+        }
+        return mainComponent;
+    }
+
+    public BoardComponent plusBoardComponent() {
+        if (boardComponent == null) {
+            boardComponent = mainComponent.plusBoardComponent(new BoardModule());
+        }
+
+        return boardComponent;
+    }
+
+    public FolderComponent plusFolderComponent() {
+        if (folderComponent == null) {
+            folderComponent = mainComponent.plusFolderComponent(new FolderModule());
+        }
+
+        return folderComponent;
+    }
+
+    public void clearMainComponent() {
+        mainComponent = null;
+    }
+
+    public void clearBoardComponent() {
+        boardComponent = null;
+        boardComponent = null;
     }
 }

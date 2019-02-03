@@ -41,4 +41,13 @@ public class BoardDb {
     public void setKey(@NonNull int key) {
         this.key = key;
     }
+
+    @Override
+    public String toString() {
+        return "BoardDb{" +
+                "key=" + key +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

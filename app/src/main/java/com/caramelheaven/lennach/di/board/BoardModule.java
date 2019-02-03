@@ -7,7 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by CaramelHeaven on 17:20, 03/02/2019.
+ * Created by CaramelHeaven on 18:12, 03/02/2019.
  */
 @Module
 public class BoardModule {

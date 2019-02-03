@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.presentation.board;
+package com.caramelheaven.lennach.presentation.folder;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,19 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.presentation.base.fragment.BaseFragment;
 
 /**
- * Created by CaramelHeaven on 18:07, 03/02/2019.
+ * Created by CaramelHeaven on 18:36, 03/02/2019.
  */
-public class BoardFragment extends BaseFragment {
+public class FolderFragment extends BaseFragment {
 
-    public static BoardFragment newInstance() {
+    public static FolderFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        BoardFragment fragment = new BoardFragment();
+        FolderFragment fragment = new FolderFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -27,7 +26,7 @@ public class BoardFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_board, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override

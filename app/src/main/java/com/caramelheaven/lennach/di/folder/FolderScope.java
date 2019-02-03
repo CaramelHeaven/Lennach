@@ -1,4 +1,4 @@
-package com.caramelheaven.lennach.di.board;
+package com.caramelheaven.lennach.di.folder;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,6 +11,6 @@ import javax.inject.Scope;
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BoardScope {
+public @interface FolderScope {
 
 }

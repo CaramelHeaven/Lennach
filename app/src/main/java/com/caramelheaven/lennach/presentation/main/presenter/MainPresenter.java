@@ -12,7 +12,9 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public MainPresenter() {
         super();
-
+        Lennach.getComponentsManager()
+                .plusMainComponent()
+                .inject(this);
     }
 
     @Override

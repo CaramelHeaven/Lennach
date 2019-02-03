@@ -31,3 +31,4 @@ public abstract class BasePresenter<S extends BaseMainView> extends MvpPresenter
         super.onDestroy();
     }
 }
+
