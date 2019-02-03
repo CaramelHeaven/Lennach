@@ -1,43 +1,21 @@
 package com.caramelheaven.lennach.models.mapper.board;
 
-import com.caramelheaven.lennach.models.database.BoardFavouriteDb;
-import com.caramelheaven.lennach.models.model.board.Board;
-import com.caramelheaven.lennach.models.model.board.BoardFavourite;
-import com.caramelheaven.lennach.models.network.BoardAllResponse;
-import com.caramelheaven.lennach.models.network.BoardResponse;
+import com.caramelheaven.lennach.models.mapper.board.entities.BoardResponseToBoard;
+import com.caramelheaven.lennach.models.model.Board;
+import com.caramelheaven.lennach.models.network.base.BoardResponse;
 
-import java.util.List;
-
+/**
+ * Created by CaramelHeaven on 16:28, 03/02/2019.
+ * Base class for handlers all mappers
+ */
 public class BoardMapper {
-    private BoardResponseToBoard boardResponseToBoard;
-    private BoardAllResponseToBoardAll boardAllResponseToBoardAll;
-    private BoardAllToBoardFavouriteDb boardAllToBoardFavouriteDb;
-    private BoardFavouriteDbToBoardFavourite boardFavouriteDbToBoardFavourite;
+    private final BoardResponseToBoard boardResponseToBoard;
 
-    public BoardMapper(BoardResponseToBoard boardResponseToBoard,
-                       BoardAllResponseToBoardAll boardAllResponseToBoardAll,
-                       BoardAllToBoardFavouriteDb boardAllToBoardFavouriteDb,
-                       BoardFavouriteDbToBoardFavourite boardFavouriteDbToBoardFavourite) {
+    public BoardMapper(BoardResponseToBoard boardResponseToBoard) {
         this.boardResponseToBoard = boardResponseToBoard;
-        this.boardAllResponseToBoardAll = boardAllResponseToBoardAll;
-        this.boardAllToBoardFavouriteDb = boardAllToBoardFavouriteDb;
-        this.boardFavouriteDbToBoardFavourite = boardFavouriteDbToBoardFavourite;
     }
 
-    public Board map(BoardResponse response) {
+    public Board map(BoardResponse response){
         return boardResponseToBoard.map(response);
     }
-
-    public List<BoardFavourite> map(BoardAllResponse response) {
-        return boardAllResponseToBoardAll.map(response);
-    }
-
-    public List<BoardFavouriteDb> map(List<BoardFavourite> boardAllList) {
-        return boardAllToBoardFavouriteDb.map(boardAllList);
-    }
-
-    public List<BoardFavourite> mapFavourite(List<BoardFavouriteDb> boardFavouriteDbs) {
-        return boardFavouriteDbToBoardFavourite.map(boardFavouriteDbs);
-    }
-
 }

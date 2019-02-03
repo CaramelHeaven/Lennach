@@ -30,15 +30,9 @@
         </activity>
 
         <!-- Image Gallery -->
-        <activity
-            android:name=".presentation.image_gallery.ImageGalleryActivity"
-            android:theme="@style/AppTheme.Transparent" />
-
-        <!-- splash screen -->
-        <activity android:name=".presentation.splash_welcome.SplashActivity">
-
-        </activity>
-
+        <!-- <activity -->
+        <!-- android:name=".presentation.image_gallery.ImageGalleryActivity" -->
+        <!-- android:theme="@style/AppTheme.Transparent" /> -->
     </application>
 
 </manifest>

@@ -1,34 +1,28 @@
 package com.caramelheaven.lennach.data.repository.board;
 
 import com.caramelheaven.lennach.data.datasource.network.LennachApiService;
-import com.caramelheaven.lennach.domain.BoardRepository;
+import com.caramelheaven.lennach.domain.repositories.BoardNetworkRepository;
 import com.caramelheaven.lennach.models.mapper.board.BoardMapper;
-import com.caramelheaven.lennach.models.model.board.Board;
-import com.caramelheaven.lennach.models.model.board.BoardFavourite;
-
-import java.util.List;
+import com.caramelheaven.lennach.models.model.Board;
 
 import io.reactivex.Single;
 
-public class BoardRemoteRepository implements BoardRepository {
+/**
+ * Created by CaramelHeaven on 16:42, 03/02/2019.
+ */
+public class BoardRemoteRepository implements BoardNetworkRepository {
 
-    private final LennachApiService apiService;
+    private final LennachApiService lennachApiService;
     private final BoardMapper boardMapper;
 
-    public BoardRemoteRepository(LennachApiService apiService, BoardMapper boardMapper) {
-        this.apiService = apiService;
+    public BoardRemoteRepository(LennachApiService lennachApiService, BoardMapper boardMapper) {
+        this.lennachApiService = lennachApiService;
         this.boardMapper = boardMapper;
     }
 
     @Override
     public Single<Board> getBoard(String boardName, int page) {
-        return apiService.getBoard(boardName, page)
-                .map(boardMapper::map);
-    }
-
-    @Override
-    public Single<List<BoardFavourite>> getAllBoards() {
-        return apiService.getAllBoards()
+        return lennachApiService.getBoard(boardName, page)
                 .map(boardMapper::map);
     }
 }

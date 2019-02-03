@@ -1,33 +1,35 @@
 package com.caramelheaven.lennach.data.repository.board;
 
 import com.caramelheaven.lennach.data.datasource.database.dao.BoardDao;
-import com.caramelheaven.lennach.domain.BoardSaveRepository;
+import com.caramelheaven.lennach.domain.repositories.BoardDatabaseRepository;
+import com.caramelheaven.lennach.models.database.BoardDb;
 import com.caramelheaven.lennach.models.mapper.board.BoardMapper;
-import com.caramelheaven.lennach.models.model.board.BoardFavourite;
 
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
-public class BoardLocalRepository implements BoardSaveRepository {
-    private final BoardMapper boardMapper;
+/**
+ * Created by CaramelHeaven on 16:42, 03/02/2019.
+ */
+public class BoardLocalRepository implements BoardDatabaseRepository {
+
     private final BoardDao boardDao;
+    private final BoardMapper boardMapper;
 
-    public BoardLocalRepository(BoardMapper boardMapper, BoardDao boardDao) {
-        this.boardMapper = boardMapper;
+    public BoardLocalRepository(BoardDao boardDao, BoardMapper boardMapper) {
         this.boardDao = boardDao;
+        this.boardMapper = boardMapper;
     }
 
     @Override
-    public Completable saveFavouriteBoards(List<BoardFavourite> values) {
-        return Completable.fromAction(() ->
-                boardDao.addListFavouriteBoards(boardMapper.map(values)));
+    public Completable saveFavouriteBoards(List<BoardDb> values) {
+        return null;
     }
 
     @Override
-    public Single<List<BoardFavourite>> getFavouriteBoards() {
-        return boardDao.getFavouritesBoards()
-                .map(boardMapper::mapFavourite);
+    public Single<List<BoardDb>> getFavouriteBoards() {
+        return null;
     }
 }

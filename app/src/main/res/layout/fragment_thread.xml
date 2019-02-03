@@ -20,7 +20,7 @@
         android:visibility="gone" />
 
     <FrameLayout
-        android:id="@+id/fm_container_messanger"
+        android:id="@+id/fm_container_messenger"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorPrimary"
@@ -66,8 +66,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_image" />
+                android:background="?selectableItemBackgroundBorderless" />
 
             <ImageButton
                 android:id="@+id/btn_send"
@@ -77,8 +76,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_send" />
+                android:background="?selectableItemBackgroundBorderless" />
 
             <EditText
                 android:id="@+id/et_name"
@@ -115,14 +113,5 @@
                 android:background="?selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_expand_more" />
         </RelativeLayout>
-
     </FrameLayout>
-
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
-
-
 </FrameLayout>

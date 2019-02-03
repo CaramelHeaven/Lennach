@@ -5,23 +5,23 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.caramelheaven.lennach.models.database.BoardFavouriteDb;
+import com.caramelheaven.lennach.models.database.BoardDb;
 
 import java.util.List;
 
 import io.reactivex.Single;
 
 /**
- * Created by CaramelHeaven on 20:45, 23/01/2019.
+ * Created by CaramelHeaven on 16:46, 03/02/2019.
  */
 @Dao
 public interface BoardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addFavouriteBoard(BoardFavouriteDb boardFavouriteDb);
+    void addFavouriteBoard(BoardDb boardDb);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addListFavouriteBoards(List<BoardFavouriteDb> boardFavouriteDbs);
+    void addListFavouriteBoards(List<BoardDb> boardDbList);
 
-    @Query("SELECT * FROM BoardFavouriteDb")
-    Single<List<BoardFavouriteDb>> getFavouritesBoards();
+    @Query("SELECT * FROM BoardDb")
+    Single<List<BoardDb>> getFavouritesBoards();
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,27 +15,15 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp" />
+        android:layout_above="@id/bottom_navigation" />
 
-    <FrameLayout
-        android:id="@+id/frame_bottom_view"
+    <com.caramelheaven.lennach.utils.views.BottomNavigationViewEx
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_gravity="bottom">
-
-        <com.caramelheaven.lennach.utils.views.BottomNavigationViewEx
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:itemIconSize="26dp"
-            app:itemIconTint="#D80027"
-            app:menu="@menu/bottom_menu_primary" />
-    </FrameLayout>
-
-    <include
-        android:id="@+id/bottom_sheet"
-        layout="@layout/sheet_bottom_navigation"
-        android:visibility="visible" />
-</android.support.design.widget.CoordinatorLayout>
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconSize="26dp"
+        app:itemIconTint="@color/colorBottomIcons"
+        app:menu="@menu/bottom_menu_primary" />
+</RelativeLayout>

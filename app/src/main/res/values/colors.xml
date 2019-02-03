@@ -22,4 +22,7 @@
 
     <color name="colorItemBackground">#FEEAE6</color>
     <color name="colorItemBackgroundSelected">#F2D8D3</color>
+
+    <!--New LIFE-->
+    <color name="colorBottomIcons">#442C2E</color>
 </resources>

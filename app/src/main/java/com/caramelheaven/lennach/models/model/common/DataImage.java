@@ -3,8 +3,13 @@ package com.caramelheaven.lennach.models.model.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
+/**
+ * Created by CaramelHeaven on 16:21, 03/02/2019.
+ * Image from network
+ */
 public class DataImage implements Parcelable {
-    //image
     private String displayNameImage;
     private String nameImage;
     private Integer sizeImage;
@@ -15,7 +20,7 @@ public class DataImage implements Parcelable {
 
     @Override
     public String toString() {
-        return "DataSet{" +
+        return "DataImage{" +
                 "displayNameImage='" + displayNameImage + '\'' +
                 ", nameImage='" + nameImage + '\'' +
                 ", sizeImage=" + sizeImage +
@@ -24,6 +29,25 @@ public class DataImage implements Parcelable {
                 ", widthImage=" + widthImage +
                 ", heightImage=" + heightImage +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataImage dataImage = (DataImage) o;
+        return Objects.equals(displayNameImage, dataImage.displayNameImage) &&
+                Objects.equals(nameImage, dataImage.nameImage) &&
+                Objects.equals(sizeImage, dataImage.sizeImage) &&
+                Objects.equals(thumbnail, dataImage.thumbnail) &&
+                Objects.equals(path, dataImage.path) &&
+                Objects.equals(widthImage, dataImage.widthImage) &&
+                Objects.equals(heightImage, dataImage.heightImage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(displayNameImage, nameImage, sizeImage, thumbnail, path, widthImage, heightImage);
     }
 
     public String getDisplayNameImage() {
@@ -58,6 +82,14 @@ public class DataImage implements Parcelable {
         this.thumbnail = thumbnail;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public Integer getWidthImage() {
         return widthImage;
     }
@@ -74,13 +106,6 @@ public class DataImage implements Parcelable {
         this.heightImage = heightImage;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     @Override
     public int describeContents() {
