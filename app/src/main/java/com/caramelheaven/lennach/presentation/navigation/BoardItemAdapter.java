@@ -12,6 +12,7 @@ import com.caramelheaven.lennach.R;
 import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.utils.Constants;
 import com.caramelheaven.lennach.utils.bus.GlobalBus;
+import com.caramelheaven.lennach.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -87,12 +88,8 @@ public class BoardItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             tvNameBoard = itemView.findViewById(R.id.tv_name_board);
             cvBase = itemView.findViewById(R.id.cv_base);
 
-            cvBase.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GlobalBus.getEventBus().post(getItemByPosition(getAdapterPosition()));
-                }
-            });
+            cvBase.setOnClickListener(v ->
+                    RxBus.getInstance().passChooseBoard(boardList.get(getAdapterPosition()).getBoardName()));
         }
     }
 

@@ -6,6 +6,7 @@ import com.caramelheaven.lennach.models.model.board.Board;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import timber.log.Timber;
 
 public class GetBoard extends BaseUseCase<Single<Board>> {
     private final BoardRepository repository;
@@ -18,6 +19,7 @@ public class GetBoard extends BaseUseCase<Single<Board>> {
 
     @Override
     public Single<Board> subscribeToData() {
+        Timber.d("board name: " + boardName);
         return repository.getBoard(boardName, pageIndex);
     }
 

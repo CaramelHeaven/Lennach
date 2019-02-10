@@ -237,5 +237,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         });
 
     }
+
+    @Override
+    public void hideBottomNavigation() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
 }
 

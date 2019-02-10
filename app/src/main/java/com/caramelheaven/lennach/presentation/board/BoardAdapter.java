@@ -26,13 +26,11 @@ import java.util.Set;
 public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Usenet> usenetList;
-    private Set<Usenet> usenetUnique;
 
     private OnBoardItemClickListener onBoardItemClickListener;
 
     public BoardAdapter(List<Usenet> usenetList) {
         this.usenetList = usenetList;
-        usenetUnique = new LinkedHashSet<>();
     }
 
     @NonNull
@@ -59,9 +57,7 @@ public class BoardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void updateAdapter(List<Usenet> items) {
-        usenetUnique.addAll(items);
-        usenetList.clear();
-        usenetList.addAll(usenetUnique);
+        usenetList = items;
     }
 
     public Usenet getItemByPosition(int position) {

@@ -7,6 +7,7 @@ import com.caramelheaven.lennach.domain.board_use_case.GetBoard;
 import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
+import com.caramelheaven.lennach.utils.bus.RxBus;
 
 import java.util.List;
 
@@ -22,13 +23,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private CompositeDisposable disposable;
 
-    /**
-     * enterImageClickPosition - position for click on image view
-     * exitImageSwipePosition - position for swipe image when we are inside gallery
-     */
-    private int enterImageClickPosition;
-    private int exitImageSwipePosition;
-
     public MainPresenter() {
         Timber.d("inject view state");
         disposable = new CompositeDisposable();
@@ -36,6 +30,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
         Lennach.getComponentsManager()
                 .plusMainComponent()
                 .inject(this);
+
+        disposable.add(RxBus.getInstance().getChooseBoard()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> getViewState().hideBottomNavigation()));
     }
 
     @Override
@@ -50,22 +48,5 @@ public class MainPresenter extends MvpPresenter<MainView> {
         Lennach.getComponentsManager().clearMainComponent();
 
         super.onDestroy();
-    }
-
-
-    public int getEnterImageClickPosition() {
-        return enterImageClickPosition;
-    }
-
-    public void setEnterImageClickPosition(int enterImageClickPosition) {
-        this.enterImageClickPosition = enterImageClickPosition;
-    }
-
-    public int getExitImageSwipePosition() {
-        return exitImageSwipePosition;
-    }
-
-    public void setExitImageSwipePosition(int exitImageSwipePosition) {
-        this.exitImageSwipePosition = exitImageSwipePosition;
     }
 }

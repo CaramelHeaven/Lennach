@@ -6,6 +6,7 @@ import com.caramelheaven.lennach.domain.board_use_case.GetBoard;
 import com.caramelheaven.lennach.models.model.board.Board;
 import com.caramelheaven.lennach.models.model.board.Usenet;
 import com.caramelheaven.lennach.presentation.base.BasePresenter;
+import com.caramelheaven.lennach.utils.bus.RxBus;
 import com.caramelheaven.lennach.utils.bus.models.ActionThread;
 import com.caramelheaven.lennach.utils.bus.models.HandlerViewPagerData;
 
@@ -46,6 +47,13 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView<Usenet
                 .inject(this);
 
         getBoard.setBoardName("b");
+
+        disposable.add(RxBus.getInstance().getChooseBoard()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    getBoard.setBoardName(result);
+                    getData();
+                }));
     }
 
     @Override
@@ -68,7 +76,14 @@ public class BoardPresenter extends BasePresenter<List<Usenet>, BoardView<Usenet
 
     @Override
     protected void successfulResult(List<Usenet> result) {
+        if (!board.equals(getBoard.getBoardName())) {
+            Timber.d("CLEARN UP");
+            usenetList.clear();
+            board = getBoard.getBoardName();
+        }
+
         usenetList.addAll(result);
+
         getViewState().hideProgress();
 
         Timber.d("check: ");

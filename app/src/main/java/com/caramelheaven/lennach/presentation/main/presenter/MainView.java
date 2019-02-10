@@ -7,5 +7,6 @@ import com.caramelheaven.lennach.presentation.base.BaseView;
 import java.util.List;
 
 public interface MainView extends BaseView {
-
+    @StateStrategyType(value = AddToEndSingleStrategy.class)
+    void hideBottomNavigation();
 }
